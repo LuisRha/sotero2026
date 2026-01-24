@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorteos 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <header>
+    <h1>🎉 GRAN SORTEO 2026</h1>
+    <p>Participa y gana increíbles premios</p>
+  </header>
+
+  <main>
+    <section id="info">
+      <h2>Información del sorteo</h2>
+      <p>🎁 Premio: Moto / Celular</p>
+      <p>💵 Precio por boleto: $5</p>
+      <p>🎟️ Total boletos: 5000</p>
+      <p id="disponibles">Boletos disponibles: --</p>
+
+      <button id="btnComprar">Comprar boletos</button>
+    </section>
+
+    <section id="formulario" class="oculto">
+      <h2>Formulario de compra</h2>
+
+      <input
+        type="text"
+        id="nombre"
+        placeholder="Tu nombre"
+      >
+
+      <input
+        type="text"
+        id="whatsapp"
+        placeholder="Tu WhatsApp"
+      >
+
+      <input
+        type="number"
+        id="cantidad"
+        min="1"
+        max="50"
+        placeholder="Cantidad de boletos"
+      >
+
+      <!-- 💰 TOTAL A PAGAR (AUTOMÁTICO) -->
+      <p
+        id="totalPagar"
+        style="margin: 10px 0; font-weight: bold;"
+      >
+        Total a pagar: $0
+      </p>
+
+      <!-- 🧾 VOUCHER / COMPROBANTE -->
+      <input
+        type="text"
+        id="voucher"
+        placeholder="Número de comprobante / voucher"
+      >
+
+      <button id="btnEnviar">Enviar</button>
+    </section>
+  </main>
+
+  <!-- ✅ JS PRINCIPAL -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
