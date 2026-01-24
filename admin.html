@@ -5,29 +5,62 @@
   <title>Admin Sorteo 2026</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- CSS ADMIN -->
   <link rel="stylesheet" href="css/admin.css">
+
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<h1>🧑‍💼 Panel Administrativo – Sorteo 2026</h1>
+  <h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
 
-<table id="tabla">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Nombre</th>
-      <th>WhatsApp</th>
-      <th>Cantidad</th>
-      <th>Números</th>
-      <th>Voucher</th>
-      <th>Estado</th>
-      <th>Acción</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <!-- 🔥 BARRA SUPERIOR (SELECT + BOTONES + RESUMEN) -->
+  <div class="barra-sorteo">
 
-<script src="js/admin.js"></script>
+    <!-- SELECT SORTEO -->
+    <div class="selector">
+      <label for="selectSorteo">🎟️ Sorteo activo:</label>
+      <select id="selectSorteo">
+        <!-- JS cargará los sorteos -->
+      </select>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="acciones">
+      <button id="btnCerrarSorteo">🔒 Cerrar</button>
+      <button id="btnNuevoSorteo">➕ Nuevo</button>
+      <button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="resumen">
+      👥 Compras registradas: <strong id="totalCompras">0</strong>
+    </div>
+
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper">
+    <table id="tabla">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre</th>
+          <th>WhatsApp</th>
+          <th>Cantidad</th>
+          <th>Números</th>
+          <th>Voucher</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- JS ADMIN -->
+  <script src="js/admin.js"></script>
+
 </body>
 </html>
