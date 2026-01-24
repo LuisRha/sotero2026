@@ -24,17 +24,38 @@ const totalPagarEl = document.getElementById("totalPagar");
 const TOTAL_BOLETOS = 5000;
 const PRECIO_BOLETO = 5;
 
+// =========================
+// 🔥 OBTENER SORTEO ACTIVO
+// =========================
+async function obtenerSorteoActivo() {
+  const { data, error } = await supabaseClient
+    .from("sorteos")
+    .select("id")
+    .eq("estado", "activo")
+    .limit(1)
+    .single();
+
+  if (error || !data) {
+    throw new Error("❌ No hay sorteo activo");
+  }
+
+  return data.id;
+}
+
 // Mostrar formulario
 btnComprar.addEventListener("click", () => {
   formulario.classList.remove("oculto");
   formulario.scrollIntoView({ behavior: "smooth" });
 });
 
-// 🔢 Obtener boletos vendidos
+// 🔢 Obtener boletos BLOQUEADOS
+// pendiente y aprobado bloquean
+// rechazado / cancelado NO bloquean
 async function obtenerVendidos() {
   const { data, error } = await supabaseClient
     .from("compras")
-    .select("cantidad");
+    .select("cantidad, estado")
+    .in("estado", ["pendiente", "aprobado"]);
 
   if (error) {
     console.error("Error al obtener vendidos:", error);
@@ -69,57 +90,63 @@ actualizarDisponibles();
 
 // 🚀 Enviar datos
 btnEnviar.addEventListener("click", async () => {
-  const nombre = nombreInput.value.trim();
-  const whatsapp = whatsappInput.value.trim();
-  const cantidad = Number(cantidadInput.value);
-  const voucher = voucherInput.value.trim();
+  try {
+    const nombre = nombreInput.value.trim();
+    const whatsapp = whatsappInput.value.trim();
+    const cantidad = Number(cantidadInput.value);
+    const voucher = voucherInput.value.trim();
 
-  if (!nombre || !whatsapp || !cantidad || cantidad <= 0 || !voucher) {
-    alert("Completa todos los campos y realiza el pago");
-    return;
-  }
+    if (!nombre || !whatsapp || !cantidad || cantidad <= 0 || !voucher) {
+      alert("Completa todos los campos y realiza el pago");
+      return;
+    }
 
-  const vendidos = await obtenerVendidos();
-  const disponibles = TOTAL_BOLETOS - vendidos;
+    const vendidos = await obtenerVendidos();
+    const disponibles = TOTAL_BOLETOS - vendidos;
 
-  if (cantidad > disponibles) {
-    alert(`Solo quedan ${disponibles} boletos disponibles`);
-    return;
-  }
+    if (cantidad > disponibles) {
+      alert(`Solo quedan ${disponibles} boletos disponibles`);
+      return;
+    }
 
-  // 🎟️ Generar números automáticos
-  const numerosAsignados = [];
-  for (let i = 1; i <= cantidad; i++) {
-    numerosAsignados.push(vendidos + i);
-  }
+    // 🎟️ Generar números automáticos
+    const numerosAsignados = [];
+    for (let i = 1; i <= cantidad; i++) {
+      numerosAsignados.push(vendidos + i);
+    }
 
-  const numerosTexto = numerosAsignados.join(",");
-  const totalPagar = cantidad * PRECIO_BOLETO;
+    const numerosTexto = numerosAsignados.join(",");
+    const totalPagar = cantidad * PRECIO_BOLETO;
 
-  // Guardar en Supabase
-  const { error: insertError } = await supabaseClient
-    .from("compras")
-    .insert([
-      {
-        nombre,
-        whatsapp,
-        cantidad,
-        numeros: numerosTexto,
-        voucher,
-        total: totalPagar
-      }
-    ]);
+    // 🔥 OBTENER SORTEO ACTIVO
+    const sorteoId = await obtenerSorteoActivo();
 
-  if (insertError) {
-    console.error(insertError);
-    alert("Error al guardar la compra");
-    return;
-  }
+    // Guardar en Supabase
+    const { error: insertError } = await supabaseClient
+      .from("compras")
+      .insert([
+        {
+          sorteo_id: sorteoId,
+          nombre,
+          whatsapp,
+          cantidad,
+          numeros: numerosTexto,
+          voucher,
+          total: totalPagar,
+          estado: "pendiente"
+        }
+      ]);
 
-  // 📲 WhatsApp ADMIN
-  const numeroAdmin = "593988271324";
+    if (insertError) {
+      console.error(insertError);
+      alert("Error al guardar la compra");
+      return;
+    }
 
-  const mensaje = `
+    // 📲 WhatsApp ADMIN
+    const numeroAdmin = "593988271324";
+
+    const mensaje = `
 📢 NUEVA SOLICITUD DE SORTEO
 
 👤 Nombre: ${nombre}
@@ -136,25 +163,28 @@ ${voucher}
 Por favor confirmar pago.
 `;
 
-  window.open(
-    `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
-    "_blank"
-  );
+    window.open(
+      `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
+      "_blank"
+    );
 
-  // 🧼 Limpiar formulario
-  nombreInput.value = "";
-  whatsappInput.value = "";
-  cantidadInput.value = "";
-  voucherInput.value = "";
-  totalPagarEl.textContent = "Total a pagar: $0";
+    // 🧼 Limpiar formulario
+    nombreInput.value = "";
+    whatsappInput.value = "";
+    cantidadInput.value = "";
+    voucherInput.value = "";
+    totalPagarEl.textContent = "Total a pagar: $0";
 
-  formulario.classList.add("oculto");
-  actualizarDisponibles();
+    formulario.classList.add("oculto");
+    actualizarDisponibles();
+  } catch (err) {
+    alert(err.message);
+  }
 });
-  
 
-// dinamico
-
+// =========================
+// TEXTO DINÁMICO (SIN CAMBIOS)
+// =========================
 const textosTopBar = [
   "JUEGA EL BONAZO $50.000",
   "SORTEO 100% TRANSPARENTE",
@@ -168,4 +198,4 @@ setInterval(() => {
   const topBar = document.getElementById("topBarText");
   indice = (indice + 1) % textosTopBar.length;
   topBar.textContent = textosTopBar[indice];
-}, 3000); // cambia cada 3 segundos
+}, 3000);

@@ -15,6 +15,12 @@
 
   <h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
 
+  <!-- 🟢 SORTEO ACTIVO (VERDE + TITILANTE) -->
+  <div id="sorteoActivoTitulo" class="sorteo-activo">
+    <span class="dot"></span>
+    Sorteo activo: —
+  </div>
+
   <!-- 🔥 BARRA SUPERIOR (SELECT + BOTONES + RESUMEN) -->
   <div class="barra-sorteo">
 
@@ -22,7 +28,7 @@
     <div class="selector">
       <label for="selectSorteo">🎟️ Sorteo activo:</label>
       <select id="selectSorteo">
-        <!-- JS cargará los sorteos -->
+        <!-- admin.js cargará los sorteos -->
       </select>
     </div>
 
@@ -40,7 +46,7 @@
 
   </div>
 
-  <!-- TABLA -->
+  <!-- TABLA DE COMPRAS -->
   <div class="table-wrapper">
     <table id="tabla">
       <thead>
@@ -55,8 +61,36 @@
           <th>Acción</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        <!-- admin.js renderiza las filas -->
+      </tbody>
     </table>
+  </div>
+
+  <!-- ========================= -->
+  <!-- MODAL NUEVO SORTEO -->
+  <!-- ========================= -->
+  <div id="modalNuevoSorteo" class="modal oculto">
+    <div class="modal-contenido">
+      <h3>➕ Crear nuevo sorteo</h3>
+
+      <label for="nuevoNombreSorteo">Nombre del sorteo</label>
+      <input
+        type="text"
+        id="nuevoNombreSorteo"
+        placeholder="Ej: Sorteo 2 - Auto 2026"
+      >
+
+      <label style="display:block;margin-top:10px;">
+        <input type="checkbox" id="nuevoSorteoActivo">
+        Marcar como sorteo activo
+      </label>
+
+      <div class="modal-acciones">
+        <button id="btnGuardarSorteo">Guardar</button>
+        <button id="btnCancelarSorteo" class="danger">Cancelar</button>
+      </div>
+    </div>
   </div>
 
   <!-- JS ADMIN -->
