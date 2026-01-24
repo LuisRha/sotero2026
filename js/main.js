@@ -151,3 +151,21 @@ Por favor confirmar pago.
   formulario.classList.add("oculto");
   actualizarDisponibles();
 });
+  
+
+// dinamico
+
+const textosTopBar = [
+  "JUEGA EL BONAZO $50.000",
+  "SORTEO 100% TRANSPARENTE",
+  "PAGA $5 Y GANA EN GRANDE",
+  "PREMIOS REALES · GANADORES REALES"
+];
+
+let indice = 0;
+
+setInterval(() => {
+  const topBar = document.getElementById("topBarText");
+  indice = (indice + 1) % textosTopBar.length;
+  topBar.textContent = textosTopBar[indice];
+}, 3000); // cambia cada 3 segundos

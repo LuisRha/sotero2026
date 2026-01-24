@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Sorteos 2026</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
@@ -13,65 +15,89 @@
 </head>
 <body>
 
-  <header>
-    <h1>🎉 GRAN SORTEO 2026</h1>
-    <p>Participa y gana increíbles premios</p>
+  <!-- TOP BAR -->
+  <div class="top-bar" id="topBarText">
+    <div class="top-bar-content">
+      <div class="top-line">JUEGA</div>
+      <div class="top-main">EL BONAZO $50.000</div>
+      <div class="top-sub">
+        $40.000 + $10.000 + $1.000 EN EFECTIVO · ACTIVIDAD #45
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="main-header">
+    <div class="logo-box">
+      <span class="logo-text">SORTEOS</span>
+      <span class="logo-highlight">2026</span>
+      <p class="slogan">Cumpliendo sueños.</p>
+    </div>
   </header>
 
-  <main>
-    <section id="info">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-box">
+      <h2>Gana premios increíbles de forma segura</h2>
+      <p>Sorteos transparentes · Pagos verificados · Premios reales</p>
+  
+  <!-- IMAGEN DEL SORTEO -->
+  <section class="sorteo-imagen">
+    <div class="container">
+      <img
+  src="images/sorteos/igm.jpg"
+  alt="Bonazo $50.000 Actividad 45"
+  loading="lazy"
+>
+    </div>
+  </section>
+  
+
+      <!-- ⚠️ ID SE MANTIENE -->
+      <button id="btnComprar" class="btn-principal">
+        Comprar boletos
+      </button>
+    </div>
+  </section>
+
+  
+
+  <!-- CONTENIDO -->
+  <main class="container">
+
+    <!-- INFO -->
+    <section id="info" class="card">
       <h2>Información del sorteo</h2>
+
       <p>🎁 Premio: Moto / Celular</p>
       <p>💵 Precio por boleto: $5</p>
       <p>🎟️ Total boletos: 5000</p>
       <p id="disponibles">Boletos disponibles: --</p>
-
-      <button id="btnComprar">Comprar boletos</button>
     </section>
 
-    <section id="formulario" class="oculto">
+    <!-- FORMULARIO -->
+    <section id="formulario" class="card oculto">
       <h2>Formulario de compra</h2>
 
-      <input
-        type="text"
-        id="nombre"
-        placeholder="Tu nombre"
-      >
+      <input type="text" id="nombre" placeholder="Tu nombre">
+      <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
+      <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
 
-      <input
-        type="text"
-        id="whatsapp"
-        placeholder="Tu WhatsApp"
-      >
-
-      <input
-        type="number"
-        id="cantidad"
-        min="1"
-        max="50"
-        placeholder="Cantidad de boletos"
-      >
-
-      <!-- 💰 TOTAL A PAGAR (AUTOMÁTICO) -->
-      <p
-        id="totalPagar"
-        style="margin: 10px 0; font-weight: bold;"
-      >
+      <p id="totalPagar" class="total">
         Total a pagar: $0
       </p>
 
-      <!-- 🧾 VOUCHER / COMPROBANTE -->
-      <input
-        type="text"
-        id="voucher"
-        placeholder="Número de comprobante / voucher"
-      >
+      <input type="text" id="voucher" placeholder="Número de comprobante / voucher">
 
-      <button id="btnEnviar">Enviar</button>
+      <!-- ⚠️ ID SE MANTIENE -->
+      <button id="btnEnviar" class="btn-principal">
+        Enviar
+      </button>
     </section>
+
   </main>
 
-  <!-- ✅ JS PRINCIPAL -->
+  <!-- JS -->
   <script src="js/main.js"></script>
 
 </body>
