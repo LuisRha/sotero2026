@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- HEADER PRINCIPAL -->
+  <!-- HEADER -->
   <header class="main-header">
     <div class="logo-box">
       <span class="logo-text">SORTEOS</span>
@@ -39,25 +39,18 @@
     <div class="container hero-box">
       <h2>Gana premios increíbles de forma segura</h2>
       <p>Sorteos transparentes · Pagos verificados · Premios reales</p>
-  
-  <!-- IMAGEN DEL SORTEO -->
-  <section class="sorteo-imagen">
-    <div class="container">
-      <img
-  src="images/sorteos/igm.jpg"
-  alt="Bonazo $50.000 Actividad 45"
-  loading="lazy"
->
-    </div>
-  </section>
 
+      <section class="sorteo-imagen">
+        <div class="container">
+          <img src="images/sorteos/igm.jpg" alt="Bonazo $50.000" loading="lazy">
+        </div>
+      </section>
 
-      <!-- ⚠️ ID SE MANTIENE -->
       <button id="btnComprar" class="btn-principal">
         Comprar boletos
       </button>
     </div>
-  </section>  
+  </section>
 
   <!-- CONTENIDO -->
   <main class="container">
@@ -65,7 +58,6 @@
     <!-- INFO -->
     <section id="info" class="card">
       <h2>Información del sorteo</h2>
-
       <p>🎁 Premio: Moto / Celular</p>
       <p>💵 Precio por boleto: $5</p>
       <p>🎟️ Total boletos: 5000</p>
@@ -80,30 +72,25 @@
       <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
       <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
 
-      <p id="totalPagar" class="total">
-        Total a pagar: $0
-      </p>
+      <p id="totalPagar" class="total">Total a pagar: $0</p>
 
       <input type="text" id="voucher" placeholder="Número de comprobante / voucher">
 
-      <!-- ⚠️ ID SE MANTIENE -->
+      <!-- BOTÓN NORMAL -->
       <button id="btnEnviar" class="btn-principal">
-        Enviar <b>
-          <b>
-            
-          </b>
-
-        <script src="https://www.paypal.com/sdk/js?client-id=AXEDtQCvKyuQi6M4IpZ-tLx6aoeWIhPUv6s7cMbkdaMkDOYwiGILBWvmCLZYaSBOdKFGmEMVC1Vho_WE&currency=USD"></script>
-
-<div id="paypal-button-container"></div>
-
-<script>
-  paypal.Buttons().render('#paypal-button-container');
-</script>
-
+        Enviar
       </button>
-    </section>
 
+      <!-- PAYPAL (SEPARADO) -->
+      <div style="margin-top:20px;">
+        <script src="https://www.paypal.com/sdk/js?client-id=AXEDtQCvKyuQi6M4IpZ-tLx6aoeWIhPUv6s7cMbkdaMkDOYwiGILBWvmCLZYaSBOdKFGmEMVC1Vho_WE&currency=USD"></script>
+        <div id="paypal-button-container"></div>
+        <script>
+          paypal.Buttons().render('#paypal-button-container');
+        </script>
+      </div>
+
+    </section>
   </main>
 
   <!-- JS -->
