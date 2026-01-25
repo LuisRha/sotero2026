@@ -13,7 +13,7 @@ body {
 .container {
   width: 90%;
   max-width: 1100px;
-  margin: auto;
+  margin: 0 auto;
 }
 
 /* ===== TOP BAR ===== */
@@ -55,7 +55,7 @@ body {
 }
 
 .logo-box {
-  color: white;
+  color: #fff;
 }
 
 .logo-text {
@@ -85,10 +85,8 @@ body {
   ), url("../images/banner.jpg") center/cover;
   padding: 80px 0;
   color: white;
-  text-align: center;
 }
 
-/* 🔥 CENTRADO TOTAL */
 .hero-box {
   display: flex;
   flex-direction: column;
@@ -98,12 +96,17 @@ body {
 
 .hero-box h2 {
   font-size: 36px;
+  margin-bottom: 10px;
 }
 
-/* Imagen del sorteo */
+.hero-box p {
+  max-width: 700px;
+}
+
+/* ===== IMAGEN SORTEO ===== */
 .sorteo-imagen img {
   display: block;
-  margin: 0 auto;
+  margin: 20px auto;
   max-width: 100%;
   height: auto;
 }
@@ -125,7 +128,6 @@ body {
 }
 
 #btnComprar {
-  display: inline-block;
   margin: 20px auto 0;
 }
 
@@ -133,7 +135,7 @@ body {
 .card {
   background: white;
   padding: 30px;
-  margin: 30px 0;
+  margin: 30px auto;
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0,0,0,.08);
 }
@@ -150,7 +152,6 @@ select {
 }
 
 select {
-  margin-bottom: 15px;
   background: #fff;
   cursor: pointer;
 }
@@ -172,9 +173,7 @@ label {
   display: none;
 }
 
-/* =========================
-   BARRA DE PROGRESO
-========================= */
+/* ===== BARRA DE PROGRESO ===== */
 .progreso-sorteo {
   margin: 25px auto;
   max-width: 420px;
@@ -248,7 +247,6 @@ label {
 
   .hero-box h2 {
     font-size: 24px;
-    margin-bottom: 10px;
   }
 
   .hero-box p {
@@ -257,7 +255,7 @@ label {
 
   .card {
     padding: 20px;
-    margin: 20px 0;
+    margin: 20px auto;
   }
 
   input,

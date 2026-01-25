@@ -3,6 +3,7 @@
 // =========================
 const btnComprar = document.getElementById("btnComprar");
 const formulario = document.getElementById("formulario");
+const info = document.getElementById("info");
 const btnEnviar = document.getElementById("btnEnviar");
 const disponiblesEl = document.getElementById("disponibles");
 
@@ -69,10 +70,11 @@ async function actualizarDisponibles() {
 }
 
 // =========================
-// MOSTRAR FORMULARIO
+// MOSTRAR FORMULARIO + INFO
 // =========================
 btnComprar.addEventListener("click", () => {
   formulario.classList.remove("oculto");
+  info.classList.remove("oculto");
   formulario.scrollIntoView({ behavior: "smooth" });
 });
 
@@ -112,14 +114,14 @@ btnEnviar.addEventListener("click", async () => {
 
     let numeros = [];
 
-    // 🔢 EN ORDEN
+    // 🔢 EN ORDEN (continuos)
     if (modo === "orden") {
       for (let i = 1; i <= cantidad; i++) {
         numeros.push(vendidos + i);
       }
     }
 
-    // 🎲 ALEATORIO
+    // 🎲 ALEATORIOS (no repetidos dentro de la compra)
     if (modo === "aleatorio") {
       const usados = new Set();
       while (numeros.length < cantidad) {
@@ -159,7 +161,9 @@ WHATSAPP: ${whatsapp}
 TICKETS: ${cantidad}
 A PAGAR: $${cantidad * PRECIO_BOLETO}
 
-NUMEROS: ${numeros.join(", ")}
+NUMEROS:
+${numeros.join(", ")}
+
 VOUCHER: ${voucher}
 `;
 
