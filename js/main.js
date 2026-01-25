@@ -129,17 +129,18 @@ btnEnviar.addEventListener("click", async () => {
 
     // 📲 WhatsApp admin
     const numeroAdmin = "593988271324";
-    const mensaje = `
-📢 NUEVA COMPRA
+const mensaje = `
+NUEVA COMPRA
 
-👤 ${nombre}
-📱 ${whatsapp}
-🎟️ ${cantidad} boletos
-💰 $${cantidad * PRECIO_BOLETO}
+Nombre: ${nombre}
+WhatsApp: ${whatsapp}
+Boletos: ${cantidad}
+Total: $${cantidad * PRECIO_BOLETO}
 
-🔢 ${numeros.join(", ")}
-🧾 ${voucher}
+Numeros: ${numeros.join(", ")}
+Voucher: ${voucher}
 `;
+
 
     window.open(
       `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
