@@ -111,6 +111,37 @@ body {
   height: auto;
 }
 
+/* ===== GALERÍA HORIZONTAL ===== */
+.galeria-sorteo {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  padding: 20px 0;
+}
+
+.galeria-sorteo img {
+  max-width: 380px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* 📱 MÓVIL: scroll horizontal natural */
+@media (max-width: 768px) {
+  .galeria-sorteo {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+
+  .galeria-sorteo img {
+    max-width: 85%;
+  }
+}
+
+
 /* ===== BOTONES ===== */
 .btn-principal {
   background: #2563eb;
