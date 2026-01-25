@@ -135,3 +135,45 @@ input {
 .oculto {
   display: none;
 }
+
+
+/* =========================
+   BARRA DE PROGRESO SORTEO
+========================= */
+
+.progreso-sorteo {
+  margin: 25px auto;
+  max-width: 420px;
+  text-align: center;
+  color: #fff;
+}
+
+.progreso-sorteo h3 {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.progreso-sorteo p {
+  margin: 6px 0;
+}
+
+.barra {
+  width: 100%;
+  height: 16px;
+  background: #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.barra-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00c853, #ffeb3b, #ff5252);
+  transition: width 0.6s ease;
+}
+
+.nota {
+  font-size: 13px;
+  opacity: 0.9;
+}
