@@ -129,37 +129,6 @@ selectSorteo.addEventListener("change", () => {
 });
 
 // =========================
-// MODAL NUEVO SORTEO (API)
-// =========================
-btnNuevoSorteo.addEventListener("click", () => {
-  modalNuevoSorteo.classList.remove("oculto");
-});
-
-btnCancelarSorteo.addEventListener("click", () => {
-  modalNuevoSorteo.classList.add("oculto");
-});
-
-btnGuardarSorteo.addEventListener("click", async () => {
-  const nombre = nuevoNombreSorteo.value.trim();
-  const activo = nuevoSorteoActivo.checked;
-
-  if (!nombre) return alert("Ingresa el nombre del sorteo");
-
-  await fetch("/api/sorteos", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nombre, activo })
-  });
-
-  nuevoNombreSorteo.value = "";
-  nuevoSorteoActivo.checked = false;
-  modalNuevoSorteo.classList.add("oculto");
-
-  await cargarSorteos();
-  await cargarDatos();
-});
-
-// =========================
 // UTILIDADES
 // =========================
 function verNumeros(n) {
@@ -171,58 +140,46 @@ function verVoucher(v) {
 }
 
 // =========================
-// ✅ APROBAR / RECHAZAR (API REAL)
+// APROBAR / RECHAZAR
 // =========================
 async function aprobar(id) {
   console.log("CLICK APROBAR:", id);
 
-  try {
-    const res = await fetch("/api/compras", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, estado: "aprobado" })
-    });
+  const res = await fetch("/api/compras", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, estado: "aprobado" })
+  });
 
-    console.log("RESPUESTA:", res.status);
-
-    if (!res.ok) {
-      const txt = await res.text();
-      console.error("ERROR BACKEND:", txt);
-      alert("❌ Error al aprobar (ver consola)");
-      return;
-    }
-
-    await cargarDatos();
-  } catch (e) {
-    console.error("EXCEPCIÓN:", e);
+  if (!res.ok) {
+    const txt = await res.text();
+    console.error("ERROR BACKEND:", txt);
+    alert("❌ Error al aprobar");
+    return;
   }
+
+  cargarDatos();
 }
 
 async function rechazar(id) {
   console.log("CLICK RECHAZAR:", id);
 
-  if (!confirm("¿Rechazar esta compra y liberar boletos?")) return;
+  if (!confirm("¿Rechazar esta compra?")) return;
 
-  try {
-    const res = await fetch("/api/compras", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, estado: "rechazado" })
-    });
+  const res = await fetch("/api/compras", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, estado: "rechazado" })
+  });
 
-    console.log("RESPUESTA:", res.status);
-
-    if (!res.ok) {
-      const txt = await res.text();
-      console.error("ERROR BACKEND:", txt);
-      alert("❌ Error al rechazar (ver consola)");
-      return;
-    }
-
-    await cargarDatos();
-  } catch (e) {
-    console.error("EXCEPCIÓN:", e);
+  if (!res.ok) {
+    const txt = await res.text();
+    console.error("ERROR BACKEND:", txt);
+    alert("❌ Error al rechazar");
+    return;
   }
+
+  cargarDatos();
 }
 
 // =========================

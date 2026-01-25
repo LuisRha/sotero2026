@@ -8,6 +8,15 @@ const supabase = createClient(
 export default async function handler(req, res) {
   try {
     // =========================
+    // NORMALIZAR BODY (CLAVE)
+    // =========================
+    let body = req.body;
+
+    if (typeof body === "string") {
+      body = JSON.parse(body);
+    }
+
+    // =========================
     // GET → LISTAR COMPRAS
     // =========================
     if (req.method === "GET") {
@@ -47,7 +56,7 @@ export default async function handler(req, res) {
         numeros,
         voucher,
         total
-      } = req.body;
+      } = body;
 
       if (
         !sorteo_id ||
@@ -85,8 +94,7 @@ export default async function handler(req, res) {
     // PUT → APROBAR / RECHAZAR
     // =========================
     if (req.method === "PUT") {
-      const { id } = req.query;
-      const { estado } = req.body;
+      const { id, estado } = body;
 
       if (!id || !estado) {
         return res.status(400).json({ error: "ID o estado faltante" });
