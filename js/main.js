@@ -132,13 +132,13 @@ btnEnviar.addEventListener("click", async () => {
 const mensaje = `
 NUEVA COMPRA
 
-Nombre: ${nombre}
-WhatsApp: ${whatsapp}
-Boletos: ${cantidad}
-Total: $${cantidad * PRECIO_BOLETO}
+NOMBRE: ${nombre}
+WHAPTSAPP: ${whatsapp}
+TICKETS: ${cantidad}
+A PAGAR: $${cantidad * PRECIO_BOLETO}
 
-Numeros: ${numeros.join(", ")}
-Voucher: ${voucher}
+NUMEROS: ${numeros.join(", ")}
+VOUCHER: ${voucher}
 `;
 
 
