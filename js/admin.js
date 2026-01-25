@@ -174,41 +174,55 @@ function verVoucher(v) {
 // ✅ APROBAR / RECHAZAR (API REAL)
 // =========================
 async function aprobar(id) {
-  const res = await fetch("/api/compras", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: id,
-      estado: "aprobado"
-    })
-  });
+  console.log("CLICK APROBAR:", id);
 
-  if (!res.ok) {
-    alert("❌ Error al aprobar");
-    return;
+  try {
+    const res = await fetch("/api/compras", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, estado: "aprobado" })
+    });
+
+    console.log("RESPUESTA:", res.status);
+
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error("ERROR BACKEND:", txt);
+      alert("❌ Error al aprobar (ver consola)");
+      return;
+    }
+
+    await cargarDatos();
+  } catch (e) {
+    console.error("EXCEPCIÓN:", e);
   }
-
-  cargarDatos();
 }
 
 async function rechazar(id) {
+  console.log("CLICK RECHAZAR:", id);
+
   if (!confirm("¿Rechazar esta compra y liberar boletos?")) return;
 
-  const res = await fetch("/api/compras", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: id,
-      estado: "rechazado"
-    })
-  });
+  try {
+    const res = await fetch("/api/compras", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, estado: "rechazado" })
+    });
 
-  if (!res.ok) {
-    alert("❌ Error al rechazar");
-    return;
+    console.log("RESPUESTA:", res.status);
+
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error("ERROR BACKEND:", txt);
+      alert("❌ Error al rechazar (ver consola)");
+      return;
+    }
+
+    await cargarDatos();
+  } catch (e) {
+    console.error("EXCEPCIÓN:", e);
   }
-
-  cargarDatos();
 }
 
 // =========================
