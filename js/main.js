@@ -152,7 +152,7 @@ btnEnviar.addEventListener("click", async () => {
     if (!res.ok) throw new Error("Error al registrar compra");
 
     // 📲 WhatsApp admin
-    const numeroAdmin = "593988271324";
+    const numeroAdmin = "593987354472";
     const mensaje = `
 NUEVA COMPRA
 
