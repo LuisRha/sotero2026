@@ -57,9 +57,7 @@
         Comprar boletos
       </button>
     </div>
-  </section>
-
-  
+  </section>  
 
   <!-- CONTENIDO -->
   <main class="container">
@@ -90,7 +88,19 @@
 
       <!-- ⚠️ ID SE MANTIENE -->
       <button id="btnEnviar" class="btn-principal">
-        Enviar
+        Enviar <b>
+          <b>
+            
+          </b>
+
+        <script src="https://www.paypal.com/sdk/js?client-id=AXEDtQCvKyuQi6M4IpZ-tLx6aoeWIhPUv6s7cMbkdaMkDOYwiGILBWvmCLZYaSBOdKFGmEMVC1Vho_WE&currency=USD"></script>
+
+<div id="paypal-button-container"></div>
+
+<script>
+  paypal.Buttons().render('#paypal-button-container');
+</script>
+
       </button>
     </section>
 
