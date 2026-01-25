@@ -23,13 +23,17 @@ const PRECIO_BOLETO = 5;
 // =========================
 async function obtenerSorteoActivo() {
   const res = await fetch("/api/sorteos");
-  const json = await res.json();
-
-  if (!res.ok || !json.ok) {
+  if (!res.ok) {
     throw new Error("❌ Error obteniendo sorteos");
   }
 
-  const activo = json.data.find(s => s.estado === "activo");
+  const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error("❌ Respuesta inválida de sorteos");
+  }
+
+  const activo = data.find(s => s.estado === "activo");
   if (!activo) throw new Error("❌ No hay sorteo activo");
 
   return activo.id;
@@ -40,10 +44,9 @@ async function obtenerSorteoActivo() {
 // =========================
 async function obtenerVendidos() {
   const res = await fetch("/api/compras?estados=pendiente,aprobado");
-  const json = await res.json();
-
   if (!res.ok) return 0;
 
+  const json = await res.json();
   return json.reduce((sum, fila) => sum + Number(fila.cantidad), 0);
 }
 
