@@ -63,6 +63,28 @@ async function actualizarDisponibles() {
   }
 }
 
+async function actualizarDisponibles() {
+  try {
+    const vendidos = await obtenerVendidos();
+    const disponibles = TOTAL_BOLETOS - vendidos;
+
+    disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
+
+    const porcentaje = Math.round((vendidos / TOTAL_BOLETOS) * 100);
+
+    const barra = document.getElementById("barraFill");
+    const texto = document.getElementById("porcentajeTexto");
+
+    if (barra) barra.style.width = porcentaje + "%";
+    if (texto) texto.textContent = `Números vendidos: ${porcentaje}%`;
+
+  } catch {
+    disponiblesEl.textContent = "Boletos disponibles: --";
+  }
+}
+
+
+
 // =========================
 // MOSTRAR FORMULARIO
 // =========================
