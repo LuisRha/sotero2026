@@ -1,13 +1,3 @@
-// ⚠️ DATOS DE SUPABASE
-const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
-
-// 👉 CREAR CLIENTE
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
 // =========================
 // ELEMENTOS
 // =========================
@@ -28,24 +18,16 @@ let sorteoActivoId = null;
 let sorteosCache = [];
 
 // =========================
-// CARGAR SORTEOS
+// CARGAR SORTEOS (API)
 // =========================
 async function cargarSorteos() {
-  const { data, error } = await supabaseClient
-    .from("sorteos")
-    .select("*")
-    .order("id", { ascending: false });
-
-  if (error) {
-    console.error("Error cargando sorteos:", error);
-    return;
-  }
+  const res = await fetch("/api/sorteos");
+  const data = await res.json();
 
   sorteosCache = data || [];
   selectSorteo.innerHTML = "";
   sorteoActivoId = null;
 
-  // 👉 OPCIÓN TODOS
   const optTodos = document.createElement("option");
   optTodos.value = "";
   optTodos.textContent = "📋 Todos los sorteos";
@@ -70,7 +52,6 @@ async function cargarSorteos() {
     selectSorteo.appendChild(option);
   });
 
-  // fallback seguro
   if (!sorteoActivoId) {
     sorteoActivoId = sorteosCache[0].id;
     selectSorteo.value = sorteoActivoId;
@@ -79,28 +60,19 @@ async function cargarSorteos() {
 }
 
 // =========================
-// CARGAR COMPRAS
+// CARGAR COMPRAS (API)
 // =========================
 async function cargarDatos() {
   tablaBody.innerHTML = "";
   totalComprasEl.textContent = "0";
 
-  let query = supabaseClient
-    .from("compras")
-    .select("*")
-    .order("created_at", { ascending: false });
-
+  let url = "/api/compras";
   if (sorteoActivoId) {
-    query = query.eq("sorteo_id", sorteoActivoId);
+    url += `?sorteo_id=${sorteoActivoId}`;
   }
 
-  const { data, error } = await query;
-
-  if (error) {
-    tablaBody.innerHTML =
-      "<tr><td colspan='8'>❌ Error al cargar datos</td></tr>";
-    return;
-  }
+  const res = await fetch(url);
+  const data = await res.json();
 
   if (!data || data.length === 0) {
     tablaBody.innerHTML =
@@ -113,16 +85,13 @@ async function cargarDatos() {
   data.forEach(item => {
     const tr = document.createElement("tr");
 
-    const numeros = item.numeros ? encodeURIComponent(item.numeros) : "";
-    const voucher = item.voucher ? encodeURIComponent(item.voucher) : "";
-
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
       <td>${item.nombre || "-"}</td>
       <td>${item.whatsapp || "-"}</td>
       <td>${item.cantidad ?? 0}</td>
-      <td>${item.numeros ? `<button onclick="verNumeros('${numeros}')">Ver</button>` : "-"}</td>
-      <td>${item.voucher ? `<button onclick="verVoucher('${voucher}')">Ver</button>` : "-"}</td>
+      <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
+      <td>${item.voucher ? `<button onclick="verVoucher('${encodeURIComponent(item.voucher)}')">Ver</button>` : "-"}</td>
       <td>${item.estado || "pendiente"}</td>
       <td>
         ${
@@ -160,7 +129,7 @@ selectSorteo.addEventListener("change", () => {
 });
 
 // =========================
-// MODAL NUEVO SORTEO
+// MODAL NUEVO SORTEO (API)
 // =========================
 btnNuevoSorteo.addEventListener("click", () => {
   modalNuevoSorteo.classList.remove("oculto");
@@ -176,16 +145,11 @@ btnGuardarSorteo.addEventListener("click", async () => {
 
   if (!nombre) return alert("Ingresa el nombre del sorteo");
 
-  if (activo) {
-    await supabaseClient
-      .from("sorteos")
-      .update({ estado: "inactivo" })
-      .neq("estado", "inactivo");
-  }
-
-  await supabaseClient.from("sorteos").insert([
-    { nombre, estado: activo ? "activo" : "inactivo" }
-  ]);
+  await fetch("/api/sorteos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre, activo })
+  });
 
   nuevoNombreSorteo.value = "";
   nuevoSorteoActivo.checked = false;
@@ -207,13 +171,22 @@ function verVoucher(v) {
 }
 
 async function aprobar(id) {
-  await supabaseClient.from("compras").update({ estado: "aprobado" }).eq("id", id);
+  await fetch(`/api/compras/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ estado: "aprobado" })
+  });
   cargarDatos();
 }
 
 async function rechazar(id) {
   if (!confirm("¿Rechazar esta compra y liberar boletos?")) return;
-  await supabaseClient.from("compras").update({ estado: "rechazado" }).eq("id", id);
+
+  await fetch(`/api/compras/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ estado: "rechazado" })
+  });
   cargarDatos();
 }
 
