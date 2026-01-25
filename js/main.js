@@ -11,6 +11,7 @@ const whatsappInput = document.getElementById("whatsapp");
 const cantidadInput = document.getElementById("cantidad");
 const voucherInput = document.getElementById("voucher");
 const totalPagarEl = document.getElementById("totalPagar");
+const modoSelect = document.getElementById("modoNumeros");
 
 // =========================
 // CONFIGURACIÓN
@@ -19,19 +20,14 @@ const TOTAL_BOLETOS = 5000;
 const PRECIO_BOLETO = 5;
 
 // =========================
-// 🔥 OBTENER SORTEO ACTIVO (API)
+// 🔥 OBTENER SORTEO ACTIVO
 // =========================
 async function obtenerSorteoActivo() {
   const res = await fetch("/api/sorteos");
-  if (!res.ok) {
-    throw new Error("❌ Error obteniendo sorteos");
-  }
+  if (!res.ok) throw new Error("❌ Error obteniendo sorteos");
 
   const data = await res.json();
-
-  if (!Array.isArray(data)) {
-    throw new Error("❌ Respuesta inválida de sorteos");
-  }
+  if (!Array.isArray(data)) throw new Error("❌ Respuesta inválida");
 
   const activo = data.find(s => s.estado === "activo");
   if (!activo) throw new Error("❌ No hay sorteo activo");
@@ -51,18 +47,8 @@ async function obtenerVendidos() {
 }
 
 // =========================
-// 📊 ACTUALIZAR DISPONIBLES
+// 📊 DISPONIBLES + BARRA
 // =========================
-async function actualizarDisponibles() {
-  try {
-    const vendidos = await obtenerVendidos();
-    const disponibles = TOTAL_BOLETOS - vendidos;
-    disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
-  } catch {
-    disponiblesEl.textContent = "Boletos disponibles: --";
-  }
-}
-
 async function actualizarDisponibles() {
   try {
     const vendidos = await obtenerVendidos();
@@ -71,7 +57,6 @@ async function actualizarDisponibles() {
     disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
 
     const porcentaje = Math.round((vendidos / TOTAL_BOLETOS) * 100);
-
     const barra = document.getElementById("barraFill");
     const texto = document.getElementById("porcentajeTexto");
 
@@ -82,8 +67,6 @@ async function actualizarDisponibles() {
     disponiblesEl.textContent = "Boletos disponibles: --";
   }
 }
-
-
 
 // =========================
 // MOSTRAR FORMULARIO
@@ -104,7 +87,7 @@ cantidadInput.addEventListener("input", () => {
 });
 
 // =========================
-// 🚀 ENVIAR COMPRA (API)
+// 🚀 ENVIAR COMPRA
 // =========================
 btnEnviar.addEventListener("click", async () => {
   try {
@@ -112,6 +95,7 @@ btnEnviar.addEventListener("click", async () => {
     const whatsapp = whatsappInput.value.trim();
     const cantidad = Number(cantidadInput.value);
     const voucher = voucherInput.value.trim();
+    const modo = modoSelect.value;
 
     if (!nombre || !whatsapp || !cantidad || !voucher) {
       alert("Completa todos los campos");
@@ -126,9 +110,25 @@ btnEnviar.addEventListener("click", async () => {
       return;
     }
 
-    const numeros = [];
-    for (let i = 1; i <= cantidad; i++) {
-      numeros.push(vendidos + i);
+    let numeros = [];
+
+    // 🔢 EN ORDEN
+    if (modo === "orden") {
+      for (let i = 1; i <= cantidad; i++) {
+        numeros.push(vendidos + i);
+      }
+    }
+
+    // 🎲 ALEATORIO
+    if (modo === "aleatorio") {
+      const usados = new Set();
+      while (numeros.length < cantidad) {
+        const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
+        if (!usados.has(n)) {
+          usados.add(n);
+          numeros.push(n);
+        }
+      }
     }
 
     const sorteoId = await obtenerSorteoActivo();
@@ -141,7 +141,7 @@ btnEnviar.addEventListener("click", async () => {
         nombre,
         whatsapp,
         cantidad,
-        numeros: numeros.join(","),
+        numeros: numeros.join(", "),
         voucher,
         total: cantidad * PRECIO_BOLETO
       })
@@ -151,18 +151,17 @@ btnEnviar.addEventListener("click", async () => {
 
     // 📲 WhatsApp admin
     const numeroAdmin = "593988271324";
-const mensaje = `
+    const mensaje = `
 NUEVA COMPRA
 
 NOMBRE: ${nombre}
-WHAPTSAPP: ${whatsapp}
+WHATSAPP: ${whatsapp}
 TICKETS: ${cantidad}
 A PAGAR: $${cantidad * PRECIO_BOLETO}
 
 NUMEROS: ${numeros.join(", ")}
 VOUCHER: ${voucher}
 `;
-
 
     window.open(
       `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
@@ -190,7 +189,7 @@ VOUCHER: ${voucher}
 actualizarDisponibles();
 
 // =========================
-// TEXTO DINÁMICO
+// TEXTO DINÁMICO TOP BAR
 // =========================
 const textosTopBar = [
   "JUEGA EL BONAZO $50.000",

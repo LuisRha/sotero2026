@@ -92,6 +92,13 @@
       <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
       <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
 
+      <!-- ✅ SELECT AÑADIDO -->
+      <label for="modoNumeros"><b>Modo de asignación de números</b></label>
+      <select id="modoNumeros">
+        <option value="aleatorio">🎲 Aleatorio</option>
+        <option value="orden">🔢 En orden</option>
+      </select>
+
       <p id="totalPagar" class="total">Total a pagar: $0</p>
 
       <input type="text" id="voucher" placeholder="Número de comprobante / voucher">
@@ -101,7 +108,7 @@
         Enviar
       </button>
 
-      <!-- PAYPAL (SEPARADO DEL BOTÓN) -->
+      <!-- PAYPAL -->
       <div style="margin-top:20px;">
         <script src="https://www.paypal.com/sdk/js?client-id=AXEDtQCvKyuQi6M4IpZ-tLx6aoeWIhPUv6s7cMbkdaMkDOYwiGILBWvmCLZYaSBOdKFGmEMVC1Vho_WE&currency=USD"></script>
         <div id="paypal-button-container"></div>
