@@ -210,3 +210,21 @@ setInterval(() => {
     el.textContent = textosTopBar[indice];
   }
 }, 3000);
+
+
+// ===== AUTO SCROLL DERECHA → IZQUIERDA =====
+const galeria = document.getElementById("galeriaSorteo");
+
+if (galeria) {
+  let scrollPos = 0;
+
+  setInterval(() => {
+    scrollPos += 1;
+    galeria.scrollLeft = scrollPos;
+
+    // cuando llega al final, vuelve al inicio
+    if (scrollPos >= galeria.scrollWidth - galeria.clientWidth) {
+      scrollPos = 0;
+    }
+  }, 30); // menor = más rápido
+}
