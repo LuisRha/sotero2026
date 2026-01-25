@@ -170,23 +170,44 @@ function verVoucher(v) {
   alert("📄 Voucher:\n\n" + decodeURIComponent(v));
 }
 
+// =========================
+// ✅ APROBAR / RECHAZAR (API REAL)
+// =========================
 async function aprobar(id) {
-  await fetch(`/api/compras/${id}`, {
+  const res = await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ estado: "aprobado" })
+    body: JSON.stringify({
+      id: id,
+      estado: "aprobado"
+    })
   });
+
+  if (!res.ok) {
+    alert("❌ Error al aprobar");
+    return;
+  }
+
   cargarDatos();
 }
 
 async function rechazar(id) {
   if (!confirm("¿Rechazar esta compra y liberar boletos?")) return;
 
-  await fetch(`/api/compras/${id}`, {
+  const res = await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ estado: "rechazado" })
+    body: JSON.stringify({
+      id: id,
+      estado: "rechazado"
+    })
   });
+
+  if (!res.ok) {
+    alert("❌ Error al rechazar");
+    return;
+  }
+
   cargarDatos();
 }
 

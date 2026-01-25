@@ -23,31 +23,41 @@ const PRECIO_BOLETO = 5;
 // =========================
 async function obtenerSorteoActivo() {
   const res = await fetch("/api/sorteos");
-  const sorteos = await res.json();
+  const json = await res.json();
 
-  const activo = sorteos.find(s => s.estado === "activo");
+  if (!res.ok || !json.ok) {
+    throw new Error("❌ Error obteniendo sorteos");
+  }
+
+  const activo = json.data.find(s => s.estado === "activo");
   if (!activo) throw new Error("❌ No hay sorteo activo");
 
   return activo.id;
 }
 
 // =========================
-// 🔢 OBTENER BOLETOS VENDIDOS (API)
+// 🔢 OBTENER BOLETOS VENDIDOS
 // =========================
 async function obtenerVendidos() {
   const res = await fetch("/api/compras?estados=pendiente,aprobado");
-  const data = await res.json();
+  const json = await res.json();
 
-  return data.reduce((sum, fila) => sum + Number(fila.cantidad), 0);
+  if (!res.ok) return 0;
+
+  return json.reduce((sum, fila) => sum + Number(fila.cantidad), 0);
 }
 
 // =========================
 // 📊 ACTUALIZAR DISPONIBLES
 // =========================
 async function actualizarDisponibles() {
-  const vendidos = await obtenerVendidos();
-  const disponibles = TOTAL_BOLETOS - vendidos;
-  disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
+  try {
+    const vendidos = await obtenerVendidos();
+    const disponibles = TOTAL_BOLETOS - vendidos;
+    disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
+  } catch {
+    disponiblesEl.textContent = "Boletos disponibles: --";
+  }
 }
 
 // =========================
@@ -63,11 +73,9 @@ btnComprar.addEventListener("click", () => {
 // =========================
 cantidadInput.addEventListener("input", () => {
   const cantidad = Number(cantidadInput.value);
-  if (!cantidad || cantidad <= 0) {
-    totalPagarEl.textContent = "Total a pagar: $0";
-    return;
-  }
-  totalPagarEl.textContent = `Total a pagar: $${cantidad * PRECIO_BOLETO}`;
+  totalPagarEl.textContent = cantidad > 0
+    ? `Total a pagar: $${cantidad * PRECIO_BOLETO}`
+    : "Total a pagar: $0";
 });
 
 // =========================
@@ -80,8 +88,8 @@ btnEnviar.addEventListener("click", async () => {
     const cantidad = Number(cantidadInput.value);
     const voucher = voucherInput.value.trim();
 
-    if (!nombre || !whatsapp || !cantidad || cantidad <= 0 || !voucher) {
-      alert("Completa todos los campos y realiza el pago");
+    if (!nombre || !whatsapp || !cantidad || !voucher) {
+      alert("Completa todos los campos");
       return;
     }
 
@@ -89,20 +97,18 @@ btnEnviar.addEventListener("click", async () => {
     const disponibles = TOTAL_BOLETOS - vendidos;
 
     if (cantidad > disponibles) {
-      alert(`Solo quedan ${disponibles} boletos disponibles`);
+      alert(`Solo quedan ${disponibles} boletos`);
       return;
     }
 
-    // 🎟️ NÚMEROS AUTOMÁTICOS
-    const numerosAsignados = [];
+    const numeros = [];
     for (let i = 1; i <= cantidad; i++) {
-      numerosAsignados.push(vendidos + i);
+      numeros.push(vendidos + i);
     }
 
     const sorteoId = await obtenerSorteoActivo();
 
-    // 📡 ENVIAR A BACKEND
-    await fetch("/api/compras", {
+    const res = await fetch("/api/compras", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -110,27 +116,26 @@ btnEnviar.addEventListener("click", async () => {
         nombre,
         whatsapp,
         cantidad,
-        numeros: numerosAsignados.join(","),
+        numeros: numeros.join(","),
         voucher,
         total: cantidad * PRECIO_BOLETO
       })
     });
 
-    // 📲 WHATSAPP ADMIN
+    if (!res.ok) throw new Error("Error al registrar compra");
+
+    // 📲 WhatsApp admin
     const numeroAdmin = "593988271324";
     const mensaje = `
-📢 NUEVA SOLICITUD DE SORTEO
+📢 NUEVA COMPRA
 
-👤 Nombre: ${nombre}
-📱 WhatsApp cliente: ${whatsapp}
-🎟️ Cantidad de boletos: ${cantidad}
-💰 Total pagado: $${cantidad * PRECIO_BOLETO}
+👤 ${nombre}
+📱 ${whatsapp}
+🎟️ ${cantidad} boletos
+💰 $${cantidad * PRECIO_BOLETO}
 
-🔢 NÚMEROS:
-${numerosAsignados.join(", ")}
-
-🧾 VOUCHER:
-${voucher}
+🔢 ${numeros.join(", ")}
+🧾 ${voucher}
 `;
 
     window.open(
@@ -138,14 +143,14 @@ ${voucher}
       "_blank"
     );
 
-    // 🧼 LIMPIAR
+    // limpiar
     nombreInput.value = "";
     whatsappInput.value = "";
     cantidadInput.value = "";
     voucherInput.value = "";
     totalPagarEl.textContent = "Total a pagar: $0";
-
     formulario.classList.add("oculto");
+
     actualizarDisponibles();
 
   } catch (err) {
@@ -159,7 +164,7 @@ ${voucher}
 actualizarDisponibles();
 
 // =========================
-// TEXTO DINÁMICO (SIN CAMBIOS)
+// TEXTO DINÁMICO
 // =========================
 const textosTopBar = [
   "JUEGA EL BONAZO $50.000",
@@ -169,9 +174,10 @@ const textosTopBar = [
 ];
 
 let indice = 0;
-
 setInterval(() => {
-  const topBar = document.getElementById("topBarText");
-  indice = (indice + 1) % textosTopBar.length;
-  topBar.textContent = textosTopBar[indice];
+  const el = document.getElementById("topBarText");
+  if (el) {
+    indice = (indice + 1) % textosTopBar.length;
+    el.textContent = textosTopBar[indice];
+  }
 }, 3000);
