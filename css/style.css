@@ -421,3 +421,196 @@ body {
 .footer-bottom .impulso-link:hover {
   text-decoration: underline;
 }
+
+
+/* =========================
+   CHECKOUT LAYOUT
+========================= */
+
+/* =========================
+   CHECKOUT GRID PRINCIPAL
+========================= */
+/* =========================
+   OVERLAY + CARD MÁS ELEGANTE
+========================= */
+.overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.card {
+  max-width: 1200px;
+  width: 96%;
+  margin: 40px auto;
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+}
+
+/* =========================
+   CHECKOUT ANCHO COMPLETO
+========================= */
+.checkout {
+  display: grid;
+  grid-template-columns: 1.5.4fr 1.2fr;
+  gap: 10px;
+  align-items:flex-start;
+}
+
+/* =========================
+   COLUMNA IZQUIERDA
+========================= */
+.checkout-left {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  gap: 1px 8px;
+}
+
+.checkout-left h2 {
+  grid-column: 1 / -1;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+/* cada campo */
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* campos largos */
+.field.full {
+  grid-column: 1 / -1;
+}
+
+/* labels */
+.checkout-left label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+/* inputs elegantes */
+.checkout-left input,
+.checkout-left select {
+  height: 42px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #6383b7;
+  background: #dfe4e9;
+  transition: all .2s ease;
+}
+
+/* placeholder */
+.checkout-left input::placeholder {
+  color: #000307;
+}
+
+/* focus bonito */
+.checkout-left input:focus,
+.checkout-left select:focus {
+  outline: none;
+  background: #fff;
+  border-color: #7d6113;
+  box-shadow: 0 0 0 3px rgba(124,242,194,.25);
+}
+
+/* =========================
+   COLUMNA DERECHA (PEDIDO)
+========================= */
+.checkout-right {
+  background: #f8fafc;
+  padding: 22px;
+  border-radius: 10px;
+  border: 1px solid #ac999f;
+}
+
+.checkout-right h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* pedido */
+.pedido {
+  border-bottom: 1px solid #c0c6d3;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.pedido-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* método de pago */
+.metodo-pago {
+  background: #dad5ce;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.metodo-pago label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.metodo-pago p {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* términos */
+.terminos {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #301414;
+  margin-bottom: 18px;
+}
+
+/* botón pagar */
+.btn-pagar {
+  width: 100%;
+  height: 44px;
+  background: #2f2f2f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.btn-pagar:hover {
+  background: #1f1f1f;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .checkout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-left {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 22px;
+  }
+}

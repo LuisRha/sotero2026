@@ -75,49 +75,133 @@
   <!-- CONTENIDO -->
   <main class="container">
 
-    <!-- INFO (OCULTA AL INICIO) -->
-    <section id="info" class="card oculto">
-      <h2>Información del sorteo</h2>
-      <p>🎁 Premio: Moto / Celular</p>
-      <p>💵 Precio por boleto: $5</p>
-      <p>🎟️ Total boletos: 5000</p>
-      <p id="disponibles">Boletos disponibles: --</p>
-    </section>
+      <!-- /* =========================
+   CHECKOUT LAYOUT
+========================= */
 
-    <!-- FORMULARIO -->
+    <!-- FORMULARIO --> <!-- FORMULARIO --> <!-- FORMULARIO --> <!-- FORMULARIO -->
     <section id="formulario" class="card oculto">
-      <h2>Formulario de compra</h2>
 
-      <input type="text" id="nombre" placeholder="Tu nombre">
-      <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
-      <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
+  <div class="checkout">
 
-      <!-- SELECT MODO -->
-      <label for="modoNumeros"><b>Modo de asignación de números</b></label>
-      <select id="modoNumeros">
-        <option value="aleatorio">🎲 Aleatorio</option>
-        <option value="orden">🔢 En orden</option>
-      </select>
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="checkout-left">
+      <h2>Datos de Facturación</h2>
 
-      <p id="totalPagar" class="total">Total a pagar: $0</p>
-
-      <input type="text" id="voucher" placeholder="Número de comprobante / voucher">
-
-      <!-- BOTÓN ENVIAR -->
-      <button id="btnEnviar" class="btn-principal">
-        RESERVAR POR 👉  WSP
-      </button>
-
-      <!-- PAYPAL -->
-      <div style="margin-top:20px;">
-        <script src="https://www.paypal.com/sdk/js?client-id=AXEDtQCvKyuQi6M4IpZ-tLx6aoeWIhPUv6s7cMbkdaMkDOYwiGILBWvmCLZYaSBOdKFGmEMVC1Vho_WE&currency=USD"></script>
-        <div id="paypal-button-container"></div>
-        <script>
-          paypal.Buttons().render('#paypal-button-container');
-        </script>
+      <div class="field">
+        <label>Tipo Documento *</label>
+        <select>
+          <option>Cédula</option>
+          <option>Pasaporte</option>
+        </select>
       </div>
 
-    </section>
+      <div class="field">
+        <label>Número Cédula / Pasaporte *</label>
+        <input type="text" placeholder="Número de documento">
+      </div>
+
+      <div class="field">
+        <label>Nombres *</label>
+        <input type="text" id="nombre" placeholder="Tu nombre">
+      </div>
+
+      <div class="field">
+        <label>Apellidos *</label>
+        <input type="text" placeholder="Apellido">
+      </div>
+
+      <div class="field full">
+        <label>Correo electrónico *</label>
+        <input type="email" placeholder="Email">
+      </div>
+
+      <div class="field full">
+        <label>Confirmar Email *</label>
+        <input type="email" placeholder="Confirmar Email">
+      </div>
+
+      <div class="field full">
+        <label>Teléfono *</label>
+        <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
+      </div>
+
+      <div class="field full">
+        <label>Dirección *</label>
+        <input type="text" placeholder="Dirección">
+      </div>
+
+      <div class="field">
+        <label>País *</label>
+        <input type="text" value="Ecuador" disabled>
+      </div>
+
+      <div class="field">
+        <label>Ciudad *</label>
+        <input type="text" placeholder="Ciudad">
+      </div>
+
+      <div class="field">
+        <label>Provincia *</label>
+        <select>
+          <option>Azuay</option>
+          <option>Pichincha</option>
+          <option>Guayas</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label>Cantidad de boletos</label>
+        <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
+      </div>
+
+      <div class="field full">
+        <input type="text" id="voucher" placeholder="Número de comprobante / voucher">
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="checkout-right">
+      <h3>Tu pedido</h3>
+
+      <div class="pedido">
+        <div class="pedido-row">
+          <span>El Bonazo $50.000</span>
+          <span id="totalPagar">$0</span>
+        </div>
+      </div>
+
+      <div class="metodo-pago">
+        <label>
+          <input type="radio" checked>
+          Transferencia bancaria o depósito
+        </label>
+        <p>
+          Tu pedido se procesará una vez confirmado el pago.
+        </p>
+      </div>
+
+      <label class="terminos">
+        <input type="checkbox">
+        He leído y acepto los términos y condiciones
+      </label>
+
+      <button id="btnEnviar" class="btn-pagar">
+        PAGAR
+      </button>
+    </div>
+
+  </div>
+</section>
+
+   <!-- /* =========================
+   CHECKOUT LAYOUT
+========================= */ -->
+
+</section>
+
+
+    
   </main>
 
   <!-- JS -->
