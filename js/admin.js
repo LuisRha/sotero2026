@@ -100,7 +100,7 @@ function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad){
 
   nombre = decodeURIComponent(nombre)
   numeros = decodeURIComponent(numeros)
-
+  numeros = numeros.split(",").join(" - ")
   const producto = "Moto IGM CR 200"
 
   const extras = generarExtras(numeros)
