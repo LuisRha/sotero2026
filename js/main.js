@@ -23,82 +23,91 @@ document.addEventListener("DOMContentLoaded", () => {
   let SORTEO_ID = null;
 
   // =========================
-  // 🔥 OBTENER SORTEO ACTIVO
+  // OBTENER SORTEO ACTIVO
   // =========================
-  async function obtenerSorteoActivo() {
+  async function obtenerSorteoActivo(){
 
     const res = await fetch("/api/sorteos");
-    if (!res.ok) throw new Error("Error obteniendo sorteos");
+
+    if(!res.ok) throw new Error("Error obteniendo sorteos");
 
     const data = await res.json();
+
     const activo = data.find(s => s.estado === "activo");
 
-    if (!activo) throw new Error("No hay sorteo activo");
+    if(!activo) throw new Error("No hay sorteo activo");
 
     SORTEO_ID = activo.id;
     TOTAL_BOLETOS = Number(activo.total_numeros);
     PRECIO_BOLETO = Number(activo.precio_ticket);
 
-    // actualizar info en la web
     const titulo = document.getElementById("titulo");
     const premio = document.getElementById("premio");
     const imagen = document.getElementById("imagen");
     const precio = document.getElementById("precio");
 
-    if (titulo) titulo.textContent = activo.nombre;
-    if (premio) premio.textContent = activo.premio;
-    if (imagen) imagen.src = activo.imagen;
-    if (precio) precio.textContent = activo.precio_ticket;
+    if(titulo) titulo.textContent = activo.nombre;
+    if(premio) premio.textContent = activo.premio;
+    if(imagen) imagen.src = activo.imagen;
+    if(precio) precio.textContent = activo.precio_ticket;
 
   }
 
   // =========================
-  // 🔢 OBTENER BOLETOS VENDIDOS
+  // OBTENER BOLETOS VENDIDOS
   // =========================
-  async function obtenerVendidos() {
+  async function obtenerVendidos(){
 
-    const res = await fetch("/api/compras?estados=pendiente,aprobado");
-    if (!res.ok) return 0;
+    if(!SORTEO_ID) return 0;
+
+    const res = await fetch(`/api/compras?sorteo_id=${SORTEO_ID}&estados=pendiente,aprobado`);
+
+    if(!res.ok) return 0;
 
     const json = await res.json();
 
-    return json.reduce((sum, fila) =>
-      sum + Number(fila.cantidad || 0), 0);
+    return json.reduce(
+      (sum,fila)=> sum + Number(fila.cantidad || 0),
+      0
+    );
 
   }
 
   // =========================
-  // 📊 DISPONIBLES + BARRA
+  // DISPONIBLES + BARRA
   // =========================
-  async function actualizarDisponibles() {
+  async function actualizarDisponibles(){
 
-    try {
+    try{
 
       const vendidos = await obtenerVendidos();
+
       const disponibles = TOTAL_BOLETOS - vendidos;
 
-      if (disponiblesEl) {
+      if(disponiblesEl){
         disponiblesEl.textContent =
-          `Boletos disponibles: ${disponibles}`;
+        `Boletos disponibles: ${disponibles}`;
       }
 
       const porcentaje =
-        TOTAL_BOLETOS > 0
-          ? Math.round((vendidos / TOTAL_BOLETOS) * 100)
-          : 0;
+      TOTAL_BOLETOS > 0
+      ? Math.round((vendidos / TOTAL_BOLETOS) * 100)
+      : 0;
 
       const barra = document.getElementById("barraFill");
       const texto = document.getElementById("porcentajeTexto");
 
-      if (barra) barra.style.width = porcentaje + "%";
-      if (texto) texto.textContent =
-        `Números vendidos: ${porcentaje}%`;
+      if(barra) barra.style.width = porcentaje + "%";
 
-    } catch {
+      if(texto)
+      texto.textContent = `Números vendidos: ${porcentaje}%`;
 
-      if (disponiblesEl) {
+    }
+    catch{
+
+      if(disponiblesEl){
         disponiblesEl.textContent =
-          "Boletos disponibles: --";
+        "Boletos disponibles: --";
       }
 
     }
@@ -108,52 +117,54 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // MOSTRAR FORMULARIO
   // =========================
-  if (btnComprar && formulario) {
+  if(btnComprar && formulario){
 
-    btnComprar.addEventListener("click", () => {
+    btnComprar.addEventListener("click", ()=>{
 
       formulario.classList.remove("oculto");
-      formulario.scrollIntoView({ behavior: "smooth" });
+
+      formulario.scrollIntoView({
+        behavior:"smooth"
+      });
 
     });
 
   }
 
   // =========================
-  // 💰 CALCULAR TOTAL
+  // CALCULAR TOTAL
   // =========================
-  if (cantidadInput && totalPagarEl) {
+  if(cantidadInput && totalPagarEl){
 
-    cantidadInput.addEventListener("input", () => {
+    cantidadInput.addEventListener("input",()=>{
 
       const cantidad = Number(cantidadInput.value);
 
       totalPagarEl.textContent =
-        cantidad > 0
-          ? `$${cantidad * PRECIO_BOLETO}`
-          : "$0";
+      cantidad > 0
+      ? `$${cantidad * PRECIO_BOLETO}`
+      : "$0";
 
     });
 
   }
 
   // =========================
-  // 🚀 ENVIAR COMPRA
+  // ENVIAR COMPRA
   // =========================
-  if (btnEnviar) {
+  if(btnEnviar){
 
-    btnEnviar.addEventListener("click", async () => {
+    btnEnviar.addEventListener("click", async ()=>{
 
-      try {
+      try{
 
         const nombre = nombreInput.value.trim();
         const whatsapp = whatsappInput.value.trim();
         const cantidad = Number(cantidadInput.value);
         const voucher = voucherInput.value.trim();
-        const modo =
-          modoSelect ? modoSelect.value : "aleatorio";
+        const modo = modoSelect ? modoSelect.value : "aleatorio";
 
-        if (!nombre || !whatsapp || !cantidad || !voucher) {
+        if(!nombre || !whatsapp || !cantidad || !voucher){
           alert("Completa todos los campos");
           return;
         }
@@ -161,29 +172,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const vendidos = await obtenerVendidos();
         const disponibles = TOTAL_BOLETOS - vendidos;
 
-        if (cantidad > disponibles) {
+        if(cantidad > disponibles){
           alert(`Solo quedan ${disponibles} boletos`);
           return;
         }
 
         let numeros = [];
 
-        if (modo === "orden") {
+        if(modo === "orden"){
 
-          for (let i = 1; i <= cantidad; i++) {
+          for(let i=1;i<=cantidad;i++){
             numeros.push(vendidos + i);
           }
 
-        } else {
+        }else{
 
           const usados = new Set();
 
-          while (numeros.length < cantidad) {
+          while(numeros.length < cantidad){
 
             const n =
-              Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
+            Math.floor(Math.random()*TOTAL_BOLETOS)+1;
 
-            if (!usados.has(n)) {
+            if(!usados.has(n)){
               usados.add(n);
               numeros.push(n);
             }
@@ -192,30 +203,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        const res = await fetch("/api/compras", {
+        const res = await fetch("/api/compras",{
 
-          method: "POST",
+          method:"POST",
 
-          headers: {
-            "Content-Type": "application/json"
+          headers:{
+            "Content-Type":"application/json"
           },
 
           body: JSON.stringify({
 
-            sorteo_id: SORTEO_ID,
+            sorteo_id:SORTEO_ID,
             nombre,
             whatsapp,
             cantidad,
-            numeros: numeros.join(", "),
+            numeros:numeros.join(", "),
             voucher,
-            total: cantidad * PRECIO_BOLETO
+            total:cantidad * PRECIO_BOLETO
 
           })
 
         });
 
-        if (!res.ok)
-          throw new Error("Error al registrar compra");
+        if(!res.ok)
+        throw new Error("Error al registrar compra");
 
         const numeroAdmin = "593987354472";
 
@@ -248,7 +259,8 @@ VOUCHER: ${voucher}
 
         actualizarDisponibles();
 
-      } catch (err) {
+      }
+      catch(err){
 
         alert(err.message);
 
@@ -261,14 +273,16 @@ VOUCHER: ${voucher}
   // =========================
   // INICIO
   // =========================
-  (async () => {
+  (async ()=>{
 
-    try {
+    try{
 
       await obtenerSorteoActivo();
+
       await actualizarDisponibles();
 
-    } catch (err) {
+    }
+    catch(err){
 
       console.error(err);
 
@@ -288,41 +302,44 @@ VOUCHER: ${voucher}
 
   let indice = 0;
 
-  setInterval(() => {
+  setInterval(()=>{
 
     const el = document.getElementById("topBarText");
 
-    if (el) {
+    if(el){
 
       indice = (indice + 1) % textosTopBar.length;
+
       el.textContent = textosTopBar[indice];
 
     }
 
-  }, 3000);
+  },3000);
 
   // =========================
   // AUTO SCROLL GALERÍA
   // =========================
   const galeria = document.getElementById("galeriaSorteo");
 
-  if (galeria) {
+  if(galeria){
 
     let scrollPos = 0;
 
-    setInterval(() => {
+    setInterval(()=>{
 
       scrollPos += 1;
+
       galeria.scrollLeft = scrollPos;
 
-      if (
-        scrollPos >=
-        galeria.scrollWidth - galeria.clientWidth
-      ) {
+      if(scrollPos >=
+         galeria.scrollWidth -
+         galeria.clientWidth){
+
         scrollPos = 0;
+
       }
 
-    }, 30);
+    },30);
 
   }
 

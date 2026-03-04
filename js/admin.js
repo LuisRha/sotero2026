@@ -19,11 +19,15 @@ const btnCancelarSorteo = document.getElementById("btnCancelarSorteo");
 const nuevoNombreSorteo = document.getElementById("nuevoNombreSorteo");
 const nuevoSorteoActivo = document.getElementById("nuevoSorteoActivo");
 
-// NUEVOS CAMPOS DEL SORTEO
+// nuevos campos del sorteo
 const nuevoPremio = document.getElementById("nuevoPremio");
 const nuevaImagen = document.getElementById("nuevaImagen");
 const precioTicket = document.getElementById("precioTicket");
 const totalNumerosInput = document.getElementById("totalNumeros");
+
+// configuración sitio
+const topBarAdmin = document.getElementById("topBarAdmin");
+const guardarTopBar = document.getElementById("guardarTopBar");
 
 let sorteoActivoId = null;
 let sorteosCache = [];
@@ -65,7 +69,7 @@ async function cargarSorteos() {
     if (!sorteoActivoId) {
 
       sorteoActivoTitulo.textContent =
-        `⚠️ Ningún sorteo activo`;
+        "⚠️ Ningún sorteo activo";
 
     }
 
@@ -88,8 +92,6 @@ function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  const producto = "Moto IGM CR 200";
-
   let extrasTexto = "----\n----\n----\n----";
 
   if(extras){
@@ -103,22 +105,13 @@ Agradecemos por tu compra
 
 Pedido número : ${pedido}
 
-${producto} adicional
-
 🎟️ TICKETS COMPRADOS : ${cantidad}
 
 ${numerosFormato}
 
-SUERTE EN NUESTRA PRIMER DINAMICA
-
-Revisa los siguientes números y compararlos con los tuyos
-si tienes alguno automáticamente ganas el premio extra
-
 🎁 NÚMEROS EXTRA (BONO)
 
 ${extrasTexto}
-
-Con el respaldo de DADE'S Y TRUJILLOGROUP
 `;
 
   const telefonoFinal = "593" + telefono.replace(/^0/, "");
@@ -182,8 +175,8 @@ async function cargarDatos() {
         ${
           item.estado === "pendiente"
             ? `
-              <button onclick="aprobar(${item.id})" style="background:#28a745;color:#fff">Aprobar</button>
-              <button onclick="rechazar(${item.id})" style="background:#dc3545;color:#fff">Rechazar</button>
+              <button onclick="aprobar(${item.id})">Aprobar</button>
+              <button onclick="rechazar(${item.id})">Rechazar</button>
             `
             : item.estado === "aprobado"
               ? `
@@ -194,12 +187,11 @@ async function cargarDatos() {
                 '${item.id}',
                 '${item.cantidad}',
                 '${item.extras || ""}'
-              )"
-              style="background:#25D366;color:#fff">
-              📨 Enviar WhatsApp
+              )">
+              Enviar WhatsApp
               </button>
               `
-              : "<span style='color:red;font-weight:bold'>✖ Rechazado</span>"
+              : "<span style='color:red'>Rechazado</span>"
         }
       </td>
     `;
@@ -260,12 +252,12 @@ async function rechazar(id) {
 // =========================
 
 // abrir modal
-btnNuevoSorteo.addEventListener("click", () => {
+btnNuevoSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.remove("oculto");
 });
 
 // cancelar modal
-btnCancelarSorteo.addEventListener("click", () => {
+btnCancelarSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.add("oculto");
 });
 
@@ -273,18 +265,18 @@ btnCancelarSorteo.addEventListener("click", () => {
 // =========================
 // CREAR SORTEO
 // =========================
-btnGuardarSorteo.addEventListener("click", async () => {
+btnGuardarSorteo?.addEventListener("click", async () => {
 
-  const nombre = nuevoNombreSorteo.value.trim()
-  const premio = nuevoPremio.value.trim()
-  const imagen = nuevaImagen.value.trim()
-  const precio_ticket = precioTicket.value
-  const total_numeros = totalNumerosInput.value
-  const activo = nuevoSorteoActivo.checked
+  const nombre = nuevoNombreSorteo.value.trim();
+  const premio = nuevoPremio.value.trim();
+  const imagen = nuevaImagen.value.trim();
+  const precio_ticket = precioTicket.value;
+  const total_numeros = totalNumerosInput.value;
+  const activo = nuevoSorteoActivo.checked;
 
   if (!nombre) {
-    alert("Ingrese nombre del sorteo")
-    return
+    alert("Ingrese nombre del sorteo");
+    return;
   }
 
   const res = await fetch("/api/sorteos", {
@@ -304,39 +296,39 @@ btnGuardarSorteo.addEventListener("click", async () => {
       activo
     })
 
-  })
+  });
 
   if (!res.ok) {
-    alert("Error creando sorteo")
-    return
+    alert("Error creando sorteo");
+    return;
   }
 
-  modalNuevoSorteo.classList.add("oculto")
+  modalNuevoSorteo.classList.add("oculto");
 
-  nuevoNombreSorteo.value = ""
-  nuevoPremio.value = ""
-  nuevaImagen.value = ""
-  precioTicket.value = ""
-  totalNumerosInput.value = "99999"
-  nuevoSorteoActivo.checked = false
+  nuevoNombreSorteo.value = "";
+  nuevoPremio.value = "";
+  nuevaImagen.value = "";
+  precioTicket.value = "";
+  totalNumerosInput.value = "99999";
+  nuevoSorteoActivo.checked = false;
 
-  await cargarSorteos()
-  await cargarDatos()
+  await cargarSorteos();
+  await cargarDatos();
 
-})
+});
 
 
 // =========================
 // CERRAR SORTEO
 // =========================
-btnCerrarSorteo.addEventListener("click", async () => {
+btnCerrarSorteo?.addEventListener("click", async () => {
 
   if(!sorteoActivoId){
-    alert("No hay sorteo activo")
-    return
+    alert("No hay sorteo activo");
+    return;
   }
 
-  if(!confirm("¿Cerrar este sorteo?")) return
+  if(!confirm("¿Cerrar este sorteo?")) return;
 
   await fetch("/api/sorteos",{
     method:"PUT",
@@ -345,24 +337,24 @@ btnCerrarSorteo.addEventListener("click", async () => {
       id: sorteoActivoId,
       estado:"cerrado"
     })
-  })
+  });
 
-  await cargarSorteos()
+  await cargarSorteos();
 
-})
+});
 
 
 // =========================
 // ELIMINAR SORTEO
 // =========================
-btnEliminarSorteo.addEventListener("click", async () => {
+btnEliminarSorteo?.addEventListener("click", async () => {
 
   if(!sorteoActivoId){
-    alert("No hay sorteo seleccionado")
-    return
+    alert("No hay sorteo seleccionado");
+    return;
   }
 
-  if(!confirm("⚠️ ¿Eliminar este sorteo?")) return
+  if(!confirm("⚠️ ¿Eliminar este sorteo?")) return;
 
   await fetch("/api/sorteos",{
     method:"DELETE",
@@ -370,12 +362,46 @@ btnEliminarSorteo.addEventListener("click", async () => {
     body: JSON.stringify({
       id:sorteoActivoId
     })
-  })
+  });
 
-  await cargarSorteos()
-  await cargarDatos()
+  await cargarSorteos();
+  await cargarDatos();
 
-})
+});
+
+
+// =========================
+// GUARDAR TEXTO TOP BAR
+// =========================
+guardarTopBar?.addEventListener("click", async ()=>{
+
+  const valor = topBarAdmin.value;
+
+  if(!valor){
+    alert("Ingrese texto");
+    return;
+  }
+
+  await fetch("/api/config",{
+
+    method:"PUT",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify({
+
+      clave:"top_bar_text",
+      valor
+
+    })
+
+  });
+
+  alert("Texto actualizado");
+
+});
 
 
 // =========================
@@ -383,7 +409,7 @@ btnEliminarSorteo.addEventListener("click", async () => {
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
 
-  await cargarSorteos()
-  await cargarDatos()
+  await cargarSorteos();
+  await cargarDatos();
 
-})
+});

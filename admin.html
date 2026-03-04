@@ -114,7 +114,9 @@ Sorteo activo: —
 <div class="acciones">
 
 <button id="btnCerrarSorteo">🔒 Cerrar</button>
+
 <button id="btnNuevoSorteo">➕ Nuevo</button>
+
 <button id="btnToggleSorteo">⚡ Activar / Desactivar</button>
 
 <button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
@@ -176,6 +178,32 @@ TABLA COMPRAS
 
 
 <!-- =========================
+CONFIGURACIÓN DEL SITIO
+========================= -->
+
+<div class="config-admin">
+
+<h3>⚙ Configuración del sitio</h3>
+
+<label for="topBarAdmin">
+Texto barra superior
+</label>
+
+<input
+type="text"
+id="topBarAdmin"
+placeholder="Texto superior del sitio"
+/>
+
+<button id="guardarTopBar">
+Guardar texto
+</button>
+
+</div>
+
+
+
+<!-- =========================
 MODAL NUEVO SORTEO
 ========================= -->
 
@@ -197,14 +225,16 @@ placeholder="Ej: Sorteo 2 - Auto 2026"
 
 
 <label>Premio</label>
+
 <input
 type="text"
 id="nuevoPremio"
-placeholder="Ej: iPhone 15 Pro Max"
+placeholder="Ej: Moto IGM CR 200"
 >
 
 
 <label>Imagen del premio (URL)</label>
+
 <input
 type="text"
 id="nuevaImagen"
@@ -213,6 +243,7 @@ placeholder="https://..."
 
 
 <label>Precio del ticket ($)</label>
+
 <input
 type="number"
 id="precioTicket"
@@ -221,6 +252,7 @@ placeholder="5"
 
 
 <label>Total de números</label>
+
 <input
 type="number"
 id="totalNumeros"
