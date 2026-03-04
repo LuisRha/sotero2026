@@ -1,57 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Login Admin</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body { font-family: Arial; background:#f2f2f2; display:flex; height:100vh; align-items:center; justify-content:center; }
-    .box { background:#fff; padding:25px; border-radius:8px; width:320px; box-shadow:0 0 10px rgba(0,0,0,.1); }
-    input { width:100%; padding:10px; margin-top:10px; }
-    button { width:100%; padding:10px; margin-top:15px; background:#2b7cff; color:#fff; border:none; }
-    .error { color:red; margin-top:10px; }
-  </style>
+
+<meta charset="UTF-8">
+<title>Login Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/login.css">
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 <body>
 
-<div class="box">
-  <h3>Login Admin</h3>
+<div class="login-box">
 
-  <input type="email" id="email" placeholder="Correo">
-  <input type="password" id="password" placeholder="Contraseña">
+<h3>Login Admin</h3>
 
-  <button onclick="login()">Ingresar</button>
+<input type="email" id="email" placeholder="Correo">
 
-  <div id="msg" class="error"></div>
+<input type="password" id="password" placeholder="Contraseña">
+
+<button id="btnLogin">Ingresar</button>
+
+<div id="msg" class="error"></div>
+
 </div>
 
-<script>
-
-const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function login(){
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
-
-  if(error){
-    document.getElementById("msg").innerText = "Credenciales incorrectas";
-    return;
-  }
-
-  window.location.href = "admin.html";
-
-}
-
-</script>
+<!-- JS -->
+<script src="js/login.js"></script>
 
 </body>
 </html>
