@@ -19,23 +19,27 @@
 
 <h3>Login Admin</h3>
 
-<form id="loginForm">
+<form id="loginForm" onsubmit="return false;">
 
-<input 
-type="email" 
-id="email" 
-placeholder="Correo" 
+<input
+type="email"
+id="email"
+name="email"
+placeholder="Correo"
+autocomplete="email"
 required
 >
 
-<input 
-type="password" 
-id="password" 
-placeholder="Contraseña" 
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Contraseña"
+autocomplete="current-password"
 required
 >
 
-<button type="submit" id="btnLogin">
+<button type="button" id="btnLogin">
 Ingresar
 </button>
 
