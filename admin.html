@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -14,11 +15,12 @@
 
 <script>
 
-// Configuración Supabase
+// =========================
+// CONFIGURACIÓN SUPABASE
+// =========================
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
-// Crear cliente global solo una vez
 if (!window.supabaseClient) {
 
   window.supabaseClient = window.supabase.createClient(
@@ -29,7 +31,9 @@ if (!window.supabaseClient) {
 }
 
 
-// 🔐 Verificar sesión cuando cargue
+// =========================
+// VERIFICAR SESIÓN
+// =========================
 document.addEventListener("DOMContentLoaded", async () => {
 
   try {
@@ -54,7 +58,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-// 🚪 Cerrar sesión
+// =========================
+// CERRAR SESIÓN
+// =========================
 async function cerrarSesion(){
 
   await window.supabaseClient.auth.signOut();
@@ -63,14 +69,19 @@ async function cerrarSesion(){
 
 }
 
-// hacer función accesible al botón
 window.cerrarSesion = cerrarSesion;
 
 </script>
 
 </head>
 
+
 <body>
+
+
+<!-- =========================
+HEADER
+========================= -->
 
 <header class="admin-header">
 
@@ -83,25 +94,19 @@ Cerrar sesión
 </header>
 
 
-<!-- SORTEO ACTIVO -->
 
-
-
-
-<!-- BARRA SUPERIOR -->
+<!-- =========================
+BARRA SUPERIOR
+========================= -->
 
 <div class="barra-sorteo">
 
 <div class="selector">
 
-  <div id="sorteoActivoTitulo" class="sorteo-activo">
+<div id="sorteoActivoTitulo" class="sorteo-activo">
 <span class="dot"></span>
 Sorteo activo: —
 </div>
-
-
-
-<!-- <select id="selectSorteo"></select> -->
 
 </div>
 
@@ -132,7 +137,10 @@ Sorteo activo: —
 </div>
 
 
-<!-- TABLA -->
+
+<!-- =========================
+TABLA COMPRAS
+========================= -->
 
 <div class="table-wrapper">
 
@@ -143,33 +151,33 @@ Sorteo activo: —
 <tr>
 
 <th>Fecha</th>
-
 <th>Nombre</th>
-
 <th>WhatsApp</th>
-
 <th>Cantidad</th>
-
 <th>Números</th>
-
 <th>Voucher</th>
-
 <th>Estado</th>
-
 <th>Acción</th>
 
 </tr>
 
 </thead>
 
-<tbody></tbody>
+<tbody>
+
+<!-- se llena con JS -->
+
+</tbody>
 
 </table>
 
 </div>
 
 
-<!-- MODAL NUEVO SORTEO -->
+
+<!-- =========================
+MODAL NUEVO SORTEO
+========================= -->
 
 <div id="modalNuevoSorteo" class="modal oculto">
 
@@ -187,6 +195,7 @@ id="nuevoNombreSorteo"
 placeholder="Ej: Sorteo 2 - Auto 2026"
 >
 
+
 <label style="display:block;margin-top:10px;">
 
 <input type="checkbox" id="nuevoSorteoActivo">
@@ -194,6 +203,7 @@ placeholder="Ej: Sorteo 2 - Auto 2026"
 Marcar como sorteo activo
 
 </label>
+
 
 <div class="modal-acciones">
 
@@ -212,16 +222,23 @@ Cancelar
 </div>
 
 
-<!-- LOADING -->
+
+<!-- =========================
+LOADING PANEL
+========================= -->
 
 <div id="loadingPanel" class="loading oculto">
 Cargando datos...
 </div>
 
 
-<!-- JS ADMIN -->
+
+<!-- =========================
+JS PANEL ADMIN
+========================= -->
 
 <script src="js/admin.js"></script>
+
 
 </body>
 </html>
