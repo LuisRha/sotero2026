@@ -22,21 +22,21 @@ const supabase = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// 🔐 Verificar sesión cuando cargue la página
+// 🔐 Verificar sesión cuando cargue
 document.addEventListener("DOMContentLoaded", async () => {
 
-  try{
+  try {
 
     const { data, error } = await supabase.auth.getSession();
 
-    if(error || !data.session){
-
-      // si no hay sesión → ir a login
+    if (error || !data.session) {
       window.location.href = "login.html";
-
+      return;
     }
 
-  }catch(e){
+    console.log("✅ Sesión activa");
+
+  } catch (e) {
 
     window.location.href = "login.html";
 
@@ -44,56 +44,107 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
+// 🚪 Cerrar sesión
+async function cerrarSesion(){
+
+  await supabase.auth.signOut();
+
+  window.location.href = "login.html";
+
+}
+
 </script>
 
 </head>
 
 <body>
 
+<header class="admin-header">
+
 <h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
 
+<button onclick="cerrarSesion()" class="logout">
+Cerrar sesión
+</button>
+
+</header>
+
+
 <!-- SORTEO ACTIVO -->
+
 <div id="sorteoActivoTitulo" class="sorteo-activo">
 <span class="dot"></span>
 Sorteo activo: —
 </div>
 
+
 <!-- BARRA SUPERIOR -->
+
 <div class="barra-sorteo">
 
 <div class="selector">
+
 <label for="selectSorteo">🎟️ Sorteo activo:</label>
+
 <select id="selectSorteo"></select>
+
 </div>
+
 
 <div class="acciones">
+
 <button id="btnCerrarSorteo">🔒 Cerrar</button>
+
 <button id="btnNuevoSorteo">➕ Nuevo</button>
+
 <button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
+
 </div>
+
 
 <div class="resumen">
-👥 Compras registradas: <strong id="totalCompras">0</strong>
+
+👥 Compras registradas:
+<strong id="totalCompras">0</strong>
+
+<br>
+
+🎟️ Números vendidos:
+<strong id="totalNumeros">0</strong>
+
 </div>
 
 </div>
+
 
 <!-- TABLA -->
+
 <div class="table-wrapper">
 
 <table id="tabla">
 
 <thead>
+
 <tr>
+
 <th>Fecha</th>
+
 <th>Nombre</th>
+
 <th>WhatsApp</th>
+
 <th>Cantidad</th>
+
 <th>Números</th>
+
 <th>Voucher</th>
+
 <th>Estado</th>
+
 <th>Acción</th>
+
 </tr>
+
 </thead>
 
 <tbody></tbody>
@@ -102,14 +153,18 @@ Sorteo activo: —
 
 </div>
 
-<!-- MODAL -->
+
+<!-- MODAL NUEVO SORTEO -->
+
 <div id="modalNuevoSorteo" class="modal oculto">
 
 <div class="modal-contenido">
 
 <h3>➕ Crear nuevo sorteo</h3>
 
-<label for="nuevoNombreSorteo">Nombre del sorteo</label>
+<label for="nuevoNombreSorteo">
+Nombre del sorteo
+</label>
 
 <input
 type="text"
@@ -118,20 +173,39 @@ placeholder="Ej: Sorteo 2 - Auto 2026"
 >
 
 <label style="display:block;margin-top:10px;">
+
 <input type="checkbox" id="nuevoSorteoActivo">
+
 Marcar como sorteo activo
+
 </label>
 
 <div class="modal-acciones">
-<button id="btnGuardarSorteo">Guardar</button>
-<button id="btnCancelarSorteo" class="danger">Cancelar</button>
-</div>
+
+<button id="btnGuardarSorteo">
+Guardar
+</button>
+
+<button id="btnCancelarSorteo" class="danger">
+Cancelar
+</button>
 
 </div>
 
 </div>
+
+</div>
+
+
+<!-- LOADING -->
+
+<div id="loadingPanel" class="loading oculto">
+Cargando datos...
+</div>
+
 
 <!-- JS ADMIN -->
+
 <script src="js/admin.js"></script>
 
 </body>
