@@ -19,16 +19,33 @@
 
 <h3>Login Admin</h3>
 
-<input type="email" id="email" placeholder="Correo">
+<form id="loginForm">
 
-<input type="password" id="password" placeholder="Contraseña">
+<input 
+type="email" 
+id="email" 
+placeholder="Correo" 
+required
+>
 
-<button id="btnLogin">Ingresar</button>
+<input 
+type="password" 
+id="password" 
+placeholder="Contraseña" 
+required
+>
+
+<button type="submit" id="btnLogin">
+Ingresar
+</button>
+
+</form>
 
 <div id="msg"></div>
 
 </div>
 
+<!-- JS LOGIN -->
 <script src="js/login.js"></script>
 
 </body>
