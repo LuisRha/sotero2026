@@ -12,7 +12,7 @@
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script defer>
+<script>
 
 // Configuración Supabase
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
@@ -57,13 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 🚪 Cerrar sesión
 async function cerrarSesion(){
 
-  try{
-
-    await window.supabaseClient.auth.signOut();
-
-  }catch(e){
-    console.log(e);
-  }
+  await window.supabaseClient.auth.signOut();
 
   window.location.href = "login.html";
 
@@ -88,6 +82,13 @@ Cerrar sesión
 
 </header>
 
+
+<!-- SORTEO ACTIVO -->
+
+<div id="sorteoActivoTitulo" class="sorteo-activo">
+<span class="dot"></span>
+Sorteo activo: —
+</div>
 
 
 <!-- BARRA SUPERIOR -->
@@ -140,12 +141,19 @@ Cerrar sesión
 <tr>
 
 <th>Fecha</th>
+
 <th>Nombre</th>
+
 <th>WhatsApp</th>
+
 <th>Cantidad</th>
+
 <th>Números</th>
+
 <th>Voucher</th>
+
 <th>Estado</th>
+
 <th>Acción</th>
 
 </tr>
