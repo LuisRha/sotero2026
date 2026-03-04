@@ -6,26 +6,26 @@
 <title>Login Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="css/style.css">
+
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
-<div style="width:300px;margin:100px auto;text-align:center">
+<div class="login-box">
 
 <h3>Login Admin</h3>
 
-<input type="email" id="email" placeholder="Correo" style="width:100%;margin:10px 0">
+<input type="email" id="email" placeholder="Correo">
 
-<input type="password" id="password" placeholder="Contraseña" style="width:100%;margin:10px 0">
+<input type="password" id="password" placeholder="Contraseña">
 
-<button id="btnLogin" style="width:100%">Ingresar</button>
+<button id="btnLogin">Ingresar</button>
 
-<div id="msg" style="color:red;margin-top:10px"></div>
+<div id="msg"></div>
 
 </div>
 
