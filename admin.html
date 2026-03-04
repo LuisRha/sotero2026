@@ -18,7 +18,7 @@
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
-// Crear cliente solo si aún no existe
+// Crear cliente global solo una vez
 if (!window.supabaseClient) {
 
   window.supabaseClient = window.supabase.createClient(
@@ -28,19 +28,16 @@ if (!window.supabaseClient) {
 
 }
 
-const supabase = window.supabaseClient;
-
 
 // 🔐 Verificar sesión cuando cargue
 document.addEventListener("DOMContentLoaded", async () => {
 
   try {
 
-    const { data, error } = await supabase.auth.getSession();
+    const { data, error } = await window.supabaseClient.auth.getSession();
 
     if (error || !data.session) {
 
-      // si no hay sesión → ir a login
       window.location.href = "login.html";
       return;
 
@@ -60,11 +57,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 🚪 Cerrar sesión
 async function cerrarSesion(){
 
-  await supabase.auth.signOut();
+  await window.supabaseClient.auth.signOut();
 
   window.location.href = "login.html";
 
 }
+
+// hacer función accesible al botón
+window.cerrarSesion = cerrarSesion;
 
 </script>
 
