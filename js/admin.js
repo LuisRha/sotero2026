@@ -96,7 +96,7 @@ function generarExtras(numerosPrincipales){
 // =========================
 // ENVIAR WHATSAPP
 // =========================
-function enviarWhatsapp(telefono,nombre,numeros,pedido){
+function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad){
 
   nombre = decodeURIComponent(nombre)
   numeros = decodeURIComponent(numeros)
@@ -114,7 +114,7 @@ Pedido número : ${pedido}
 
 ${producto} adicional
 
-A eso tenemos 10 números con premios extra.
+🎟️ TICKETS COMPRADOS : ${cantidad}
 
 🎟️ NÚMEROS PRINCIPALES
 
@@ -207,7 +207,8 @@ async function cargarDatos() {
                 '${item.whatsapp}',
                 '${encodeURIComponent(item.nombre)}',
                 '${encodeURIComponent(item.numeros)}',
-                '${item.id}'
+                '${item.id}',
+                '${item.cantidad}'
               )"
               style="background:#25D366;color:#fff">
               📨 Enviar WhatsApp
