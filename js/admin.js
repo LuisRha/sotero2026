@@ -77,9 +77,7 @@ async function cargarDatos() {
   let url = "/api/compras";
 
   if (sorteoActivoId) {
-
     url += `?sorteo_id=${sorteoActivoId}`;
-
   }
 
   const res = await fetch(url);
@@ -96,7 +94,6 @@ async function cargarDatos() {
 
   totalComprasEl.textContent = data.length;
 
-
   data.forEach(item => {
 
     totalNumeros += Number(item.cantidad || 0);
@@ -106,11 +103,24 @@ async function cargarDatos() {
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
       <td>${item.nombre || "-"}</td>
-      <td>${item.whatsapp || "-"}</td>
+
+      <td>
+      ${
+        item.whatsapp
+        ? `<a href="https://wa.me/593${item.whatsapp.replace(/^0/,'')}?text=${encodeURIComponent('Hola, gracias por participar en el sorteo.')}" 
+             target="_blank"
+             style="color:#0a7cff;font-weight:bold;text-decoration:none;">
+             ${item.whatsapp}
+           </a>`
+        : "-"
+      }
+      </td>
+
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
       <td>${item.voucher ? `<button onclick="verVoucher('${encodeURIComponent(item.voucher)}')">Ver</button>` : "-"}</td>
       <td>${item.estado || "pendiente"}</td>
+
       <td>
         ${
           item.estado === "pendiente"
@@ -129,8 +139,6 @@ async function cargarDatos() {
 
   });
 
-
-  // MOSTRAR TOTAL NUMEROS
   totalNumerosEl.textContent = totalNumeros;
 
 }
@@ -140,15 +148,11 @@ async function cargarDatos() {
 // UTILIDADES
 // =========================
 function verNumeros(n) {
-
   alert("🎟️ Números comprados:\n\n" + decodeURIComponent(n));
-
 }
 
 function verVoucher(v) {
-
   alert("📄 Voucher:\n\n" + decodeURIComponent(v));
-
 }
 
 
@@ -158,20 +162,14 @@ function verVoucher(v) {
 async function aprobar(id) {
 
   const res = await fetch("/api/compras", {
-
     method: "PUT",
-
     headers: { "Content-Type": "application/json" },
-
     body: JSON.stringify({ id, estado: "aprobado" })
-
   });
 
   if (!res.ok) {
-
     alert("❌ Error al aprobar");
     return;
-
   }
 
   cargarDatos();
@@ -183,20 +181,14 @@ async function rechazar(id) {
   if (!confirm("¿Rechazar esta compra?")) return;
 
   const res = await fetch("/api/compras", {
-
     method: "PUT",
-
     headers: { "Content-Type": "application/json" },
-
     body: JSON.stringify({ id, estado: "rechazado" })
-
   });
 
   if (!res.ok) {
-
     alert("❌ Error al rechazar");
     return;
-
   }
 
   cargarDatos();
@@ -210,7 +202,6 @@ async function rechazar(id) {
 document.addEventListener("DOMContentLoaded", async () => {
 
   await cargarSorteos();
-
   await cargarDatos();
 
 });
