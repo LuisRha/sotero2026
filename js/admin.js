@@ -4,7 +4,7 @@
 const tablaBody = document.querySelector("#tabla tbody");
 const totalComprasEl = document.getElementById("totalCompras");
 const totalNumerosEl = document.getElementById("totalNumeros");
-const selectSorteo = document.getElementById("selectSorteo");
+// const selectSorteo = document.getElementById("selectSorteo");
 const sorteoActivoTitulo = document.getElementById("sorteoActivoTitulo");
 
 // ➕ Nuevo sorteo (modal)
