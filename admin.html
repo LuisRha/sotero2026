@@ -14,13 +14,22 @@
 
 <script>
 
-// const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-// const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
+// Configuración Supabase
+const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+// Crear cliente solo si aún no existe
+if (!window.supabaseClient) {
+
+  window.supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+}
+
+const supabase = window.supabaseClient;
+
 
 // 🔐 Verificar sesión cuando cargue
 document.addEventListener("DOMContentLoaded", async () => {
@@ -30,8 +39,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const { data, error } = await supabase.auth.getSession();
 
     if (error || !data.session) {
+
+      // si no hay sesión → ir a login
       window.location.href = "login.html";
       return;
+
     }
 
     console.log("✅ Sesión activa");
@@ -43,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 });
+
 
 // 🚪 Cerrar sesión
 async function cerrarSesion(){
