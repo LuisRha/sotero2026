@@ -17,9 +17,10 @@ body {
 }
 
 /* ===== TOP BAR ===== */
+
 .top-bar {
-  background: #7CF2C2;
-  color: #000;
+  background: linear-gradient(90deg,#0A1FFF,#FF2DAA);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +28,7 @@ body {
   text-align: center;
   letter-spacing: 1px;
 }
+
 
 .top-bar-content {
   line-height: 1.2;
