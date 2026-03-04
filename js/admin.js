@@ -119,17 +119,18 @@ ${producto} adicional
 
 ${numeros}
 
+
+SUERTE EN NUESTRA PRIMER DINAMICA
+
+Revisa los siguientes números y compararlos con los tuyos
+si tienes alguno automáticamente ganas el premio extra
+
 🎁 NÚMEROS EXTRA (BONO)
 
 ${extras[0]}
 ${extras[1]}
 ${extras[2]}
 ${extras[3]}
-
-SUERTE EN NUESTRA PRIMER DINAMICA
-
-Revisa los siguientes números y compararlos con los tuyos
-si tienes alguno automáticamente ganas el premio extra
 
 Con el respaldo de DADE'S Y TRUJILLOGROUP
 `
