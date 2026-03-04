@@ -63,6 +63,68 @@ async function cargarSorteos() {
 
 
 // =========================
+// GENERAR NUMEROS EXTRA
+// =========================
+function generarNumeroExtra(){
+  return Math.floor(Math.random()*9999)
+    .toString()
+    .padStart(4,"0")
+}
+
+
+// =========================
+// ENVIAR WHATSAPP
+// =========================
+function enviarWhatsapp(telefono,nombre,numeros,pedido){
+
+  nombre = decodeURIComponent(nombre)
+  numeros = decodeURIComponent(numeros)
+
+  const producto = "Moto IGM CR 200"
+
+  const extra1 = generarNumeroExtra()
+  const extra2 = generarNumeroExtra()
+  const extra3 = generarNumeroExtra()
+  const extra4 = generarNumeroExtra()
+
+  const mensaje = `
+Hola, ${nombre}
+
+Agradecemos por tu compra
+
+Pedido número : ${pedido}
+
+${producto} adicional
+
+A eso tenemos 10 números con premios extra.
+
+Estos son tus números
+${numeros}
+
+SUERTE EN NUESTRA PRIMER DINAMICA
+
+Revisa los siguientes números y compararlos con los tuyos
+si tienes alguno automáticamente ganas el premio extra
+
+${extra1}
+${extra2}
+${extra3}
+${extra4}
+
+Con el respaldo de DADE'S Y TRUJILLOGROUP
+`
+
+  const telefonoFinal = "593" + telefono.replace(/^0/, "")
+
+  window.open(
+    `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
+    "_blank"
+  )
+
+}
+
+
+// =========================
 // CARGAR COMPRAS (API)
 // =========================
 async function cargarDatos() {
@@ -100,49 +162,11 @@ async function cargarDatos() {
 
     const tr = document.createElement("tr");
 
-    const nombre = item.nombre || "Cliente";
-    const numeros = item.numeros || "Sin números";
-
-    const mensaje = `
-Hola, ${nombre}.
-Agradecemos por tu compra
-
-Pedido número : ${item.id}
-
-IPhone 17 pro máx adicional
-A eso tenemos 10 números con premios extra.
-
-Estos son tus números
-${numeros}
-
-SUERTE EN NUESTRA PRIMER DINAMICA
-
-Revisa los siguientes números y compararlos con los tuyos
-si tienes alguno automáticamente ganas el premio extra
-
-..............
-..............
-..............
-..............
-
-Con el respaldo de DADE'S Y TRUJILLOGROUP
-`;
-
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
       <td>${item.nombre || "-"}</td>
 
-      <td>
-      ${
-        item.whatsapp
-        ? `<a href="https://wa.me/593${item.whatsapp.replace(/^0/,'')}?text=${encodeURIComponent(mensaje)}" 
-             target="_blank"
-             style="color:#0a7cff;font-weight:bold;text-decoration:none;">
-             ${item.whatsapp}
-           </a>`
-        : "-"
-      }
-      </td>
+      <td>${item.whatsapp || "-"}</td>
 
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
@@ -157,7 +181,17 @@ Con el respaldo de DADE'S Y TRUJILLOGROUP
               <button onclick="rechazar(${item.id})" style="background:#dc3545;color:#fff">Rechazar</button>
             `
             : item.estado === "aprobado"
-              ? "<span style='color:green;font-weight:bold'>✔ Aprobado</span>"
+              ? `
+              <button onclick="enviarWhatsapp(
+                '${item.whatsapp}',
+                '${encodeURIComponent(item.nombre)}',
+                '${encodeURIComponent(item.numeros)}',
+                '${item.id}'
+              )"
+              style="background:#25D366;color:#fff">
+              📨 Enviar WhatsApp
+              </button>
+              `
               : "<span style='color:red;font-weight:bold'>✖ Rechazado</span>"
         }
       </td>
