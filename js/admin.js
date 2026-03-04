@@ -63,12 +63,33 @@ async function cargarSorteos() {
 
 
 // =========================
-// GENERAR NUMEROS EXTRA
+// GENERAR NUMEROS EXTRA UNICOS
 // =========================
-function generarNumeroExtra(){
-  return Math.floor(Math.random()*9999)
-    .toString()
-    .padStart(4,"0")
+function generarExtras(numerosPrincipales){
+
+  const usados = new Set()
+
+  if(numerosPrincipales){
+    numerosPrincipales.split(/[\s,]+/).forEach(n=>{
+      if(n.trim() !== "") usados.add(n.trim())
+    })
+  }
+
+  const extras = []
+
+  while(extras.length < 4){
+
+    let num = Math.floor(Math.random()*99999)+1
+    num = num.toString().padStart(5,"0")
+
+    if(!usados.has(num) && !extras.includes(num)){
+      extras.push(num)
+    }
+
+  }
+
+  return extras
+
 }
 
 
@@ -82,10 +103,7 @@ function enviarWhatsapp(telefono,nombre,numeros,pedido){
 
   const producto = "Moto IGM CR 200"
 
-  const extra1 = generarNumeroExtra()
-  const extra2 = generarNumeroExtra()
-  const extra3 = generarNumeroExtra()
-  const extra4 = generarNumeroExtra()
+  const extras = generarExtras(numeros)
 
   const mensaje = `
 Hola, ${nombre}
@@ -98,18 +116,21 @@ ${producto} adicional
 
 A eso tenemos 10 números con premios extra.
 
-Estos son tus números
+🎟️ NÚMEROS PRINCIPALES
+
 ${numeros}
+
+🎁 NÚMEROS EXTRA (BONO)
+
+${extras[0]}
+${extras[1]}
+${extras[2]}
+${extras[3]}
 
 SUERTE EN NUESTRA PRIMER DINAMICA
 
 Revisa los siguientes números y compararlos con los tuyos
 si tienes alguno automáticamente ganas el premio extra
-
-${extra1}
-${extra2}
-${extra3}
-${extra4}
 
 Con el respaldo de DADE'S Y TRUJILLOGROUP
 `
