@@ -1,120 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Sorteo 2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS ADMIN -->
-  <link rel="stylesheet" href="css/admin.css">
+<meta charset="UTF-8">
+<title>Admin Sorteo 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="css/admin.css">
 
-  <script>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-  const SUPABASE_KEY = "AQUI_TU_PUBLISHABLE_KEY";
+<script>
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
-  // 🔒 Verificar sesión antes de cargar el panel
-  document.addEventListener("DOMContentLoaded", async () => {
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-    const { data } = await supabase.auth.getSession();
+// 🔐 Verificar sesión
+async function verificarSesion(){
 
-    if(!data.session){
-      window.location.href = "login.html";
+  try{
+
+    const { data, error } = await supabase.auth.getSession();
+
+    if(error || !data.session){
+
+      // redirigir si no hay sesión
+      window.location.replace("/login.html");
+
     }
 
-  });
+  }catch(e){
 
-  </script>
+    window.location.replace("/login.html");
+
+  }
+
+}
+
+// ejecutar verificación
+verificarSesion();
+
+</script>
 
 </head>
 
 <body>
 
-  <h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
+<h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
 
-  <!-- 🟢 SORTEO ACTIVO -->
-  <div id="sorteoActivoTitulo" class="sorteo-activo">
-    <span class="dot"></span>
-    Sorteo activo: —
-  </div>
+<!-- SORTEO ACTIVO -->
+<div id="sorteoActivoTitulo" class="sorteo-activo">
+<span class="dot"></span>
+Sorteo activo: —
+</div>
 
-  <!-- 🔥 BARRA SUPERIOR -->
-  <div class="barra-sorteo">
+<!-- BARRA SUPERIOR -->
+<div class="barra-sorteo">
 
-    <div class="selector">
-      <label for="selectSorteo">🎟️ Sorteo activo:</label>
-      <select id="selectSorteo"></select>
-    </div>
+<div class="selector">
+<label for="selectSorteo">🎟️ Sorteo activo:</label>
+<select id="selectSorteo"></select>
+</div>
 
-    <div class="acciones">
-      <button id="btnCerrarSorteo">🔒 Cerrar</button>
-      <button id="btnNuevoSorteo">➕ Nuevo</button>
-      <button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
-    </div>
+<div class="acciones">
+<button id="btnCerrarSorteo">🔒 Cerrar</button>
+<button id="btnNuevoSorteo">➕ Nuevo</button>
+<button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
+</div>
 
-    <div class="resumen">
-      👥 Compras registradas: <strong id="totalCompras">0</strong>
-    </div>
+<div class="resumen">
+👥 Compras registradas: <strong id="totalCompras">0</strong>
+</div>
 
-  </div>
+</div>
 
-  <!-- TABLA -->
-  <div class="table-wrapper">
-    <table id="tabla">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Nombre</th>
-          <th>WhatsApp</th>
-          <th>Cantidad</th>
-          <th>Números</th>
-          <th>Voucher</th>
-          <th>Estado</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
+<!-- TABLA -->
+<div class="table-wrapper">
+<table id="tabla">
 
-      <tbody></tbody>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Nombre</th>
+<th>WhatsApp</th>
+<th>Cantidad</th>
+<th>Números</th>
+<th>Voucher</th>
+<th>Estado</th>
+<th>Acción</th>
+</tr>
+</thead>
 
-    </table>
-  </div>
+<tbody></tbody>
 
-  <!-- MODAL NUEVO SORTEO -->
-  <div id="modalNuevoSorteo" class="modal oculto">
+</table>
+</div>
 
-    <div class="modal-contenido">
+<!-- MODAL -->
+<div id="modalNuevoSorteo" class="modal oculto">
 
-      <h3>➕ Crear nuevo sorteo</h3>
+<div class="modal-contenido">
 
-      <label for="nuevoNombreSorteo">Nombre del sorteo</label>
+<h3>➕ Crear nuevo sorteo</h3>
 
-      <input
-        type="text"
-        id="nuevoNombreSorteo"
-        placeholder="Ej: Sorteo 2 - Auto 2026"
-      >
+<label for="nuevoNombreSorteo">Nombre del sorteo</label>
 
-      <label style="display:block;margin-top:10px;">
-        <input type="checkbox" id="nuevoSorteoActivo">
-        Marcar como sorteo activo
-      </label>
+<input
+type="text"
+id="nuevoNombreSorteo"
+placeholder="Ej: Sorteo 2 - Auto 2026"
+>
 
-      <div class="modal-acciones">
-        <button id="btnGuardarSorteo">Guardar</button>
-        <button id="btnCancelarSorteo" class="danger">Cancelar</button>
-      </div>
+<label style="display:block;margin-top:10px;">
+<input type="checkbox" id="nuevoSorteoActivo">
+Marcar como sorteo activo
+</label>
 
-    </div>
+<div class="modal-acciones">
+<button id="btnGuardarSorteo">Guardar</button>
+<button id="btnCancelarSorteo" class="danger">Cancelar</button>
+</div>
 
-  </div>
+</div>
 
-  <!-- JS ADMIN -->
-  <script src="js/admin.js"></script>
+</div>
+
+<!-- JS ADMIN -->
+<script src="js/admin.js"></script>
 
 </body>
 </html>
