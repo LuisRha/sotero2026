@@ -15,8 +15,15 @@ const btnEliminarSorteo = document.getElementById("btnEliminarSorteo");
 const modalNuevoSorteo = document.getElementById("modalNuevoSorteo");
 const btnGuardarSorteo = document.getElementById("btnGuardarSorteo");
 const btnCancelarSorteo = document.getElementById("btnCancelarSorteo");
+
 const nuevoNombreSorteo = document.getElementById("nuevoNombreSorteo");
 const nuevoSorteoActivo = document.getElementById("nuevoSorteoActivo");
+
+// NUEVOS CAMPOS DEL SORTEO
+const nuevoPremio = document.getElementById("nuevoPremio");
+const nuevaImagen = document.getElementById("nuevaImagen");
+const precioTicket = document.getElementById("precioTicket");
+const totalNumerosInput = document.getElementById("totalNumeros");
 
 let sorteoActivoId = null;
 let sorteosCache = [];
@@ -27,36 +34,44 @@ let sorteosCache = [];
 // =========================
 async function cargarSorteos() {
 
-  const res = await fetch("/api/sorteos");
-  const data = await res.json();
+  try {
 
-  sorteosCache = data || [];
-  sorteoActivoId = null;
+    const res = await fetch("/api/sorteos");
+    const data = await res.json();
 
-  if (sorteosCache.length === 0) {
-    sorteoActivoTitulo.textContent = "⚠️ No hay sorteos";
-    return;
-  }
+    sorteosCache = data || [];
+    sorteoActivoId = null;
 
-  sorteosCache.forEach(sorteo => {
+    if (sorteosCache.length === 0) {
 
-    if (sorteo.estado === "activo" && sorteoActivoId === null) {
-
-      sorteoActivoId = sorteo.id;
-
-      sorteoActivoTitulo.textContent =
-        `🔴 Sorteo activo: ${sorteo.nombre}`;
+      sorteoActivoTitulo.textContent = "⚠️ No hay sorteos";
+      return;
 
     }
 
-  });
+    sorteosCache.forEach(sorteo => {
 
-  if (!sorteoActivoId) {
+      if (sorteo.estado === "activo" && !sorteoActivoId) {
 
-    sorteoActivoId = sorteosCache[0].id;
+        sorteoActivoId = sorteo.id;
 
-    sorteoActivoTitulo.textContent =
-      `🔴 Sorteo activo: ${sorteosCache[0].nombre}`;
+        sorteoActivoTitulo.textContent =
+          `🔴 Sorteo activo: ${sorteo.nombre}`;
+
+      }
+
+    });
+
+    if (!sorteoActivoId) {
+
+      sorteoActivoTitulo.textContent =
+        `⚠️ Ningún sorteo activo`;
+
+    }
+
+  } catch (err) {
+
+    console.error("Error cargando sorteos", err);
 
   }
 
@@ -71,7 +86,6 @@ function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
   nombre = decodeURIComponent(nombre);
 
   const numerosOriginales = decodeURIComponent(numeros);
-
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
   const producto = "Moto IGM CR 200";
@@ -127,7 +141,7 @@ async function cargarDatos() {
   totalComprasEl.textContent = "0";
   totalNumerosEl.textContent = "0";
 
-  let totalNumeros = 0;
+  let totalNumerosVendidos = 0;
 
   let url = "/api/compras";
 
@@ -151,16 +165,14 @@ async function cargarDatos() {
 
   data.forEach(item => {
 
-    totalNumeros += Number(item.cantidad || 0);
+    totalNumerosVendidos += Number(item.cantidad || 0);
 
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
       <td>${item.nombre || "-"}</td>
-
       <td>${item.whatsapp || "-"}</td>
-
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
       <td>${item.voucher ? `<button onclick="verVoucher('${encodeURIComponent(item.voucher)}')">Ver</button>` : "-"}</td>
@@ -196,7 +208,7 @@ async function cargarDatos() {
 
   });
 
-  totalNumerosEl.textContent = totalNumeros;
+  totalNumerosEl.textContent = totalNumerosVendidos;
 
 }
 
@@ -218,16 +230,11 @@ function verVoucher(v) {
 // =========================
 async function aprobar(id) {
 
-  const res = await fetch("/api/compras", {
+  await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, estado: "aprobado" })
   });
-
-  if (!res.ok) {
-    alert("❌ Error al aprobar");
-    return;
-  }
 
   cargarDatos();
 
@@ -237,16 +244,11 @@ async function rechazar(id) {
 
   if (!confirm("¿Rechazar esta compra?")) return;
 
-  const res = await fetch("/api/compras", {
+  await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, estado: "rechazado" })
   });
-
-  if (!res.ok) {
-    alert("❌ Error al rechazar");
-    return;
-  }
 
   cargarDatos();
 
@@ -257,65 +259,84 @@ async function rechazar(id) {
 // BOTONES PANEL
 // =========================
 
-// abrir modal nuevo sorteo
+// abrir modal
 btnNuevoSorteo.addEventListener("click", () => {
-
   modalNuevoSorteo.classList.remove("oculto");
-
 });
 
 // cancelar modal
 btnCancelarSorteo.addEventListener("click", () => {
-
   modalNuevoSorteo.classList.add("oculto");
-
 });
 
-// guardar sorteo
+
+// =========================
+// CREAR SORTEO
+// =========================
 btnGuardarSorteo.addEventListener("click", async () => {
 
-  const nombre = nuevoNombreSorteo.value.trim();
-  const activo = nuevoSorteoActivo.checked;
+  const nombre = nuevoNombreSorteo.value.trim()
+  const premio = nuevoPremio.value.trim()
+  const imagen = nuevaImagen.value.trim()
+  const precio_ticket = precioTicket.value
+  const total_numeros = totalNumerosInput.value
+  const activo = nuevoSorteoActivo.checked
 
   if (!nombre) {
-    alert("Ingrese nombre del sorteo");
-    return;
+    alert("Ingrese nombre del sorteo")
+    return
   }
 
   const res = await fetch("/api/sorteos", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
     body: JSON.stringify({
       nombre,
+      premio,
+      imagen,
+      precio_ticket,
+      total_numeros,
       activo
     })
-  });
 
-  if(!res.ok){
-    alert("Error al crear sorteo");
-    return;
+  })
+
+  if (!res.ok) {
+    alert("Error creando sorteo")
+    return
   }
 
-  modalNuevoSorteo.classList.add("oculto");
+  modalNuevoSorteo.classList.add("oculto")
 
-  nuevoNombreSorteo.value="";
-  nuevoSorteoActivo.checked=false;
+  nuevoNombreSorteo.value = ""
+  nuevoPremio.value = ""
+  nuevaImagen.value = ""
+  precioTicket.value = ""
+  totalNumerosInput.value = "99999"
+  nuevoSorteoActivo.checked = false
 
-  await cargarSorteos();
-  await cargarDatos();
+  await cargarSorteos()
+  await cargarDatos()
 
-});
+})
 
 
-// cerrar sorteo
+// =========================
+// CERRAR SORTEO
+// =========================
 btnCerrarSorteo.addEventListener("click", async () => {
 
   if(!sorteoActivoId){
-    alert("No hay sorteo activo");
-    return;
+    alert("No hay sorteo activo")
+    return
   }
 
-  if(!confirm("¿Cerrar este sorteo?")) return;
+  if(!confirm("¿Cerrar este sorteo?")) return
 
   await fetch("/api/sorteos",{
     method:"PUT",
@@ -324,23 +345,24 @@ btnCerrarSorteo.addEventListener("click", async () => {
       id: sorteoActivoId,
       estado:"cerrado"
     })
-  });
+  })
 
-  await cargarSorteos();
-  await cargarDatos();
+  await cargarSorteos()
 
-});
+})
 
 
-// eliminar sorteo
+// =========================
+// ELIMINAR SORTEO
+// =========================
 btnEliminarSorteo.addEventListener("click", async () => {
 
   if(!sorteoActivoId){
-    alert("No hay sorteo seleccionado");
-    return;
+    alert("No hay sorteo seleccionado")
+    return
   }
 
-  if(!confirm("⚠️ ¿Eliminar este sorteo?")) return;
+  if(!confirm("⚠️ ¿Eliminar este sorteo?")) return
 
   await fetch("/api/sorteos",{
     method:"DELETE",
@@ -348,12 +370,12 @@ btnEliminarSorteo.addEventListener("click", async () => {
     body: JSON.stringify({
       id:sorteoActivoId
     })
-  });
+  })
 
-  await cargarSorteos();
-  await cargarDatos();
+  await cargarSorteos()
+  await cargarDatos()
 
-});
+})
 
 
 // =========================
@@ -361,7 +383,7 @@ btnEliminarSorteo.addEventListener("click", async () => {
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
 
-  await cargarSorteos();
-  await cargarDatos();
+  await cargarSorteos()
+  await cargarDatos()
 
-});
+})

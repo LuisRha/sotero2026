@@ -32,26 +32,47 @@ export default async function handler(req, res) {
       return res.status(200).json(data);
     }
 
-
     // =========================
     // POST → CREAR SORTEO
     // =========================
     if (req.method === "POST") {
 
-      const { nombre, activo } = body;
+      const { 
+        nombre,
+        premio,
+        imagen,
+        precio_ticket,
+        total_numeros,
+        activo
+      } = body;
 
       if (!nombre) {
         return res.status(400).json({ error:"Nombre requerido" });
       }
 
+      // si el nuevo sorteo será activo
+      if (activo) {
+
+        // cerrar todos los demás
+        await supabase
+          .from("sorteos")
+          .update({ estado:"cerrado" })
+          .neq("id",0);
+
+      }
+
       const { error } = await supabase
         .from("sorteos")
-        .insert([
-          {
-            nombre,
-            estado: activo ? "activo" : "cerrado"
-          }
-        ]);
+        .insert([{
+
+          nombre,
+          premio,
+          imagen,
+          precio_ticket,
+          total_numeros,
+          estado: activo ? "activo" : "cerrado"
+
+        }]);
 
       if (error) {
         return res.status(500).json({ error:error.message });
@@ -60,13 +81,27 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok:true });
     }
 
-
     // =========================
-    // PUT → CERRAR / ACTIVAR
+    // PUT → ACTIVAR / CERRAR
     // =========================
     if (req.method === "PUT") {
 
       const { id, estado } = body;
+
+      if (!id) {
+        return res.status(400).json({ error:"ID requerido" });
+      }
+
+      // si se activa un sorteo
+      if (estado === "activo") {
+
+        // cerrar todos
+        await supabase
+          .from("sorteos")
+          .update({ estado:"cerrado" })
+          .neq("id",0);
+
+      }
 
       const { error } = await supabase
         .from("sorteos")
@@ -80,13 +115,16 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok:true });
     }
 
-
     // =========================
     // DELETE → ELIMINAR
     // =========================
     if (req.method === "DELETE") {
 
       const { id } = body;
+
+      if (!id) {
+        return res.status(400).json({ error:"ID requerido" });
+      }
 
       const { error } = await supabase
         .from("sorteos")
@@ -99,7 +137,6 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ ok:true });
     }
-
 
     return res.status(405).json({ error:"Método no permitido" });
 
