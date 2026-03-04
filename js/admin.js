@@ -4,11 +4,14 @@
 const tablaBody = document.querySelector("#tabla tbody");
 const totalComprasEl = document.getElementById("totalCompras");
 const totalNumerosEl = document.getElementById("totalNumeros");
-// const selectSorteo = document.getElementById("selectSorteo");
 const sorteoActivoTitulo = document.getElementById("sorteoActivoTitulo");
 
-// ➕ Nuevo sorteo (modal)
+// botones superiores
+const btnCerrarSorteo = document.getElementById("btnCerrarSorteo");
 const btnNuevoSorteo = document.getElementById("btnNuevoSorteo");
+const btnEliminarSorteo = document.getElementById("btnEliminarSorteo");
+
+// modal nuevo sorteo
 const modalNuevoSorteo = document.getElementById("modalNuevoSorteo");
 const btnGuardarSorteo = document.getElementById("btnGuardarSorteo");
 const btnCancelarSorteo = document.getElementById("btnCancelarSorteo");
@@ -20,7 +23,7 @@ let sorteosCache = [];
 
 
 // =========================
-// CARGAR SORTEOS (API)
+// CARGAR SORTEOS
 // =========================
 async function cargarSorteos() {
 
@@ -65,18 +68,18 @@ async function cargarSorteos() {
 // =========================
 function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
 
-  nombre = decodeURIComponent(nombre)
+  nombre = decodeURIComponent(nombre);
 
-  const numerosOriginales = decodeURIComponent(numeros)
+  const numerosOriginales = decodeURIComponent(numeros);
 
-  const numerosFormato = numerosOriginales.split(",").join(" - ")
+  const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  const producto = "Moto IGM CR 200"
+  const producto = "Moto IGM CR 200";
 
-  let extrasTexto = "----\n----\n----\n----"
+  let extrasTexto = "----\n----\n----\n----";
 
   if(extras){
-    extrasTexto = extras.split(",").join("\n")
+    extrasTexto = extras.split(",").join("\n");
   }
 
   const mensaje = `
@@ -102,20 +105,20 @@ si tienes alguno automáticamente ganas el premio extra
 ${extrasTexto}
 
 Con el respaldo de DADE'S Y TRUJILLOGROUP
-`
+`;
 
-  const telefonoFinal = "593" + telefono.replace(/^0/, "")
+  const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
   window.open(
     `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
     "_blank"
-  )
+  );
 
 }
 
 
 // =========================
-// CARGAR COMPRAS (API)
+// CARGAR COMPRAS
 // =========================
 async function cargarDatos() {
 
@@ -248,6 +251,109 @@ async function rechazar(id) {
   cargarDatos();
 
 }
+
+
+// =========================
+// BOTONES PANEL
+// =========================
+
+// abrir modal nuevo sorteo
+btnNuevoSorteo.addEventListener("click", () => {
+
+  modalNuevoSorteo.classList.remove("oculto");
+
+});
+
+// cancelar modal
+btnCancelarSorteo.addEventListener("click", () => {
+
+  modalNuevoSorteo.classList.add("oculto");
+
+});
+
+// guardar sorteo
+btnGuardarSorteo.addEventListener("click", async () => {
+
+  const nombre = nuevoNombreSorteo.value.trim();
+  const activo = nuevoSorteoActivo.checked;
+
+  if (!nombre) {
+    alert("Ingrese nombre del sorteo");
+    return;
+  }
+
+  const res = await fetch("/api/sorteos", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      nombre,
+      activo
+    })
+  });
+
+  if(!res.ok){
+    alert("Error al crear sorteo");
+    return;
+  }
+
+  modalNuevoSorteo.classList.add("oculto");
+
+  nuevoNombreSorteo.value="";
+  nuevoSorteoActivo.checked=false;
+
+  await cargarSorteos();
+  await cargarDatos();
+
+});
+
+
+// cerrar sorteo
+btnCerrarSorteo.addEventListener("click", async () => {
+
+  if(!sorteoActivoId){
+    alert("No hay sorteo activo");
+    return;
+  }
+
+  if(!confirm("¿Cerrar este sorteo?")) return;
+
+  await fetch("/api/sorteos",{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json"},
+    body: JSON.stringify({
+      id: sorteoActivoId,
+      estado:"cerrado"
+    })
+  });
+
+  await cargarSorteos();
+  await cargarDatos();
+
+});
+
+
+// eliminar sorteo
+btnEliminarSorteo.addEventListener("click", async () => {
+
+  if(!sorteoActivoId){
+    alert("No hay sorteo seleccionado");
+    return;
+  }
+
+  if(!confirm("⚠️ ¿Eliminar este sorteo?")) return;
+
+  await fetch("/api/sorteos",{
+    method:"DELETE",
+    headers:{ "Content-Type":"application/json"},
+    body: JSON.stringify({
+      id:sorteoActivoId
+    })
+  });
+
+  await cargarSorteos();
+  await cargarDatos();
+
+});
 
 
 // =========================
