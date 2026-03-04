@@ -116,7 +116,6 @@ ${producto} adicional
 
 🎟️ TICKETS COMPRADOS : ${cantidad}
 
-🎟️ NÚMEROS PRINCIPALES
 
 ${numeros}
 
