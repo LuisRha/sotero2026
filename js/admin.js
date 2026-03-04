@@ -100,6 +100,34 @@ async function cargarDatos() {
 
     const tr = document.createElement("tr");
 
+    const nombre = item.nombre || "Cliente";
+    const numeros = item.numeros || "Sin números";
+
+    const mensaje = `
+Hola, ${nombre}.
+Agradecemos por tu compra
+
+Pedido número : ${item.id}
+
+IPhone 17 pro máx adicional
+A eso tenemos 10 números con premios extra.
+
+Estos son tus números
+${numeros}
+
+SUERTE EN NUESTRA PRIMER DINAMICA
+
+Revisa los siguientes números y compararlos con los tuyos
+si tienes alguno automáticamente ganas el premio extra
+
+..............
+..............
+..............
+..............
+
+Con el respaldo de DADE'S Y TRUJILLOGROUP
+`;
+
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
       <td>${item.nombre || "-"}</td>
@@ -107,7 +135,7 @@ async function cargarDatos() {
       <td>
       ${
         item.whatsapp
-        ? `<a href="https://wa.me/593${item.whatsapp.replace(/^0/,'')}?text=${encodeURIComponent('Hola, gracias por participar en el sorteo.')}" 
+        ? `<a href="https://wa.me/593${item.whatsapp.replace(/^0/,'')}?text=${encodeURIComponent(mensaje)}" 
              target="_blank"
              style="color:#0a7cff;font-weight:bold;text-decoration:none;">
              ${item.whatsapp}
