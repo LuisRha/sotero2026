@@ -10,43 +10,60 @@
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+  const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+  const SUPABASE_KEY = "AQUI_TU_PUBLISHABLE_KEY";
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // 🔒 Verificar sesión antes de cargar el panel
+  document.addEventListener("DOMContentLoaded", async () => {
+
+    const { data } = await supabase.auth.getSession();
+
+    if(!data.session){
+      window.location.href = "login.html";
+    }
+
+  });
+
+  </script>
+
 </head>
+
 <body>
 
   <h1>🧑‍💼 Panel Administrativo – Sorteos</h1>
 
-  <!-- 🟢 SORTEO ACTIVO (VERDE + TITILANTE) -->
+  <!-- 🟢 SORTEO ACTIVO -->
   <div id="sorteoActivoTitulo" class="sorteo-activo">
     <span class="dot"></span>
     Sorteo activo: —
   </div>
 
-  <!-- 🔥 BARRA SUPERIOR (SELECT + BOTONES + RESUMEN) -->
+  <!-- 🔥 BARRA SUPERIOR -->
   <div class="barra-sorteo">
 
-    <!-- SELECT SORTEO -->
     <div class="selector">
       <label for="selectSorteo">🎟️ Sorteo activo:</label>
-      <select id="selectSorteo">
-        <!-- admin.js cargará los sorteos -->
-      </select>
+      <select id="selectSorteo"></select>
     </div>
 
-    <!-- BOTONES -->
     <div class="acciones">
       <button id="btnCerrarSorteo">🔒 Cerrar</button>
       <button id="btnNuevoSorteo">➕ Nuevo</button>
       <button id="btnEliminarSorteo" class="danger">🗑️ Eliminar</button>
     </div>
 
-    <!-- RESUMEN -->
     <div class="resumen">
       👥 Compras registradas: <strong id="totalCompras">0</strong>
     </div>
 
   </div>
 
-  <!-- TABLA DE COMPRAS -->
+  <!-- TABLA -->
   <div class="table-wrapper">
     <table id="tabla">
       <thead>
@@ -61,20 +78,21 @@
           <th>Acción</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- admin.js renderiza las filas -->
-      </tbody>
+
+      <tbody></tbody>
+
     </table>
   </div>
 
-  <!-- ========================= -->
   <!-- MODAL NUEVO SORTEO -->
-  <!-- ========================= -->
   <div id="modalNuevoSorteo" class="modal oculto">
+
     <div class="modal-contenido">
+
       <h3>➕ Crear nuevo sorteo</h3>
 
       <label for="nuevoNombreSorteo">Nombre del sorteo</label>
+
       <input
         type="text"
         id="nuevoNombreSorteo"
@@ -90,7 +108,9 @@
         <button id="btnGuardarSorteo">Guardar</button>
         <button id="btnCancelarSorteo" class="danger">Cancelar</button>
       </div>
+
     </div>
+
   </div>
 
   <!-- JS ADMIN -->
