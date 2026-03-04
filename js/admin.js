@@ -31,10 +31,8 @@ async function cargarSorteos() {
   sorteoActivoId = null;
 
   if (sorteosCache.length === 0) {
-
     sorteoActivoTitulo.textContent = "⚠️ No hay sorteos";
     return;
-
   }
 
   sorteosCache.forEach(sorteo => {
@@ -63,47 +61,23 @@ async function cargarSorteos() {
 
 
 // =========================
-// GENERAR NUMEROS EXTRA UNICOS
-// =========================
-function generarExtras(numerosPrincipales){
-
-  const usados = new Set()
-
-  if(numerosPrincipales){
-    numerosPrincipales.split(/[\s,]+/).forEach(n=>{
-      if(n.trim() !== "") usados.add(n.trim())
-    })
-  }
-
-  const extras = []
-
-  while(extras.length < 4){
-
-    let num = Math.floor(Math.random()*99999)+1
-    num = num.toString().padStart(5,"0")
-
-    if(!usados.has(num) && !extras.includes(num)){
-      extras.push(num)
-    }
-
-  }
-
-  return extras
-
-}
-
-
-// =========================
 // ENVIAR WHATSAPP
 // =========================
-function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad){
+function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
 
   nombre = decodeURIComponent(nombre)
-  numeros = decodeURIComponent(numeros)
-  numeros = numeros.split(",").join(" - ")
+
+  const numerosOriginales = decodeURIComponent(numeros)
+
+  const numerosFormato = numerosOriginales.split(",").join(" - ")
+
   const producto = "Moto IGM CR 200"
 
-  const extras = generarExtras(numeros)
+  let extrasTexto = "----\n----\n----\n----"
+
+  if(extras){
+    extrasTexto = extras.split(",").join("\n")
+  }
 
   const mensaje = `
 Hola, ${nombre}
@@ -116,9 +90,7 @@ ${producto} adicional
 
 🎟️ TICKETS COMPRADOS : ${cantidad}
 
-
-${numeros}
-
+${numerosFormato}
 
 SUERTE EN NUESTRA PRIMER DINAMICA
 
@@ -127,10 +99,7 @@ si tienes alguno automáticamente ganas el premio extra
 
 🎁 NÚMEROS EXTRA (BONO)
 
-${extras[0]}
-${extras[1]}
-${extras[2]}
-${extras[3]}
+${extrasTexto}
 
 Con el respaldo de DADE'S Y TRUJILLOGROUP
 `
@@ -208,7 +177,8 @@ async function cargarDatos() {
                 '${encodeURIComponent(item.nombre)}',
                 '${encodeURIComponent(item.numeros)}',
                 '${item.id}',
-                '${item.cantidad}'
+                '${item.cantidad}',
+                '${item.extras || ""}'
               )"
               style="background:#25D366;color:#fff">
               📨 Enviar WhatsApp
