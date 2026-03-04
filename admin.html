@@ -22,8 +22,8 @@ const supabase = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// 🔐 Verificar sesión
-async function verificarSesion(){
+// 🔐 Verificar sesión cuando cargue la página
+document.addEventListener("DOMContentLoaded", async () => {
 
   try{
 
@@ -31,21 +31,18 @@ async function verificarSesion(){
 
     if(error || !data.session){
 
-      // redirigir si no hay sesión
-      window.location.replace("/login.html");
+      // si no hay sesión → ir a login
+      window.location.href = "login.html";
 
     }
 
   }catch(e){
 
-    window.location.replace("/login.html");
+    window.location.href = "login.html";
 
   }
 
-}
-
-// ejecutar verificación
-verificarSesion();
+});
 
 </script>
 
@@ -83,6 +80,7 @@ Sorteo activo: —
 
 <!-- TABLA -->
 <div class="table-wrapper">
+
 <table id="tabla">
 
 <thead>
@@ -101,6 +99,7 @@ Sorteo activo: —
 <tbody></tbody>
 
 </table>
+
 </div>
 
 <!-- MODAL -->
