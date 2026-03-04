@@ -28,13 +28,7 @@ async function cargarSorteos() {
   const data = await res.json();
 
   sorteosCache = data || [];
-  selectSorteo.innerHTML = "";
   sorteoActivoId = null;
-
-  const optTodos = document.createElement("option");
-  optTodos.value = "";
-  optTodos.textContent = "📋 Todos los sorteos";
-  selectSorteo.appendChild(optTodos);
 
   if (sorteosCache.length === 0) {
 
@@ -45,14 +39,8 @@ async function cargarSorteos() {
 
   sorteosCache.forEach(sorteo => {
 
-    const option = document.createElement("option");
-
-    option.value = sorteo.id;
-    option.textContent = sorteo.nombre;
-
     if (sorteo.estado === "activo" && sorteoActivoId === null) {
 
-      option.selected = true;
       sorteoActivoId = sorteo.id;
 
       sorteoActivoTitulo.textContent =
@@ -60,14 +48,11 @@ async function cargarSorteos() {
 
     }
 
-    selectSorteo.appendChild(option);
-
   });
 
   if (!sorteoActivoId) {
 
     sorteoActivoId = sorteosCache[0].id;
-    selectSorteo.value = sorteoActivoId;
 
     sorteoActivoTitulo.textContent =
       `🔴 Sorteo activo: ${sorteosCache[0].nombre}`;
@@ -149,37 +134,6 @@ async function cargarDatos() {
   totalNumerosEl.textContent = totalNumeros;
 
 }
-
-
-// =========================
-// EVENTO CAMBIO DE SORTEO
-// =========================
-selectSorteo.addEventListener("change", () => {
-
-  const id = selectSorteo.value;
-
-  if (!id) {
-
-    sorteoActivoId = null;
-
-    sorteoActivoTitulo.textContent =
-      "📋 Mostrando todos los sorteos";
-
-  } else {
-
-    sorteoActivoId = Number(id);
-
-    const s = sorteosCache.find(x => x.id == id);
-
-    if (s)
-      sorteoActivoTitulo.textContent =
-        `🔴 Sorteo activo: ${s.nombre}`;
-
-  }
-
-  cargarDatos();
-
-});
 
 
 // =========================
