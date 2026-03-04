@@ -12,7 +12,7 @@
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
+<script defer>
 
 // Configuración Supabase
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
@@ -57,7 +57,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 🚪 Cerrar sesión
 async function cerrarSesion(){
 
-  await window.supabaseClient.auth.signOut();
+  try{
+
+    await window.supabaseClient.auth.signOut();
+
+  }catch(e){
+    console.log(e);
+  }
 
   window.location.href = "login.html";
 
@@ -141,19 +147,12 @@ Sorteo activo: —
 <tr>
 
 <th>Fecha</th>
-
 <th>Nombre</th>
-
 <th>WhatsApp</th>
-
 <th>Cantidad</th>
-
 <th>Números</th>
-
 <th>Voucher</th>
-
 <th>Estado</th>
-
 <th>Acción</th>
 
 </tr>
