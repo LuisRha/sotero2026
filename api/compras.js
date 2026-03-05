@@ -128,11 +128,12 @@ export default async function handler(req, res) {
         vendidosData.forEach(c => {
 
           if (c.numeros) {
-            numerosVendidos.push(...c.numeros.split(","));
+            // Limpiamos espacios por si acaso antes de hacer el split
+            numerosVendidos.push(...c.numeros.replace(/\s/g, '').split(","));
           }
 
           if (c.extras) {
-            numerosVendidos.push(...c.extras.split(","));
+            numerosVendidos.push(...c.extras.replace(/\s/g, '').split(","));
           }
 
         });
@@ -155,11 +156,11 @@ export default async function handler(req, res) {
           sorteo_id,
           nombre,
           whatsapp,
-          cantidad,
+          cantidad: Number(cantidad),
           numeros,
           extras,
           voucher,
-          total,
+          total: Number(total),
           estado: "pendiente"
         }
       ]);

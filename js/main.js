@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(!SORTEO_ID) return 0;
 
+    // Llamamos a tu API de compras filtrando por el sorteo actual
     const res = await fetch(`/api/compras?sorteo_id=${SORTEO_ID}&estados=pendiente,aprobado`);
 
     if(!res.ok) return 0;
@@ -67,14 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const json = await res.json();
 
     return json.reduce(
-      (sum,fila)=> sum + Number(fila.cantidad || 0),
+      (sum, fila) => sum + Number(fila.cantidad || 0),
       0
     );
 
   }
 
   // =========================
-  // DISPONIBLES + BARRA
+  // DISPONIBLES + BARRA (ACTUALIZADO)
   // =========================
   async function actualizarDisponibles(){
 
@@ -89,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `Boletos disponibles: ${disponibles}`;
       }
 
+      // Cálculo del porcentaje basado en los vendidos reales
       const porcentaje =
       TOTAL_BOLETOS > 0
       ? Math.round((vendidos / TOTAL_BOLETOS) * 100)
@@ -97,19 +99,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const barra = document.getElementById("barraFill");
       const texto = document.getElementById("porcentajeTexto");
 
-      if(barra) barra.style.width = porcentaje + "%";
+      // Aplicamos el ancho a la barra visualmente
+      if(barra) {
+        barra.style.width = porcentaje + "%";
+        barra.style.transition = "width 1s ease-in-out"; // Para que se vea fluido
+      }
 
-      if(texto)
-      texto.textContent = `Números vendidos: ${porcentaje}%`;
+      if(texto) {
+        texto.textContent = `Números vendidos: ${porcentaje}%`;
+      }
 
     }
-    catch{
-
+    catch(err){
+      console.error("Error al actualizar barra:", err);
       if(disponiblesEl){
         disponiblesEl.textContent =
         "Boletos disponibles: --";
       }
-
     }
 
   }
@@ -181,18 +187,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if(modo === "orden"){
 
-          for(let i=1;i<=cantidad;i++){
+          for(let i=1; i<=cantidad; i++){
             numeros.push(vendidos + i);
           }
 
-        }else{
+        } else {
 
           const usados = new Set();
 
           while(numeros.length < cantidad){
 
             const n =
-            Math.floor(Math.random()*TOTAL_BOLETOS)+1;
+            Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
 
             if(!usados.has(n)){
               usados.add(n);
@@ -213,13 +219,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           body: JSON.stringify({
 
-            sorteo_id:SORTEO_ID,
+            sorteo_id: SORTEO_ID,
             nombre,
             whatsapp,
             cantidad,
-            numeros:numeros.join(", "),
+            numeros: numeros.join(", "),
             voucher,
-            total:cantidad * PRECIO_BOLETO
+            total: cantidad * PRECIO_BOLETO
 
           })
 
@@ -249,6 +255,7 @@ VOUCHER: ${voucher}
           "_blank"
         );
 
+        // Limpiar campos
         nombreInput.value = "";
         whatsappInput.value = "";
         cantidadInput.value = "";
@@ -257,13 +264,12 @@ VOUCHER: ${voucher}
 
         formulario.classList.add("oculto");
 
+        // Actualizar la barra inmediatamente después de comprar
         actualizarDisponibles();
 
       }
       catch(err){
-
         alert(err.message);
-
       }
 
     });
@@ -316,7 +322,7 @@ VOUCHER: ${voucher}
 
     }
 
-  },3000);
+  }, 3000);
 
   // =========================
   // AUTO SCROLL GALERÍA
@@ -341,7 +347,7 @@ VOUCHER: ${voucher}
 
       }
 
-    },30);
+    }, 30);
 
   }
 
