@@ -60,13 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(!SORTEO_ID) return 0;
 
-    // Llamamos a tu API de compras filtrando por el sorteo actual
-    const res = await fetch(`/api/compras?sorteo_id=${SORTEO_ID}&estados=pendiente,aprobado`);
+    // Ajustado: Si no tienes columna 'estado' aún, quitamos el filtro para que cuente todo
+    const res = await fetch(`/api/compras?sorteo_id=${SORTEO_ID}`);
 
     if(!res.ok) return 0;
 
     const json = await res.json();
 
+    // Sumamos la columna 'cantidad' que se ve en tu captura
     return json.reduce(
       (sum, fila) => sum + Number(fila.cantidad || 0),
       0
@@ -75,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // DISPONIBLES + BARRA (ACTUALIZADO)
+  // ACTUALIZAR BARRA (CONEXIÓN REAL)
   // =========================
   async function actualizarDisponibles(){
 
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `Boletos disponibles: ${disponibles}`;
       }
 
-      // Cálculo del porcentaje basado en los vendidos reales
+      // Cálculo basado en tus 61 registros actuales
       const porcentaje =
       TOTAL_BOLETOS > 0
       ? Math.round((vendidos / TOTAL_BOLETOS) * 100)
@@ -99,10 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const barra = document.getElementById("barraFill");
       const texto = document.getElementById("porcentajeTexto");
 
-      // Aplicamos el ancho a la barra visualmente
       if(barra) {
         barra.style.width = porcentaje + "%";
-        barra.style.transition = "width 1s ease-in-out"; // Para que se vea fluido
+        barra.style.transition = "width 1s ease-in-out";
       }
 
       if(texto) {
@@ -112,10 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     catch(err){
       console.error("Error al actualizar barra:", err);
-      if(disponiblesEl){
-        disponiblesEl.textContent =
-        "Boletos disponibles: --";
-      }
     }
 
   }
@@ -185,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let numeros = [];
 
+        // Lógica de asignación de números según tu tabla
         if(modo === "orden"){
 
           for(let i=1; i<=cantidad; i++){
@@ -194,17 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
           const usados = new Set();
-
           while(numeros.length < cantidad){
-
-            const n =
-            Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
-
+            const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
             if(!usados.has(n)){
               usados.add(n);
               numeros.push(n);
             }
-
           }
 
         }
@@ -218,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
           },
 
           body: JSON.stringify({
-
             sorteo_id: SORTEO_ID,
             nombre,
             whatsapp,
@@ -226,45 +217,24 @@ document.addEventListener("DOMContentLoaded", () => {
             numeros: numeros.join(", "),
             voucher,
             total: cantidad * PRECIO_BOLETO
-
           })
 
         });
 
-        if(!res.ok)
-        throw new Error("Error al registrar compra");
+        if(!res.ok) throw new Error("Error al registrar compra");
 
-        const numeroAdmin = "593987354472";
+        const mensaje = `NUEVA COMPRA\n\nNOMBRE: ${nombre}\nWHATSAPP: ${whatsapp}\nBOLETOS: ${cantidad}\nTOTAL: $${cantidad * PRECIO_BOLETO}\nNUMEROS: ${numeros.join(", ")}\nVOUCHER: ${voucher}`;
 
-        const mensaje = `
-NUEVA COMPRA
+        window.open(`https://wa.me/593987354472?text=${encodeURIComponent(mensaje)}`, "_blank");
 
-NOMBRE: ${nombre}
-WHATSAPP: ${whatsapp}
-BOLETOS: ${cantidad}
-TOTAL: $${cantidad * PRECIO_BOLETO}
-
-NUMEROS:
-${numeros.join(", ")}
-
-VOUCHER: ${voucher}
-`;
-
-        window.open(
-          `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
-          "_blank"
-        );
-
-        // Limpiar campos
+        // Reset
         nombreInput.value = "";
         whatsappInput.value = "";
         cantidadInput.value = "";
         voucherInput.value = "";
         totalPagarEl.textContent = "$0";
-
         formulario.classList.add("oculto");
 
-        // Actualizar la barra inmediatamente después de comprar
         actualizarDisponibles();
 
       }
@@ -284,45 +254,14 @@ VOUCHER: ${voucher}
     try{
 
       await obtenerSorteoActivo();
-
       await actualizarDisponibles();
 
     }
     catch(err){
-
       console.error(err);
-
     }
 
   })();
-
-  // =========================
-  // TEXTO DINÁMICO TOP BAR
-  // =========================
-  const textosTopBar = [
-    "DINÁMICA #1",
-    "A llevarse un iPhone 17 Pro Max",
-    "SORTEO 100% TRANSPARENTE",
-    "A llevarse un iPhone 17 Pro Max",
-    "PREMIOS REALES · GANADORES REALES",
-    "A llevarse un iPhone 17 Pro Max"
-  ];
-
-  let indice = 0;
-
-  setInterval(()=>{
-
-    const el = document.getElementById("topBarText");
-
-    if(el){
-
-      indice = (indice + 1) % textosTopBar.length;
-
-      el.textContent = textosTopBar[indice];
-
-    }
-
-  }, 3000);
 
   // =========================
   // AUTO SCROLL GALERÍA
