@@ -294,10 +294,12 @@ VOUCHER: ${voucher}
   // TEXTO DINÁMICO TOP BAR
   // =========================
   const textosTopBar = [
-    "JUEGA EL BONAZO $50.000",
+    "DINÁMICA #1",
+    "A llevarse un iPhone 17 Pro Max",
     "SORTEO 100% TRANSPARENTE",
-    "PAGA $5 Y GANA EN GRANDE",
-    "PREMIOS REALES · GANADORES REALES"
+    "A llevarse un iPhone 17 Pro Max",
+    "PREMIOS REALES · GANADORES REALES",
+    "A llevarse un iPhone 17 Pro Max"
   ];
 
   let indice = 0;
