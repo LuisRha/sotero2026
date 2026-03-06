@@ -1,9 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "TU_SUPABASE_URL",
-  "TU_SUPABASE_SERVICE_ROLE_KEY"
+  "https://xxxx.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 );
+
+
 export default async function handler(req, res) {
 
   try {
