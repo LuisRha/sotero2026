@@ -156,9 +156,9 @@ async function cargarDatos() {
   data.forEach(item => {
 
     // ✅ SOLO CONTAR APROBADOS
-    if(item.estado === "aprobado" || item.estado === "pendiente"){
-  totalNumerosVendidos += Number(item.cantidad || 0);
-}
+    if(item.estado === "aprobado"){
+      totalNumerosVendidos += Number(item.cantidad || 0);
+    }
 
     const tr = document.createElement("tr");
 
