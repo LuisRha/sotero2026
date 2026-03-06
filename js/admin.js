@@ -32,7 +32,6 @@ const guardarTopBar = document.getElementById("guardarTopBar");
 let sorteoActivoId = null;
 let sorteosCache = [];
 
-
 // =========================
 // CARGAR SORTEOS
 // =========================
@@ -81,7 +80,6 @@ async function cargarSorteos() {
 
 }
 
-
 // =========================
 // ENVIAR WHATSAPP
 // =========================
@@ -123,7 +121,6 @@ ${extrasTexto}
 
 }
 
-
 // =========================
 // CARGAR COMPRAS
 // =========================
@@ -158,7 +155,10 @@ async function cargarDatos() {
 
   data.forEach(item => {
 
-    totalNumerosVendidos += Number(item.cantidad || 0);
+    // ✅ SOLO CONTAR APROBADOS
+    if(item.estado === "aprobado"){
+      totalNumerosVendidos += Number(item.cantidad || 0);
+    }
 
     const tr = document.createElement("tr");
 
@@ -204,7 +204,6 @@ async function cargarDatos() {
 
 }
 
-
 // =========================
 // UTILIDADES
 // =========================
@@ -215,7 +214,6 @@ function verNumeros(n) {
 function verVoucher(v) {
   alert("📄 Voucher:\n\n" + decodeURIComponent(v));
 }
-
 
 // =========================
 // APROBAR / RECHAZAR
@@ -246,21 +244,16 @@ async function rechazar(id) {
 
 }
 
-
 // =========================
 // BOTONES PANEL
 // =========================
-
-// abrir modal
 btnNuevoSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.remove("oculto");
 });
 
-// cancelar modal
 btnCancelarSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.add("oculto");
 });
-
 
 // =========================
 // CREAR SORTEO
@@ -317,7 +310,6 @@ btnGuardarSorteo?.addEventListener("click", async () => {
 
 });
 
-
 // =========================
 // CERRAR SORTEO
 // =========================
@@ -343,7 +335,6 @@ btnCerrarSorteo?.addEventListener("click", async () => {
 
 });
 
-
 // =========================
 // ELIMINAR SORTEO
 // =========================
@@ -368,7 +359,6 @@ btnEliminarSorteo?.addEventListener("click", async () => {
   await cargarDatos();
 
 });
-
 
 // =========================
 // GUARDAR TEXTO TOP BAR
@@ -402,7 +392,6 @@ guardarTopBar?.addEventListener("click", async ()=>{
   alert("Texto actualizado");
 
 });
-
 
 // =========================
 // INICIO
