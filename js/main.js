@@ -83,18 +83,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const vendidos = await obtenerVendidos();
 
-      const disponibles = TOTAL_BOLETOS - vendidos;
+      let disponibles = TOTAL_BOLETOS - vendidos;
 
-      if(disponiblesEl){
-        disponiblesEl.textContent =
-        `Boletos disponibles: ${disponibles}`;
-      }
+      if (disponibles < 0) disponibles = 0;
 
       // Cálculo del porcentaje basado en los vendidos reales
-      const porcentaje =
-      TOTAL_BOLETOS > 0
-      ? ((vendidos / TOTAL_BOLETOS) * 100).toFixed(2)
-      : 0;
+      let porcentaje = TOTAL_BOLETOS > 0
+? (vendidos / TOTAL_BOLETOS) * 100
+: 0;
+
+if (porcentaje > 100) porcentaje = 100;
+
+porcentaje = porcentaje.toFixed(2);
 
       const barra = document.getElementById("barraFill");
       const texto = document.getElementById("porcentajeTexto");

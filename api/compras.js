@@ -36,7 +36,7 @@ function generarTickets(cantidad, numerosYaVendidos = [], totalNumeros = 99999) 
     principales.push(generarNumero());
   }
 
-  // 4 extras
+  // extras
   for (let i = 0; i < 4; i++) {
     extras.push(generarNumero());
   }
@@ -123,8 +123,8 @@ export default async function handler(req, res) {
       const totalNumeros = sorteo?.total_numeros || 99999;
 
       // =========================
-      // OBTENER NUMEROS VENDIDOS
-      // SOLO pendiente + aprobado
+      // OBTENER NUMEROS OCUPADOS
+      // pendiente + aprobado
       // =========================
       const { data: vendidosData } = await supabase
         .from("compras")
@@ -132,28 +132,30 @@ export default async function handler(req, res) {
         .eq("sorteo_id", sorteo_id)
         .in("estado", ["pendiente","aprobado"]);
 
-      let numerosVendidos = [];
+      let numerosOcupados = [];
 
       if (vendidosData) {
 
         vendidosData.forEach(c => {
 
           if (c.numeros) {
-            numerosVendidos.push(...c.numeros.replace(/\s/g,'').split(","));
+            numerosOcupados.push(...c.numeros.replace(/\s/g,'').split(","));
           }
 
           if (c.extras) {
-            numerosVendidos.push(...c.extras.replace(/\s/g,'').split(","));
+            numerosOcupados.push(...c.extras.replace(/\s/g,'').split(","));
           }
 
         });
 
       }
 
+      const ocupados = numerosOcupados.length;
+
       // =========================
       // BLOQUEAR SI SE LLENÓ
       // =========================
-      if (numerosVendidos.length >= totalNumeros) {
+      if (ocupados >= totalNumeros) {
 
         return res.status(400).json({
           error: "El sorteo ya se encuentra lleno"
@@ -161,7 +163,10 @@ export default async function handler(req, res) {
 
       }
 
-      if (numerosVendidos.length + Number(cantidad) > totalNumeros) {
+      const extrasPorCompra = 4;
+      const boletosNecesarios = Number(cantidad) + extrasPorCompra;
+
+      if (ocupados + boletosNecesarios > totalNumeros) {
 
         return res.status(400).json({
           error: "No hay suficientes boletos disponibles"
@@ -174,7 +179,7 @@ export default async function handler(req, res) {
       // =========================
       const tickets = generarTickets(
         Number(cantidad),
-        numerosVendidos,
+        numerosOcupados,
         totalNumeros
       );
 
