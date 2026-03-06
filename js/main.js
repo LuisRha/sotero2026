@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Cálculo del porcentaje basado en los vendidos reales
       const porcentaje =
       TOTAL_BOLETOS > 0
-      ? Math.round((vendidos / TOTAL_BOLETOS) * 100)
+      ? ((vendidos / TOTAL_BOLETOS) * 100).toFixed(2)
       : 0;
 
       const barra = document.getElementById("barraFill");
