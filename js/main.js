@@ -426,3 +426,42 @@ el.textContent = frases[i];
 }
 
 cargarTopBar();
+
+
+// =========================
+// CARGAR NUMEROS PREMIOS DESDE  LA BASE DE  DATOS
+// =========================
+async function cargarNumerosPremio(){
+
+  const res = await fetch("/api/premios");
+
+  if(!res.ok) return;
+
+  const data = await res.json();
+
+  const contenedor = document.getElementById("numerosPremio");
+
+  if(!contenedor) return;
+
+  contenedor.innerHTML = "";
+
+  data.forEach(n => {
+
+    const span = document.createElement("span");
+
+    span.textContent = n.numero;
+
+    if(n.premio){
+      span.classList.add("activo");
+    }else{
+      span.classList.add("entregado");
+    }
+
+    contenedor.appendChild(span);
+
+  });
+
+}
+
+// ejecutar
+cargarNumerosPremio();
