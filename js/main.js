@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const voucherInput = document.getElementById("voucher");
 
   const totalPagarEl = document.getElementById("totalPagar");
-  const modoSelect = document.getElementById("modoNumeros");
-
   const aceptarTerminos = document.getElementById("aceptarTerminos");
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
@@ -31,45 +29,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   async function obtenerSorteoActivo(){
 
-  const res = await fetch("/api/sorteos");
+    const res = await fetch("/api/sorteos");
 
-  if(!res.ok) throw new Error("Error obteniendo sorteos");
+    if(!res.ok) throw new Error("Error obteniendo sorteos");
 
-  const data = await res.json();
+    const data = await res.json();
 
-  const activo = data.find(s => s.estado === "activo");
+    const activo = data.find(s => s.estado === "activo");
 
-  if(!activo) throw new Error("No hay sorteo activo");
+    if(!activo) throw new Error("No hay sorteo activo");
 
-  SORTEO_ID = activo.id;
-  TOTAL_BOLETOS = Number(activo.total_numeros);
-  PRECIO_BOLETO = Number(activo.precio_ticket);
+    SORTEO_ID = activo.id;
+    TOTAL_BOLETOS = Number(activo.total_numeros);
+    PRECIO_BOLETO = Number(activo.precio_ticket);
 
-  // Mostrar precio del boleto desde la base de datos
-  const precioUnidad = document.getElementById("precioUnidad");
+    const precioUnidad = document.getElementById("precioUnidad");
 
-  if(precioUnidad){
-    precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
+    if(precioUnidad){
+      precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
+    }
+
+    const titulo = document.getElementById("titulo");
+    const premio = document.getElementById("premio");
+    const imagen = document.getElementById("imagen");
+
+    if(titulo) titulo.textContent = activo.nombre;
+    if(premio) premio.textContent = activo.premio;
+    if(imagen && activo.imagen) imagen.src = activo.imagen;
+
+    if(nombreSorteoPedido){
+      nombreSorteoPedido.textContent = activo.nombre;
+    }
+
   }
-
-  // Elementos de la página
-  const titulo = document.getElementById("titulo");
-  const premio = document.getElementById("premio");
-  const imagen = document.getElementById("imagen");
-  const precio = document.getElementById("precio");
-  const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
-
-  if(titulo) titulo.textContent = activo.nombre;
-  if(premio) premio.textContent = activo.premio;
-  if(imagen && activo.imagen) imagen.src = activo.imagen;
-  if(precio) precio.textContent = PRECIO_BOLETO.toFixed(2);
-
-  // Mostrar nombre del sorteo en el checkout
-  if(nombreSorteoPedido){
-    nombreSorteoPedido.textContent = activo.nombre;
-  }
-
-}
 
   // =========================
   // OBTENER BOLETOS VENDIDOS
@@ -91,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // DISPONIBLES + BARRA
+  // ACTUALIZAR DISPONIBLES
   // =========================
   async function actualizarDisponibles(){
 
@@ -101,13 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let disponibles = TOTAL_BOLETOS - vendidos;
 
-      if (disponibles < 0) disponibles = 0;
+      if(disponibles < 0) disponibles = 0;
 
       let porcentaje = TOTAL_BOLETOS > 0
-      ? (vendidos / TOTAL_BOLETOS) * 100
-      : 0;
+        ? (vendidos / TOTAL_BOLETOS) * 100
+        : 0;
 
-      if (porcentaje > 100) porcentaje = 100;
+      if(porcentaje > 100) porcentaje = 100;
 
       porcentaje = porcentaje.toFixed(2);
 
@@ -116,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if(barra){
         barra.style.width = porcentaje + "%";
-        barra.style.transition = "width 1s ease-in-out";
       }
 
       if(texto){
@@ -129,25 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
     catch(err){
-      console.error("Error al actualizar barra:", err);
+      console.error("Error barra:", err);
     }
-  }
-
-  // =========================
-  // BOTÓN RESERVAR ANTIGUO
-  // =========================
-  if(btnComprar && formulario){
-
-    btnComprar.addEventListener("click", ()=>{
-
-      formulario.classList.remove("oculto");
-
-      formulario.scrollIntoView({
-        behavior:"smooth"
-      });
-
-    });
-
   }
 
   // =========================
@@ -155,25 +129,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   if(cantidadInput && totalPagarEl){
 
-  const calcularTotal = () => {
+    const calcularTotal = () => {
 
-    const cantidad = Number(cantidadInput.value);
+      const cantidad = Number(cantidadInput.value);
 
-    if(cantidad > 0){
-      totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
-    }else{
-      totalPagarEl.textContent = "$0";
-    }
+      if(cantidad > 0){
+        totalPagarEl.textContent =
+          "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
+      }else{
+        totalPagarEl.textContent = "$0";
+      }
 
-  };
+    };
 
-  // cuando el usuario escribe
-  cantidadInput.addEventListener("input", calcularTotal);
+    cantidadInput.addEventListener("input", calcularTotal);
 
-  // calcular si ya hay valor cargado
-  calcularTotal();
+    calcularTotal();
 
-}
+  }
 
   // =========================
   // ENVIAR COMPRA
@@ -188,10 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const whatsapp = whatsappInput.value.trim();
         const cantidad = Number(cantidadInput.value);
         const voucher = voucherInput ? voucherInput.value.trim() : "";
-        const modo = modoSelect ? modoSelect.value : "aleatorio";
 
-        if(!aceptarTerminos || !aceptarTerminos.checked){
-          alert("Debes aceptar los términos y condiciones");
+        if(!aceptarTerminos.checked){
+          alert("Debes aceptar los términos");
           return;
         }
 
@@ -208,21 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        let numeros = [];
-
-        const usados = new Set();
-
-        while(numeros.length < cantidad){
-
-          const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
-
-          if(!usados.has(n)){
-            usados.add(n);
-            numeros.push(n);
-          }
-
-        }
-
         const res = await fetch("/api/compras",{
 
           method:"POST",
@@ -237,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
             nombre,
             whatsapp,
             cantidad,
-            numeros: numeros.join(", "),
             voucher,
             total: cantidad * PRECIO_BOLETO
 
@@ -246,34 +202,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if(!res.ok)
-        throw new Error("Error al registrar compra");
+          throw new Error("Error al registrar compra");
 
-        const numeroAdmin = "593987354472";
+        alert("Compra registrada correctamente");
 
-        const mensaje = `
-NUEVA COMPRA
-
-NOMBRE: ${nombre}
-WHATSAPP: ${whatsapp}
-BOLETOS: ${cantidad}
-TOTAL: $${cantidad * PRECIO_BOLETO}
-
-NUMEROS:
-${numeros.join(", ")}
-
-VOUCHER: ${voucher}
-`;
-
-        window.open(
-          `https://wa.me/${numeroAdmin}?text=${encodeURIComponent(mensaje)}`,
-          "_blank"
-        );
-
-        nombreInput.value = "";
-        whatsappInput.value = "";
-        cantidadInput.value = "";
-        if(voucherInput) voucherInput.value = "";
-        totalPagarEl.textContent = "$0";
+        nombreInput.value="";
+        whatsappInput.value="";
+        cantidadInput.value="";
+        voucherInput.value="";
+        totalPagarEl.textContent="$0";
 
         formulario.classList.add("oculto");
 
@@ -303,71 +240,26 @@ VOUCHER: ${voucher}
 
   })();
 
-  // =========================
-  // TEXTO DINÁMICO TOP BAR
-  // =========================
-  const textosTopBar = [
-    "DINÁMICA #1",
-    "A llevarse un iPhone 17 Pro Max",
-    "SORTEO 100% TRANSPARENTE",
-    "A llevarse un iPhone 17 Pro Max",
-    "PREMIOS REALES · GANADORES REALES",
-    "A llevarse un iPhone 17 Pro Max"
-  ];
-
-  let indice = 0;
-
-  setInterval(()=>{
-
-    const el = document.getElementById("topBarText");
-
-    if(el){
-
-      indice = (indice + 1) % textosTopBar.length;
-
-      el.textContent = textosTopBar[indice];
-
-    }
-
-  }, 3000);
-
 });
 
 
 // =========================
-// COMPRAR DESDE CUADROS
+// COMPRAR DESDE PAQUETES
 // =========================
 function comprar(cantidad){
 
   const cantidadInput = document.getElementById("cantidad");
-  const totalPagarEl = document.getElementById("totalPagar");
+  const formulario = document.getElementById("formulario");
 
   cantidadInput.value = cantidad;
 
-  // calcular total
-  if(totalPagarEl && typeof PRECIO_BOLETO !== "undefined"){
-    totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
-  }
+  formulario.classList.remove("oculto");
 
-  document.getElementById("formulario").classList.remove("oculto");
-
-  document.getElementById("formulario").scrollIntoView({
+  formulario.scrollIntoView({
     behavior:"smooth"
   });
 
 }
-
-// calcular total
-if(totalPagarEl && typeof PRECIO_BOLETO !== "undefined"){
-totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO);
-}
-
-document.getElementById("formulario").classList.remove("oculto");
-
-document.getElementById("formulario").scrollIntoView({
-behavior:"smooth"
-});
-
 
 
 // =========================
@@ -375,87 +267,41 @@ behavior:"smooth"
 // =========================
 async function consultarNumeros(){
 
-const telefono = document.getElementById("consultaWhatsapp").value.trim();
+  const telefono = document.getElementById("consultaWhatsapp").value.trim();
 
-if(!telefono){
-alert("Ingresa tu número de WhatsApp");
-return;
-}
+  if(!telefono){
+    alert("Ingresa tu WhatsApp");
+    return;
+  }
 
-const res = await fetch(`/api/compras?whatsapp=${telefono}`);
+  const res = await fetch(`/api/compras?whatsapp=${telefono}`);
 
-if(!res.ok){
-alert("Error consultando números");
-return;
-}
+  if(!res.ok){
+    alert("Error consultando números");
+    return;
+  }
 
-const data = await res.json();
+  const data = await res.json();
 
-const resultado = document.getElementById("resultadoConsulta");
+  const resultado = document.getElementById("resultadoConsulta");
 
-if(!data.length){
-resultado.innerHTML = "No se encontraron compras con ese WhatsApp.";
-return;
-}
+  if(!data.length){
+    resultado.innerHTML = "No se encontraron compras.";
+    return;
+  }
 
-let html = "<h3>Tus números:</h3>";
+  let html = "<h3>Tus números:</h3>";
 
-data.forEach(compra => {
+  data.forEach(compra => {
 
-html += `
-<div style="margin-bottom:10px;">
-🎟 ${compra.numeros}
-</div>
-`;
+    html += `
+    <div style="margin-bottom:10px;">
+    🎟 ${compra.numeros}
+    </div>
+    `;
 
-});
+  });
 
-resultado.innerHTML = html;
-
-}
-
-
-// =========================
-// MOSTRAR ÚLTIMA COMPRA
-// =========================
-async function mostrarUltimaCompra(){
-
-try{
-
-const res = await fetch("/api/compras?estados=aprobado");
-
-if(!res.ok) return;
-
-const data = await res.json();
-
-if(!data.length) return;
-
-const ultima = data[0];
-
-const aviso = document.createElement("div");
-
-aviso.className = "alerta-compra";
-
-aviso.innerHTML = `
-🔥 ${ultima.nombre} acaba de comprar 
-<b>${ultima.cantidad}</b> boletos
-`;
-
-document.body.appendChild(aviso);
-
-setTimeout(()=>{
-aviso.remove();
-},6000);
+  resultado.innerHTML = html;
 
 }
-catch(err){
-console.error("Error mostrando compra:", err);
-}
-
-}
-
-
-// =========================
-// CONSULTAR CADA 1 HORA
-// =========================
-setInterval(mostrarUltimaCompra,3600000);
