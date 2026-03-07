@@ -249,9 +249,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function comprar(cantidad){
 
   const cantidadInput = document.getElementById("cantidad");
+  const totalPagarEl = document.getElementById("totalPagar");
   const formulario = document.getElementById("formulario");
 
+  if(!cantidadInput || !totalPagarEl) return;
+
   cantidadInput.value = cantidad;
+
+  const precio = Number(cantidad) * Number(PRECIO_BOLETO);
+
+  totalPagarEl.textContent = "$" + precio.toFixed(2);
 
   formulario.classList.remove("oculto");
 
@@ -303,5 +310,26 @@ async function consultarNumeros(){
   });
 
   resultado.innerHTML = html;
+
+}
+
+
+// =========================
+// COMPRAR PERSONALIZADO
+// =========================
+function comprarPersonalizado(){
+
+  const input = document.getElementById("cantidadPersonalizada");
+
+  if(!input) return;
+
+  const cantidad = Number(input.value);
+
+  if(!cantidad || cantidad <= 0){
+    alert("Ingresa una cantidad válida");
+    return;
+  }
+
+  comprar(cantidad);
 
 }
