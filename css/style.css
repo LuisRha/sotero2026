@@ -104,33 +104,44 @@ body {
 }
 
 /* ===== IMÁGENES DEL SORTEO ===== */
-.sorteo-imagen img {
-  display: block;
-  margin: 0px auto;
-  max-width: 100%;
-  height: auto;
-}
-
-/* ===== GALERÍA HORIZONTAL ===== */
-.galeria-sorteo {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-  overflow-x: auto;
-  padding: 20px 0;
-}
-
-.galeria-sorteo img {
-  max-width: 380px;
+.sorteo-imagen {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
 }
 
-/* 📱 MÓVIL: scroll horizontal natural */
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 600px;      /* misma altura para todas las imágenes */
+  overflow: hidden;
+
+  border: 4px solid #f700ff6c;     /* color brillante */
+  
+
+  box-shadow: 0 0 20px #fb00ff;  /* efecto brillo */
+
+}
+
+.slide {
+  width: 100%;
+  height: 100%;       /* ocupa toda la altura del slider */
+  object-fit: cover;  /* recorta la imagen sin deformarla */
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+/* 📱 MÓVIL */
 @media (max-width: 768px) {
+
+  .slider{
+    height: 280px;   /* altura menor en celular */
+  }
+
   .galeria-sorteo {
     justify-content: flex-start;
     padding-left: 10px;
@@ -139,6 +150,7 @@ body {
   .galeria-sorteo img {
     max-width: 85%;
   }
+
 }
 
 

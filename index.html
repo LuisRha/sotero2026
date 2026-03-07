@@ -24,6 +24,18 @@
     </div>
   </div>
 
+  <!--
+TEXTOS DINÁMICOS TOP BAR
+Se cargan desde la base de datos (tabla configuracion)
+clave: top_bar_text
+valor: JSON con frases que cambian automáticamente
+-->
+<div class="top-bar">
+<span id="topBarText"></span>
+</div>
+
+
+
   <header class="main-header">
     <div class="logo-box">
       <span class="logo-text"></span>
@@ -39,13 +51,16 @@
       <h2>Llevate contigo - IPhone 17 Pro Max</h2>
       <p>Sorteos transparentes · Pagos verificados · Premios reales</p>
 
-      <section class="sorteo-imagen">
-        <div class="galeria-sorteo" id="galeriaSorteo">
-          <img src="images/sorteos/igm.jpg" alt="Imagen 1">
-          <img src="images/sorteos/igm2.jpg" alt="Imagen 2">
-        </div>
-      </section>
+<section class="sorteo-imagen">
 
+<div class="slider">
+
+    <img src="images/sorteos/igm.jpg" class="slide active">
+    <img src="images/sorteos/igm3.jpg" class="slide">
+
+</div>
+
+</section>
       <div class="progreso-sorteo">
         <h3>¡CANTIDADES LIMITADAS!</h3>
 

@@ -359,3 +359,66 @@ function comprarPersonalizado(){
   comprar(cantidad);
 
 }
+
+// slider iamgen 
+document.addEventListener("DOMContentLoaded", function(){
+
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function cambiarImagen(){
+
+slides[index].classList.remove("active");
+
+index++;
+
+if(index >= slides.length){
+index = 0;
+}
+
+slides[index].classList.add("active");
+
+}
+
+setInterval(cambiarImagen,3000);
+
+});
+
+
+async function cargarTopBar(){
+
+const res = await fetch("/api/config");
+
+if(!res.ok) return;
+
+const data = await res.json();
+
+const config = data.find(c => c.clave === "top_bar_text");
+
+if(!config) return;
+
+let frases = JSON.parse(config.valor);
+
+let i = 0;
+
+const el = document.getElementById("topBarText");
+
+if(!el) return;
+
+el.textContent = frases[0];
+
+setInterval(()=>{
+
+i++;
+
+if(i >= frases.length){
+i = 0;
+}
+
+el.textContent = frases[i];
+
+},3000);
+
+}
+
+cargarTopBar();
