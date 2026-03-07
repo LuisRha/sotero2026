@@ -135,83 +135,93 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // CALCULAR TOTAL
   // =========================
-  if(cantidadInput && totalPagarEl){
-
-    const calcularTotal = () => {
-
-      const cantidad = Number(cantidadInput.value);
-
-      if(cantidad > 0){
-        totalPagarEl.textContent =
-          "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
-      }else{
-        totalPagarEl.textContent = "$0";
-      }
-
-    };
-
-    cantidadInput.addEventListener("input", calcularTotal);
-
-    calcularTotal();
-  }
-
-
-  // =========================
-  // ENVIAR COMPRA
-  // =========================
   if(btnEnviar){
 
-    btnEnviar.addEventListener("click", async ()=>{
+  btnEnviar.addEventListener("click", async ()=>{
 
-      try{
+    try{
 
-        const nombres = nombreInput.value.trim();
-        const telefono = whatsappInput.value.trim();
-        const cantidad = Number(cantidadInput.value);
-        const voucher = voucherInput ? voucherInput.value.trim() : "";
+      const nombres = nombreInput.value.trim();
+      const telefono = whatsappInput.value.trim();
+      const cantidad = Number(cantidadInput.value);
+      const voucher = voucherInput ? voucherInput.value.trim() : "";
 
-        if(!aceptarTerminos.checked){
-          alert("Debes aceptar los términos");
-          return;
-        }
+      if(!aceptarTerminos.checked){
+        alert("Debes aceptar los términos");
+        return;
+      }
 
-        if(!nombre || !whatsapp || !cantidad){
-          alert("Completa todos los campos");
-          return;
-        }
+      if(!nombres || !telefono || !cantidad){
+        alert("Completa todos los campos");
+        return;
+      }
 
-        const vendidos = await obtenerVendidos();
-        const disponibles = TOTAL_BOLETOS - vendidos;
+      const vendidos = await obtenerVendidos();
+      const disponibles = TOTAL_BOLETOS - vendidos;
 
-        if(cantidad > disponibles){
-          alert(`Solo quedan ${disponibles} boletos`);
-          return;
-        }
+      if(cantidad > disponibles){
+        alert(`Solo quedan ${disponibles} boletos`);
+        return;
+      }
 
-        const res = await fetch("/api/compras",{
+      const res = await fetch("/api/compras",{
 
-          method:"POST",
+        method:"POST",
 
-          headers:{
-            "Content-Type":"application/json"
-          },
+        headers:{
+          "Content-Type":"application/json"
+        },
 
-          body: JSON.stringify({
+        body: JSON.stringify({
 
-  sorteo_id: SORTEO_ID,
+          sorteo_id: SORTEO_ID,
 
-  nombres: nombre,
-  apellidos: "",
+          nombres: nombres,
+          apellidos: "",
 
-  telefono: whatsapp,
-  whatsapp: whatsapp,
+          telefono: telefono,
+          whatsapp: telefono,
 
-  cantidad,
-  voucher,
+          cantidad: cantidad,
+          voucher: voucher,
 
-  total: cantidad * PRECIO_BOLETO
+          total: cantidad * PRECIO_BOLETO
 
-})
+        })
+
+      });
+
+      const data = await res.json();
+
+      if(!res.ok){
+        throw new Error(data.error || "Error al registrar compra");
+      }
+
+      alert(
+`Compra registrada correctamente
+
+Tus números:
+${data.numeros}
+
+Extras:
+${data.extras}`
+      );
+
+      nombreInput.value = "";
+      whatsappInput.value = "";
+      cantidadInput.value = "";
+      if(voucherInput) voucherInput.value = "";
+
+      actualizarDisponibles();
+
+    }
+    catch(err){
+      alert(err.message);
+    }
+
+  });
+
+}
 
          
 

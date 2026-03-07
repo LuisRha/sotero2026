@@ -102,22 +102,17 @@ export default async function handler(req, res) {
       const {
 
         sorteo_id,
-
         tipo_documento,
         numero_documento,
-
         nombres,
         apellidos,
-
         email,
         telefono,
         whatsapp,
-
         direccion,
         pais,
         provincia,
         ciudad,
-
         cantidad,
         voucher,
         total
@@ -129,7 +124,6 @@ export default async function handler(req, res) {
       if (
         !sorteo_id ||
         !nombres ||
-        !apellidos ||
         !telefono ||
         !cantidad ||
         !voucher
@@ -142,13 +136,17 @@ export default async function handler(req, res) {
       // =========================
       // OBTENER CONFIG SORTEO
       // =========================
-      const { data: sorteo } = await supabase
+      const { data: sorteo, error: sorteoError } = await supabase
         .from("sorteos")
         .select("total_numeros")
         .eq("id", sorteo_id)
         .single();
 
-      const totalNumeros = sorteo?.total_numeros || 99999;
+      if (sorteoError || !sorteo) {
+        return res.status(400).json({ error: "Sorteo no encontrado" });
+      }
+
+      const totalNumeros = sorteo.total_numeros || 99999;
 
 
 
@@ -271,7 +269,7 @@ export default async function handler(req, res) {
 
       if (error) {
 
-        console.error(error);
+        console.error("Error insert:", error);
 
         return res.status(500).json({ error: error.message });
 
@@ -282,7 +280,6 @@ export default async function handler(req, res) {
       return res.status(200).json({
 
         ok: true,
-
         numeros,
         extras
 
@@ -324,7 +321,7 @@ export default async function handler(req, res) {
 
   } catch (err) {
 
-    console.error(err);
+    console.error("Error general:", err);
 
     return res.status(500).json({ error: err.message });
 
