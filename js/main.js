@@ -165,8 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try{
 
-        const nombre = nombreInput.value.trim();
-        const whatsapp = whatsappInput.value.trim();
+        const nombres = nombreInput.value.trim();
+        const telefono = whatsappInput.value.trim();
         const cantidad = Number(cantidadInput.value);
         const voucher = voucherInput ? voucherInput.value.trim() : "";
 
@@ -198,14 +198,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
           body: JSON.stringify({
 
-            sorteo_id: SORTEO_ID,
-            nombre,
-            whatsapp,
-            cantidad,
-            voucher,
-            total: cantidad * PRECIO_BOLETO
+  sorteo_id: SORTEO_ID,
 
-          })
+  nombres,
+  apellidos: "",
+
+  telefono,
+  whatsapp: telefono,
+
+  cantidad,
+  voucher,
+
+  total: cantidad * PRECIO_BOLETO
+
+})
+
+         
 
         });
 
