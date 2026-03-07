@@ -10,12 +10,14 @@ let SORTEO_ID = null;
 // INICIO DOM
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
   const btnEnviar = document.getElementById("btnEnviar");
   const formulario = document.getElementById("formulario");
   const disponiblesEl = document.getElementById("disponibles");
 
   const nombreInput = document.getElementById("nombre");
+  const apellidosInput = document.getElementById("apellidos");   // 👈 agregado
   const whatsappInput = document.getElementById("whatsapp");
   const cantidadInput = document.getElementById("cantidad");
   const voucherInput = document.getElementById("voucher");
@@ -24,6 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const aceptarTerminos = document.getElementById("aceptarTerminos");
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
+});
+
+  
 
   // =========================
   // OBTENER SORTEO ACTIVO
@@ -171,21 +176,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         body: JSON.stringify({
 
-          sorteo_id: SORTEO_ID,
+  sorteo_id: SORTEO_ID,
 
-          nombre: nombres,
-          nombres: nombres,
-          apellidos: apellidos,
+  nombres: nombres,
+  apellidos: apellidos,
 
-          telefono: telefono,
-          whatsapp: telefono,
+  telefono: telefono,
+  whatsapp: telefono,
 
-          cantidad: cantidad,
-          voucher: voucher,
+  cantidad: cantidad,
+  voucher: voucher,
 
-          total: cantidad * PRECIO_BOLETO
+  total: cantidad * PRECIO_BOLETO
 
-        })
+      })    
 
       });
 
