@@ -237,27 +237,27 @@ export default async function handler(req, res) {
 
             sorteo_id,
 
-            nombres,
-            apellidos,
+            nombres: nombres || "",
+            apellidos: apellidos || "",
 
-            tipo_documento,
-            numero_documento,
+            tipo_documento: tipo_documento || "",
+            numero_documento: numero_documento || "",
 
-            email,
-            telefono,
-            whatsapp,
+            email: email || "",
+            telefono: telefono || "",
+            whatsapp: whatsapp || telefono || "",
 
-            direccion,
-            pais,
-            provincia,
-            ciudad,
+            direccion: direccion || "",
+            pais: pais || "",
+            provincia: provincia || "",
+            ciudad: ciudad || "",
 
             cantidad: Number(cantidad),
 
             numeros,
             extras,
 
-            voucher,
+            voucher: voucher || "",
             total: Number(total),
 
             estado: "pendiente"
