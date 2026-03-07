@@ -31,35 +31,45 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   async function obtenerSorteoActivo(){
 
-    const res = await fetch("/api/sorteos");
+  const res = await fetch("/api/sorteos");
 
-    if(!res.ok) throw new Error("Error obteniendo sorteos");
+  if(!res.ok) throw new Error("Error obteniendo sorteos");
 
-    const data = await res.json();
+  const data = await res.json();
 
-    const activo = data.find(s => s.estado === "activo");
+  const activo = data.find(s => s.estado === "activo");
 
-    if(!activo) throw new Error("No hay sorteo activo");
+  if(!activo) throw new Error("No hay sorteo activo");
 
-    SORTEO_ID = activo.id;
-    TOTAL_BOLETOS = Number(activo.total_numeros);
-    PRECIO_BOLETO = Number(activo.precio_ticket);
+  SORTEO_ID = activo.id;
+  TOTAL_BOLETOS = Number(activo.total_numeros);
+  PRECIO_BOLETO = Number(activo.precio_ticket);
 
-    const titulo = document.getElementById("titulo");
-    const premio = document.getElementById("premio");
-    const imagen = document.getElementById("imagen");
-    const precio = document.getElementById("precio");
+  // Mostrar precio del boleto desde la base de datos
+  const precioUnidad = document.getElementById("precioUnidad");
 
-    if(titulo) titulo.textContent = activo.nombre;
-    if(premio) premio.textContent = activo.premio;
-    if(imagen) imagen.src = activo.imagen;
-    if(precio) precio.textContent = activo.precio_ticket;
-
-    if(nombreSorteoPedido){
-      nombreSorteoPedido.textContent = activo.nombre;
-    }
-
+  if(precioUnidad){
+    precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
   }
+
+  // Elementos de la página
+  const titulo = document.getElementById("titulo");
+  const premio = document.getElementById("premio");
+  const imagen = document.getElementById("imagen");
+  const precio = document.getElementById("precio");
+  const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
+
+  if(titulo) titulo.textContent = activo.nombre;
+  if(premio) premio.textContent = activo.premio;
+  if(imagen && activo.imagen) imagen.src = activo.imagen;
+  if(precio) precio.textContent = PRECIO_BOLETO.toFixed(2);
+
+  // Mostrar nombre del sorteo en el checkout
+  if(nombreSorteoPedido){
+    nombreSorteoPedido.textContent = activo.nombre;
+  }
+
+}
 
   // =========================
   // OBTENER BOLETOS VENDIDOS
