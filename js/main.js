@@ -21,6 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const cantidadInput = document.getElementById("cantidad");
   const voucherInput = document.getElementById("voucher");
 
+  // NUEVOS CAMPOS
+  const emailInput = document.getElementById("email");
+  const direccionInput = document.getElementById("direccion");
+  const provinciaInput = document.getElementById("provincia");
+  const ciudadInput = document.getElementById("ciudad");
+  const documentoInput = document.getElementById("numero_documento");
+  const tipoDocumentoInput = document.querySelector("select");
+
   const totalPagarEl = document.getElementById("totalPagar");
   const aceptarTerminos = document.getElementById("aceptarTerminos");
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
@@ -50,14 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if(precioUnidad){
       precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
     }
-
-    const titulo = document.getElementById("titulo");
-    const premio = document.getElementById("premio");
-    const imagen = document.getElementById("imagen");
-
-    if(titulo) titulo.textContent = activo.nombre;
-    if(premio) premio.textContent = activo.premio;
-    if(imagen && activo.imagen) imagen.src = activo.imagen;
 
     if(nombreSorteoPedido){
       nombreSorteoPedido.textContent = activo.nombre;
@@ -138,19 +138,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try{
 
-        const nombres = nombreInput.value.trim();
-        const apellidos = apellidosInput.value.trim();
-        const telefono = whatsappInput.value.trim();
-        const cantidad = Number(cantidadInput.value);
+        const nombres = nombreInput?.value.trim();
+        const apellidos = apellidosInput?.value.trim();
+        const telefono = whatsappInput?.value.trim();
+        const cantidad = Number(cantidadInput?.value);
         const voucher = voucherInput ? voucherInput.value.trim() : "";
+
+        // NUEVOS CAMPOS
+        const email = emailInput?.value.trim();
+        const direccion = direccionInput?.value.trim();
+        const provincia = provinciaInput?.value;
+        const ciudad = ciudadInput?.value.trim();
+        const numero_documento = documentoInput?.value.trim();
+        const tipo_documento = tipoDocumentoInput?.value;
 
         if(!aceptarTerminos.checked){
           alert("Debes aceptar los términos");
           return;
         }
 
-        if(!nombres || !apellidos || !telefono || !cantidad){
-          alert("Completa todos los campos");
+        if(!nombres || !apellidos || !telefono || !cantidad || !email){
+          alert("Completa todos los campos obligatorios");
           return;
         }
 
@@ -180,6 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
             telefono,
             whatsapp: telefono,
 
+            email,
+            direccion,
+            provincia,
+            ciudad,
+            numero_documento,
+            tipo_documento,
+
             cantidad,
             voucher,
 
@@ -205,10 +220,19 @@ Extras:
 ${data.extras}`
         );
 
+        // LIMPIAR FORMULARIO
         nombreInput.value="";
         apellidosInput.value="";
         whatsappInput.value="";
         cantidadInput.value="";
+        emailInput.value="";
+        direccionInput.value="";
+        ciudadInput.value="";
+        documentoInput.value="";
+
+        if(provinciaInput) provinciaInput.selectedIndex = 0;
+        if(tipoDocumentoInput) tipoDocumentoInput.selectedIndex = 0;
+
         if(voucherInput) voucherInput.value="";
 
         totalPagarEl.textContent="$0";
