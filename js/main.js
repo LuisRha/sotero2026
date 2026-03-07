@@ -323,8 +323,14 @@ VOUCHER: ${voucher}
 function comprar(cantidad){
 
 const cantidadInput = document.getElementById("cantidad");
+const totalPagarEl = document.getElementById("totalPagar");
 
 cantidadInput.value = cantidad;
+
+// calcular total
+if(totalPagarEl && typeof PRECIO_BOLETO !== "undefined"){
+totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO);
+}
 
 document.getElementById("formulario").classList.remove("oculto");
 
@@ -338,7 +344,7 @@ function comprarPersonalizado(){
 
 const cantidad = document.getElementById("cantidadPersonalizada").value;
 
-comprar(cantidad);
+comprar(Number(cantidad));
 
 }
 
