@@ -12,8 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const whatsappInput = document.getElementById("whatsapp");
   const cantidadInput = document.getElementById("cantidad");
   const voucherInput = document.getElementById("voucher");
+
   const totalPagarEl = document.getElementById("totalPagar");
   const modoSelect = document.getElementById("modoNumeros");
+
+  const aceptarTerminos = document.getElementById("aceptarTerminos");
+  const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
   // =========================
   // CONFIGURACIÓN DINÁMICA
@@ -50,6 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if(premio) premio.textContent = activo.premio;
     if(imagen) imagen.src = activo.imagen;
     if(precio) precio.textContent = activo.precio_ticket;
+
+    if(nombreSorteoPedido){
+      nombreSorteoPedido.textContent = activo.nombre;
+    }
+
   }
 
   // =========================
@@ -161,10 +170,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const nombre = nombreInput.value.trim();
         const whatsapp = whatsappInput.value.trim();
         const cantidad = Number(cantidadInput.value);
-        const voucher = voucherInput.value.trim();
+        const voucher = voucherInput ? voucherInput.value.trim() : "";
         const modo = modoSelect ? modoSelect.value : "aleatorio";
 
-        if(!nombre || !whatsapp || !cantidad || !voucher){
+        if(!aceptarTerminos || !aceptarTerminos.checked){
+          alert("Debes aceptar los términos y condiciones");
+          return;
+        }
+
+        if(!nombre || !whatsapp || !cantidad){
           alert("Completa todos los campos");
           return;
         }
@@ -179,25 +193,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let numeros = [];
 
-        if(modo === "orden"){
+        const usados = new Set();
 
-          for(let i=1; i<=cantidad; i++){
-            numeros.push(vendidos + i);
-          }
+        while(numeros.length < cantidad){
 
-        } else {
+          const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
 
-          const usados = new Set();
-
-          while(numeros.length < cantidad){
-
-            const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
-
-            if(!usados.has(n)){
-              usados.add(n);
-              numeros.push(n);
-            }
-
+          if(!usados.has(n)){
+            usados.add(n);
+            numeros.push(n);
           }
 
         }
@@ -251,7 +255,7 @@ VOUCHER: ${voucher}
         nombreInput.value = "";
         whatsappInput.value = "";
         cantidadInput.value = "";
-        voucherInput.value = "";
+        if(voucherInput) voucherInput.value = "";
         totalPagarEl.textContent = "$0";
 
         formulario.classList.add("oculto");
@@ -312,21 +316,15 @@ VOUCHER: ${voucher}
 
 });
 
+
 // =========================
 // COMPRAR DESDE CUADROS
 // =========================
 function comprar(cantidad){
 
 const cantidadInput = document.getElementById("cantidad");
-const totalPagarEl = document.getElementById("totalPagar");
 
 cantidadInput.value = cantidad;
-
-if(totalPagarEl){
-const precio = document.getElementById("precio");
-const precioUnidad = precio ? Number(precio.textContent) : 0;
-totalPagarEl.textContent = `$${cantidad * precioUnidad}`;
-}
 
 document.getElementById("formulario").classList.remove("oculto");
 
@@ -345,10 +343,9 @@ comprar(cantidad);
 }
 
 
-
-//  consultar tu boletos
-
-
+// =========================
+// CONSULTAR BOLETOS
+// =========================
 async function consultarNumeros(){
 
 const telefono = document.getElementById("consultaWhatsapp").value.trim();
@@ -389,3 +386,49 @@ html += `
 resultado.innerHTML = html;
 
 }
+
+
+// =========================
+// MOSTRAR ÚLTIMA COMPRA
+// =========================
+async function mostrarUltimaCompra(){
+
+try{
+
+const res = await fetch("/api/compras?estados=aprobado");
+
+if(!res.ok) return;
+
+const data = await res.json();
+
+if(!data.length) return;
+
+const ultima = data[0];
+
+const aviso = document.createElement("div");
+
+aviso.className = "alerta-compra";
+
+aviso.innerHTML = `
+🔥 ${ultima.nombre} acaba de comprar 
+<b>${ultima.cantidad}</b> boletos
+`;
+
+document.body.appendChild(aviso);
+
+setTimeout(()=>{
+aviso.remove();
+},6000);
+
+}
+catch(err){
+console.error("Error mostrando compra:", err);
+}
+
+}
+
+
+// =========================
+// CONSULTAR CADA 1 HORA
+// =========================
+setInterval(mostrarUltimaCompra,3600000);
