@@ -155,18 +155,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   if(cantidadInput && totalPagarEl){
 
-    cantidadInput.addEventListener("input",()=>{
+  const calcularTotal = () => {
 
-      const cantidad = Number(cantidadInput.value);
+    const cantidad = Number(cantidadInput.value);
 
-      totalPagarEl.textContent =
-      cantidad > 0
-      ? `$${cantidad * PRECIO_BOLETO}`
-      : "$0";
+    if(cantidad > 0){
+      totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
+    }else{
+      totalPagarEl.textContent = "$0";
+    }
 
-    });
+  };
 
-  }
+  // cuando el usuario escribe
+  cantidadInput.addEventListener("input", calcularTotal);
+
+  // calcular si ya hay valor cargado
+  calcularTotal();
+
+}
 
   // =========================
   // ENVIAR COMPRA
@@ -332,10 +339,23 @@ VOUCHER: ${voucher}
 // =========================
 function comprar(cantidad){
 
-const cantidadInput = document.getElementById("cantidad");
-const totalPagarEl = document.getElementById("totalPagar");
+  const cantidadInput = document.getElementById("cantidad");
+  const totalPagarEl = document.getElementById("totalPagar");
 
-cantidadInput.value = cantidad;
+  cantidadInput.value = cantidad;
+
+  // calcular total
+  if(totalPagarEl && typeof PRECIO_BOLETO !== "undefined"){
+    totalPagarEl.textContent = "$" + (cantidad * PRECIO_BOLETO).toFixed(2);
+  }
+
+  document.getElementById("formulario").classList.remove("oculto");
+
+  document.getElementById("formulario").scrollIntoView({
+    behavior:"smooth"
+  });
+
+}
 
 // calcular total
 if(totalPagarEl && typeof PRECIO_BOLETO !== "undefined"){
