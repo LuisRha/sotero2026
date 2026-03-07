@@ -60,31 +60,39 @@ export default async function handler(req, res) {
     // =========================
     // GET → LISTAR COMPRAS
     // =========================
-    if (req.method === "GET") {
+    // =========================
+// GET → LISTAR COMPRAS
+// =========================
+if (req.method === "GET") {
 
-      const { sorteo_id, estados } = req.query;
+const { sorteo_id, estados, whatsapp } = req.query;
 
-      let query = supabase
-        .from("compras")
-        .select("*")
-        .order("created_at", { ascending: false });
+let query = supabase
+.from("compras")
+.select("*")
+.order("created_at", { ascending: false });
 
-      if (sorteo_id) {
-        query = query.eq("sorteo_id", sorteo_id);
-      }
+if (sorteo_id) {
+query = query.eq("sorteo_id", sorteo_id);
+}
 
-      if (estados) {
-        query = query.in("estado", estados.split(","));
-      }
+if (estados) {
+query = query.in("estado", estados.split(","));
+}
 
-      const { data, error } = await query;
+if (whatsapp) {
+query = query.eq("whatsapp", whatsapp);
+}
 
-      if (error) {
-        return res.status(500).json({ error: error.message });
-      }
+const { data, error } = await query;
 
-      return res.status(200).json(data);
-    }
+if (error) {
+return res.status(500).json({ error: error.message });
+}
+
+return res.status(200).json(data);
+
+}
 
     // =========================
     // POST → CREAR COMPRA

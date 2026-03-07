@@ -150,7 +150,7 @@ También podrás consultarlos en la sección «Consulta tus números.
 </div>
 
 <div class="card destacado-verde">
-<span class="tag">Juega KTM Duke 200</span>
+<span class="tag">★★★★★</span>
 <h3>X50 NÚMEROS</h3>
 <p class="precio">$100</p>
 <button onclick="comprar(50)">COMPRAR</button>
@@ -166,6 +166,31 @@ También podrás consultarlos en la sección «Consulta tus números.
 <input type="number" id="cantidadPersonalizada" value="50" min="1">
 
 <button onclick="comprarPersonalizado()">COMPRAR</button>
+
+</div>
+
+<!-- consultas tus numeros -->
+
+<div class="consulta-numeros">
+
+<h2>CONSULTA TUS NÚMEROS</h2>
+
+<p class="consulta-texto">
+¿Ya hiciste tu compra?<br>
+Ingresa tu número de WhatsApp para consultar tus boletos.
+</p>
+
+<input 
+type="text"
+id="consultaWhatsapp"
+placeholder="WhatsApp"
+>
+
+<button onclick="consultarNumeros()" class="btn-consultar">
+CONSULTAR
+</button>
+
+<div id="resultadoConsulta"></div>
 
 </div>
 

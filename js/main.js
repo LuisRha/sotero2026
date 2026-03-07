@@ -343,3 +343,49 @@ const cantidad = document.getElementById("cantidadPersonalizada").value;
 comprar(cantidad);
 
 }
+
+
+
+//  consultar tu boletos
+
+
+async function consultarNumeros(){
+
+const telefono = document.getElementById("consultaWhatsapp").value.trim();
+
+if(!telefono){
+alert("Ingresa tu número de WhatsApp");
+return;
+}
+
+const res = await fetch(`/api/compras?whatsapp=${telefono}`);
+
+if(!res.ok){
+alert("Error consultando números");
+return;
+}
+
+const data = await res.json();
+
+const resultado = document.getElementById("resultadoConsulta");
+
+if(!data.length){
+resultado.innerHTML = "No se encontraron compras con ese WhatsApp.";
+return;
+}
+
+let html = "<h3>Tus números:</h3>";
+
+data.forEach(compra => {
+
+html += `
+<div style="margin-bottom:10px;">
+🎟 ${compra.numeros}
+</div>
+`;
+
+});
+
+resultado.innerHTML = html;
+
+}
