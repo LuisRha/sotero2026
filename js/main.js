@@ -200,11 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sorteo_id: SORTEO_ID,
 
-  nombres,
+  nombres: nombre,
   apellidos: "",
 
-  telefono,
-  whatsapp: telefono,
+  telefono: whatsapp,
+  whatsapp: whatsapp,
 
   cantidad,
   voucher,
