@@ -368,15 +368,6 @@ document.getElementById("formulario").scrollIntoView({
 behavior:"smooth"
 });
 
-}
-
-function comprarPersonalizado(){
-
-const cantidad = document.getElementById("cantidadPersonalizada").value;
-
-comprar(Number(cantidad));
-
-}
 
 
 // =========================
