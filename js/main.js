@@ -10,14 +10,13 @@ let SORTEO_ID = null;
 // INICIO DOM
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
-  document.addEventListener("DOMContentLoaded", () => {
 
   const btnEnviar = document.getElementById("btnEnviar");
   const formulario = document.getElementById("formulario");
   const disponiblesEl = document.getElementById("disponibles");
 
   const nombreInput = document.getElementById("nombre");
-  const apellidosInput = document.getElementById("apellidos");   // 👈 agregado
+  const apellidosInput = document.getElementById("apellidos");
   const whatsappInput = document.getElementById("whatsapp");
   const cantidadInput = document.getElementById("cantidad");
   const voucherInput = document.getElementById("voucher");
@@ -26,9 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const aceptarTerminos = document.getElementById("aceptarTerminos");
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
-});
-
-  
 
   // =========================
   // OBTENER SORTEO ACTIVO
@@ -138,68 +134,68 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   if(btnEnviar){
 
-  btnEnviar.addEventListener("click", async ()=>{
+    btnEnviar.addEventListener("click", async ()=>{
 
-    try{
+      try{
 
-      const nombres = nombreInput.value.trim();
-      const apellidos = apellidosInput.value.trim();
-      const telefono = whatsappInput.value.trim();
-      const cantidad = Number(cantidadInput.value);
-      const voucher = voucherInput ? voucherInput.value.trim() : "";
+        const nombres = nombreInput.value.trim();
+        const apellidos = apellidosInput.value.trim();
+        const telefono = whatsappInput.value.trim();
+        const cantidad = Number(cantidadInput.value);
+        const voucher = voucherInput ? voucherInput.value.trim() : "";
 
-      if(!aceptarTerminos.checked){
-        alert("Debes aceptar los términos");
-        return;
-      }
+        if(!aceptarTerminos.checked){
+          alert("Debes aceptar los términos");
+          return;
+        }
 
-      if(!nombres || !apellidos || !telefono || !cantidad){
-        alert("Completa todos los campos");
-        return;
-      }
+        if(!nombres || !apellidos || !telefono || !cantidad){
+          alert("Completa todos los campos");
+          return;
+        }
 
-      const vendidos = await obtenerVendidos();
-      const disponibles = TOTAL_BOLETOS - vendidos;
+        const vendidos = await obtenerVendidos();
+        const disponibles = TOTAL_BOLETOS - vendidos;
 
-      if(cantidad > disponibles){
-        alert(`Solo quedan ${disponibles} boletos`);
-        return;
-      }
+        if(cantidad > disponibles){
+          alert(`Solo quedan ${disponibles} boletos`);
+          return;
+        }
 
-      const res = await fetch("/api/compras",{
+        const res = await fetch("/api/compras",{
 
-        method:"POST",
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-        body: JSON.stringify({
+          body: JSON.stringify({
 
-  sorteo_id: SORTEO_ID,
+            sorteo_id: SORTEO_ID,
 
-  nombres: nombres,
-  apellidos: apellidos,
+            nombres,
+            apellidos,
 
-  telefono: telefono,
-  whatsapp: telefono,
+            telefono,
+            whatsapp: telefono,
 
-  cantidad: cantidad,
-  voucher: voucher,
+            cantidad,
+            voucher,
 
-  total: cantidad * PRECIO_BOLETO
+            total: cantidad * PRECIO_BOLETO
 
-      })    
+          })
 
-      });
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if(!res.ok){
-        throw new Error(data.error || "Error al registrar compra");
-      }
+        if(!res.ok){
+          throw new Error(data.error || "Error al registrar compra");
+        }
 
-      alert(
+        alert(
 `Compra registrada correctamente
 
 Tus números:
@@ -207,28 +203,29 @@ ${data.numeros}
 
 Extras:
 ${data.extras}`
-      );
+        );
 
-      nombreInput.value="";
-      apellidosInput.value="";
-      whatsappInput.value="";
-      cantidadInput.value="";
-      if(voucherInput) voucherInput.value="";
+        nombreInput.value="";
+        apellidosInput.value="";
+        whatsappInput.value="";
+        cantidadInput.value="";
+        if(voucherInput) voucherInput.value="";
 
-      totalPagarEl.textContent="$0";
+        totalPagarEl.textContent="$0";
 
-      formulario.classList.add("oculto");
+        formulario.classList.add("oculto");
 
-      actualizarDisponibles();
+        actualizarDisponibles();
 
-    }
-    catch(err){
-      alert(err.message);
-    }
+      }
+      catch(err){
+        alert(err.message);
+      }
 
-  });
+    });
 
-}
+  }
+
 
   // =========================
   // INICIO
