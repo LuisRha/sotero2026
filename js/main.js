@@ -1,3 +1,14 @@
+// =========================
+// VARIABLES GLOBALES
+// =========================
+let TOTAL_BOLETOS = 0;
+let PRECIO_BOLETO = 0;
+let SORTEO_ID = null;
+
+
+// =========================
+// INICIO DOM
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
 
   // =========================
@@ -17,12 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const aceptarTerminos = document.getElementById("aceptarTerminos");
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
-  // =========================
-  // CONFIGURACIÓN DINÁMICA
-  // =========================
-  let TOTAL_BOLETOS = 0;
-  let PRECIO_BOLETO = 0;
-  let SORTEO_ID = null;
 
   // =========================
   // OBTENER SORTEO ACTIVO
@@ -63,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   // =========================
   // OBTENER BOLETOS VENDIDOS
   // =========================
@@ -81,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       0
     );
   }
+
 
   // =========================
   // ACTUALIZAR DISPONIBLES
@@ -124,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+
   // =========================
   // CALCULAR TOTAL
   // =========================
@@ -145,8 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cantidadInput.addEventListener("input", calcularTotal);
 
     calcularTotal();
-
   }
+
 
   // =========================
   // ENVIAR COMPRA
@@ -209,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nombreInput.value="";
         whatsappInput.value="";
         cantidadInput.value="";
-        voucherInput.value="";
+        if(voucherInput) voucherInput.value="";
         totalPagarEl.textContent="$0";
 
         formulario.classList.add("oculto");
@@ -224,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   }
+
 
   // =========================
   // INICIO
@@ -256,7 +265,7 @@ function comprar(cantidad){
 
   cantidadInput.value = cantidad;
 
-  const precio = Number(cantidad) * Number(PRECIO_BOLETO);
+  const precio = cantidad * PRECIO_BOLETO;
 
   totalPagarEl.textContent = "$" + precio.toFixed(2);
 
