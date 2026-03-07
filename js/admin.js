@@ -59,7 +59,7 @@ async function cargarSorteos() {
         sorteoActivoId = sorteo.id;
 
         sorteoActivoTitulo.textContent =
-          `🔴 Sorteo activo: ${sorteo.nombre}`;
+          `🟢 Sorteo activo: ${sorteo.nombre}`;
 
       }
 

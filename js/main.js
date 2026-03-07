@@ -270,32 +270,6 @@ ${data.extras}`
 
 
 // =========================
-// COMPRAR DESDE PAQUETES
-// =========================
-function comprar(cantidad){
-
-  const cantidadInput = document.getElementById("cantidad");
-  const totalPagarEl = document.getElementById("totalPagar");
-  const formulario = document.getElementById("formulario");
-
-  if(!cantidadInput || !totalPagarEl) return;
-
-  cantidadInput.value = cantidad;
-
-  const precio = cantidad * PRECIO_BOLETO;
-
-  totalPagarEl.textContent = "$" + precio.toFixed(2);
-
-  formulario.classList.remove("oculto");
-
-  formulario.scrollIntoView({
-    behavior:"smooth"
-  });
-
-}
-
-
-// =========================
 // CONSULTAR BOLETOS
 // =========================
 async function consultarNumeros(){
@@ -333,6 +307,33 @@ async function consultarNumeros(){
     </div>
     `;
 
+    // DETECTAR SI HAY PREMIO
+    if(compra.premio){
+
+      html += `
+      <div style="color:#00ff88;font-weight:bold;">
+      🎉 ¡GANASTE UN PREMIO!
+      Número ganador: ${compra.numeros}
+      </div>
+      `;
+
+      const mensaje = `
+🎉 FELICIDADES
+
+Tu número ${compra.numeros} ha ganado
+un premio instantáneo.
+
+Comunícate con nosotros para reclamarlo.
+`;
+
+      const telefonoFinal = "593" + telefono.replace(/^0/, "");
+
+      window.open(
+      `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`
+      );
+
+    }
+
   });
 
   resultado.innerHTML = html;
@@ -359,6 +360,7 @@ function comprarPersonalizado(){
   comprar(cantidad);
 
 }
+
 
 // slider iamgen 
 document.addEventListener("DOMContentLoaded", function(){
