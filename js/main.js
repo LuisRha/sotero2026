@@ -1,4 +1,15 @@
 // =========================
+// CONEXIÓN SUPABASE
+// =========================
+const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+const SUPABASE_KEY = "TU_KEY";
+
+window.supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// =========================
 // VARIABLES GLOBALES
 // =========================
 let TOTAL_BOLETOS = 0;
