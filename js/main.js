@@ -454,3 +454,28 @@ async function cargarNumerosPremio(){
   }
 
 }
+
+
+
+// FUNCIÓN COMPRAR
+function comprar(cantidad){
+
+  const formulario = document.getElementById("formulario");
+  const cantidadInput = document.getElementById("cantidad");
+  const totalPagar = document.getElementById("totalPagar");
+
+  if(!cantidadInput) return;
+
+  cantidadInput.value = cantidad;
+
+  const total = cantidad * PRECIO_BOLETO;
+
+  totalPagar.textContent = "$" + total.toFixed(2);
+
+  formulario.classList.remove("oculto");
+
+  formulario.scrollIntoView({
+    behavior:"smooth"
+  });
+
+}
