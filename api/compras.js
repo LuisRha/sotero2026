@@ -104,15 +104,20 @@ export default async function handler(req, res) {
         sorteo_id,
         tipo_documento,
         numero_documento,
+
+        nombre,        // 👈 agregado
         nombres,
         apellidos,
+
         email,
         telefono,
         whatsapp,
+
         direccion,
         pais,
         provincia,
         ciudad,
+
         cantidad,
         voucher,
         total
@@ -196,7 +201,6 @@ export default async function handler(req, res) {
 
 
       const extrasPorCompra = 4;
-
       const boletosNecesarios = Number(cantidad) + extrasPorCompra;
 
 
@@ -237,11 +241,12 @@ export default async function handler(req, res) {
 
             sorteo_id,
 
-            tipo_documento,
-            numero_documento,
-
+            nombre: nombre || nombres,   // 👈 SOLUCIÓN
             nombres,
             apellidos,
+
+            tipo_documento,
+            numero_documento,
 
             email,
             telefono,
@@ -258,10 +263,10 @@ export default async function handler(req, res) {
             extras,
 
             voucher,
-
             total: Number(total),
 
             estado: "pendiente"
+
           }
         ]);
 
