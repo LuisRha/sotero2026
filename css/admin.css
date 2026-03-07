@@ -249,3 +249,23 @@ button:hover {
     padding: 6px 10px;
   }
 }
+
+
+
+/* botones rechazar y aprobar */
+
+.btn-aprobar{
+background:#28a745;
+color:#fff;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+}
+
+.btn-rechazar{
+background:#dc3545;
+color:#fff;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+}
