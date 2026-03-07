@@ -11,12 +11,8 @@ let SORTEO_ID = null;
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
 
-  // =========================
-  // ELEMENTOS
-  // =========================
-  const btnComprar = document.getElementById("btnComprar");
-  const formulario = document.getElementById("formulario");
   const btnEnviar = document.getElementById("btnEnviar");
+  const formulario = document.getElementById("formulario");
   const disponiblesEl = document.getElementById("disponibles");
 
   const nombreInput = document.getElementById("nombre");
@@ -70,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // OBTENER BOLETOS VENDIDOS
+  // OBTENER VENDIDOS
   // =========================
   async function obtenerVendidos(){
 
@@ -133,71 +129,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // CALCULAR TOTAL
+  // BOTON PAGAR
   // =========================
   if(btnEnviar){
 
-  btnEnviar.addEventListener("click", async ()=>{
+    btnEnviar.addEventListener("click", async ()=>{
 
-    try{
+      try{
 
-      const nombres = nombreInput.value.trim();
-      const telefono = whatsappInput.value.trim();
-      const cantidad = Number(cantidadInput.value);
-      const voucher = voucherInput ? voucherInput.value.trim() : "";
+        const nombres = nombreInput.value.trim();
+        const telefono = whatsappInput.value.trim();
+        const cantidad = Number(cantidadInput.value);
+        const voucher = voucherInput ? voucherInput.value.trim() : "";
 
-      if(!aceptarTerminos.checked){
-        alert("Debes aceptar los términos");
-        return;
-      }
+        if(!aceptarTerminos.checked){
+          alert("Debes aceptar los términos");
+          return;
+        }
 
-      if(!nombres || !telefono || !cantidad){
-        alert("Completa todos los campos");
-        return;
-      }
+        if(!nombres || !telefono || !cantidad){
+          alert("Completa todos los campos");
+          return;
+        }
 
-      const vendidos = await obtenerVendidos();
-      const disponibles = TOTAL_BOLETOS - vendidos;
+        const vendidos = await obtenerVendidos();
+        const disponibles = TOTAL_BOLETOS - vendidos;
 
-      if(cantidad > disponibles){
-        alert(`Solo quedan ${disponibles} boletos`);
-        return;
-      }
+        if(cantidad > disponibles){
+          alert(`Solo quedan ${disponibles} boletos`);
+          return;
+        }
 
-      const res = await fetch("/api/compras",{
+        const res = await fetch("/api/compras",{
 
-        method:"POST",
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-        body: JSON.stringify({
+          body: JSON.stringify({
 
-          sorteo_id: SORTEO_ID,
+            sorteo_id: SORTEO_ID,
 
-          nombres: nombres,
-          apellidos: "",
+            nombres: nombres,
+            apellidos: "",
 
-          telefono: telefono,
-          whatsapp: telefono,
+            telefono: telefono,
+            whatsapp: telefono,
 
-          cantidad: cantidad,
-          voucher: voucher,
+            cantidad: cantidad,
+            voucher: voucher,
 
-          total: cantidad * PRECIO_BOLETO
+            total: cantidad * PRECIO_BOLETO
 
-        })
+          })
 
-      });
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if(!res.ok){
-        throw new Error(data.error || "Error al registrar compra");
-      }
+        if(!res.ok){
+          throw new Error(data.error || "Error al registrar compra");
+        }
 
-      alert(
+        alert(
 `Compra registrada correctamente
 
 Tus números:
@@ -205,37 +201,13 @@ ${data.numeros}
 
 Extras:
 ${data.extras}`
-      );
-
-      nombreInput.value = "";
-      whatsappInput.value = "";
-      cantidadInput.value = "";
-      if(voucherInput) voucherInput.value = "";
-
-      actualizarDisponibles();
-
-    }
-    catch(err){
-      alert(err.message);
-    }
-
-  });
-
-}
-
-         
-
-        });
-
-        if(!res.ok)
-          throw new Error("Error al registrar compra");
-
-        alert("Compra registrada correctamente");
+        );
 
         nombreInput.value="";
         whatsappInput.value="";
         cantidadInput.value="";
         if(voucherInput) voucherInput.value="";
+
         totalPagarEl.textContent="$0";
 
         formulario.classList.add("oculto");
@@ -342,7 +314,7 @@ async function consultarNumeros(){
 
 
 // =========================
-// COMPRAR PERSONALIZADO
+// COMPRA PERSONALIZADA
 // =========================
 function comprarPersonalizado(){
 
