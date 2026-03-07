@@ -64,8 +64,6 @@
         </p>
       </div>
 
-<!-- premios instantaneos -->
-
       <div class="premios-instantaneos">
 
 <h2>¡PREMIOS INSTANTÁNEOS!</h2>
@@ -104,8 +102,7 @@ También podrás consultarlos en la sección «Consulta tus números.
 
 </div>
 
-  <!-- comprar boletos -->
-    <section class="paquetes-compra">
+<section class="paquetes-compra">
 
 <h2>¡ADQUIERE TUS NÚMEROS!</h2>
 <p class="precio-unitario">
@@ -165,8 +162,6 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 
 </div>
 
-<!-- consultas tus numeros -->
-
 <div class="consulta-numeros">
 
 <h2>CONSULTA TUS NÚMEROS</h2>
@@ -192,27 +187,30 @@ CONSULTAR
 
 </section>  
 
-    </div>
+</div>
 
-  </section>
+</section>
 
-  <main class="container">
+<main class="container">
 
-    <section id="formulario" class="card oculto">
+<section id="formulario" class="card oculto">
 
-      <div class="checkout">
+<div class="checkout">
 
-        <div class="checkout-left">
+<div class="checkout-left">
 
-          <h2>Datos de Facturación</h2>
+<h2>Datos de Facturación</h2>
 
-          <div class="field">
-            <label>Tipo Documento *</label>
-            <select>
-              <option>Cédula</option>
-              <option>Pasaporte</option>
-            </select>
-          </div>
+<div class="field">
+<label>Tipo Documento *</label>
+
+<select id="tipo_documento">
+<option value="cedula">Cédula</option>
+<option value="pasaporte">Pasaporte</option>
+</select>
+
+</div>
+
 <div class="field">
 <label>Número Cédula / Pasaporte *</label>
 <input type="text" id="numero_documento" placeholder="Número de documento">
@@ -250,7 +248,10 @@ CONSULTAR
 
 <div class="field">
 <label>País *</label>
+
+<input type="hidden" id="pais" value="Ecuador">
 <input type="text" value="Ecuador" disabled>
+
 </div>
 
 <div class="field">
@@ -291,113 +292,113 @@ CONSULTAR
 <input type="text" id="ciudad" placeholder="Ciudad">
 </div>
 
-          <div class="field full">
-            <label>Cantidad de boletos</label>
-            <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
-          </div>
+<div class="field full">
+<label>Cantidad de boletos</label>
+<input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
+</div>
 
-        </div>
+</div>
 
-        <div class="checkout-right">
+<div class="checkout-right">
 
-          <h3>Tu pedido</h3>
+<h3>Tu pedido</h3>
 
-          <div class="pedido">
+<div class="pedido">
 
-            <div class="pedido-row">
+<div class="pedido-row">
 
-              <span id="nombreSorteoPedido">Nombre del sorteo</span>
+<span id="nombreSorteoPedido">Nombre del sorteo</span>
 
-              <span id="totalPagar">$0</span>
+<span id="totalPagar">$0</span>
 
-            </div>
+</div>
 
-            <div class="field full">
+<div class="field full">
 <label>Voucher de pago *</label>
 <input type="text" id="voucher" placeholder="Número de comprobante">
 </div>
 
-          </div>
+</div>
 
-          <div class="metodo-pago">
+<div class="metodo-pago">
 
-            <label>
-              <input type="radio" checked>
-              Transferencia bancaria o depósito
-            </label>
+<label>
+<input type="radio" checked>
+Transferencia bancaria o depósito
+</label>
 
-            <p>
-              Tu pedido se procesará una vez confirmado el pago.
-            </p>
+<p>
+Tu pedido se procesará una vez confirmado el pago.
+</p>
 
-          </div>
+</div>
 
-          <label class="terminos">
+<label class="terminos">
 
-            <input type="checkbox" id="aceptarTerminos">
+<input type="checkbox" id="aceptarTerminos">
 
-            He leído y acepto los términos y condiciones
+He leído y acepto los términos y condiciones
 
-          </label>
+</label>
 
-          <button id="btnEnviar" class="btn-pagar">
-            PAGAR
-          </button>
+<button id="btnEnviar" class="btn-pagar">
+PAGAR
+</button>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </section>
+</section>
 
-  </main>
+</main>
 
-  <footer class="footer">
+<footer class="footer">
 
-    <div class="footer-container">
+<div class="footer-container">
 
-      <div class="footer-brand">
+<div class="footer-brand">
 
-        <h3>SorteoEC</h3>
+<h3>SorteoEC</h3>
 
-        <p>Sorteos digitales con transparencia y confianza.</p>
+<p>Sorteos digitales con transparencia y confianza.</p>
 
-      </div>
+</div>
 
-      <div class="footer-contact">
+<div class="footer-contact">
 
-        <p>
-          📞 WhatsApp:
-          <a href="https://wa.me/5939XXXXXXXX" target="_blank">
-            +593 9XXXXXXX
-          </a>
-        </p>
+<p>
+📞 WhatsApp:
+<a href="https://wa.me/5939XXXXXXXX" target="_blank">
++593 9XXXXXXX
+</a>
+</p>
 
-        <div class="footer-social">
+<div class="footer-social">
 
-          <a href="#">Facebook</a>
-          <a href="#">Instagram</a>
-          <a href="#">TikTok</a>
+<a href="#">Facebook</a>
+<a href="#">Instagram</a>
+<a href="#">TikTok</a>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-    <div class="footer-bottom">
+<div class="footer-bottom">
 
-      © 2026 SorteoEC.online – Todos los derechos reservados |
+© 2026 SorteoEC.online – Todos los derechos reservados |
 
-      <a href="https://www.facebook.com/ImpulsoDigital19" target="_blank" class="impulso-link">
-        Impulso Digital
-      </a>
+<a href="https://www.facebook.com/ImpulsoDigital19" target="_blank" class="impulso-link">
+Impulso Digital
+</a>
 
-    </div>
+</div>
 
-  </footer>
+</footer>
 
-  <script src="js/main.js"></script>
+<script src="js/main.js"></script>
 
 </body>
 </html>
