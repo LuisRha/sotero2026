@@ -8,7 +8,9 @@
   <link rel="icon" type="image/png" href="favicon-v2.png">
 
   <link rel="stylesheet" href="css/style.css">
-   <link rel="stylesheet" href="premiosinstantaneos.css">
+  <link rel="stylesheet" href="css/premiosinstantaneos.css">
+  <link rel="stylesheet" href="css/comprar-boletos.css">
+  
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -67,14 +69,14 @@
         </p>
       </div>
 
-      <!-- premios instantaneos -->
+<!-- premios instantaneos -->
 
       <div class="premios-instantaneos">
 
 <h2>¡PREMIOS INSTANTÁNEOS!</h2>
 
-<p>
-¡Hay 10 números bendecidos con premios en efectivo!
+<p class="descripcion">
+¡Hay 10 números bendecidos con premios en efectivo! 
 Realiza tu compra y revisa si tienes uno de los siguientes números:
 </p>
 
@@ -93,15 +95,81 @@ Realiza tu compra y revisa si tienes uno de los siguientes números:
 <span class="entregado">42838</span>
 
 </div>
+<p class="participacion">
+<h1>¿Cómo participar?</h1>
+1. Selecciona el paquete de números que desees, recuerda que mientras más números tengas, más oportunidades tendrás de ganar. <br>
+
+2. Serás redirigido a una página donde seleccionarás tu forma de pago y llenarás tus datos. <br>
+3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
+También podrás consultarlos en la sección «Consulta tus números.
+</p>
+
+ </div>
 
 </div>
 
 
 
-         <!-- RESERVAR BOLETOS -->
-      <button id="btnComprar" class="btn-principal">
-        RESERVAR BOLETOS
-      </button>
+  <!-- comprar boletos -->
+    <section class="paquetes-compra">
+
+<h2>¡ADQUIERE TUS NÚMEROS!</h2>
+<p class="precio-unitario">VALOR DE LA UNIDAD: $2</p>
+
+<div class="grid-paquetes">
+
+<div class="card">
+<h3>X6 NÚMEROS</h3>
+<p class="precio">$12</p>
+<button onclick="comprar(6)">COMPRAR</button>
+</div>
+
+<div class="card">
+<h3>X8 NÚMEROS</h3>
+<p class="precio">$16</p>
+<button onclick="comprar(8)">COMPRAR</button>
+</div>
+
+<div class="card destacado">
+<span class="tag">★ Más Vendido ★</span>
+<h3>X10 NÚMEROS</h3>
+<p class="precio">$20</p>
+<button onclick="comprar(10)">COMPRAR</button>
+</div>
+
+<div class="card">
+<h3>X20 NÚMEROS</h3>
+<p class="precio">$40</p>
+<button onclick="comprar(20)">COMPRAR</button>
+</div>
+
+<div class="card">
+<h3>X30 NÚMEROS</h3>
+<p class="precio">$60</p>
+<button onclick="comprar(30)">COMPRAR</button>
+</div>
+
+<div class="card destacado-verde">
+<span class="tag">Juega KTM Duke 200</span>
+<h3>X50 NÚMEROS</h3>
+<p class="precio">$100</p>
+<button onclick="comprar(50)">COMPRAR</button>
+</div>
+
+</div>
+
+<div class="mas-numeros">
+
+<h3>¿MÁS NÚMEROS?</h3>
+<p>Agrega la cantidad de números que desees.</p>
+
+<input type="number" id="cantidadPersonalizada" value="50" min="1">
+
+<button onclick="comprarPersonalizado()">COMPRAR</button>
+
+</div>
+
+</section>  
 
     </div>
 

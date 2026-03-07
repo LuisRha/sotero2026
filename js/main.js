@@ -352,3 +352,28 @@ VOUCHER: ${voucher}
   }
 
 });
+
+// comprar boletos en combo
+
+function comprar(cantidad){
+
+// colocar cantidad en el formulario
+document.getElementById("cantidad").value = cantidad;
+
+// mostrar formulario
+document.getElementById("formulario").classList.remove("oculto");
+
+// hacer scroll al formulario
+document.getElementById("formulario").scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+function comprarPersonalizado(){
+
+const cantidad = document.getElementById("cantidadPersonalizada").value;
+
+comprar(cantidad);
+
+}
