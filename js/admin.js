@@ -83,9 +83,9 @@ async function cargarSorteos() {
 // =========================
 // ENVIAR WHATSAPP
 // =========================
-function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
+function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad,extras){
 
-  nombre = decodeURIComponent(nombre);
+  nombreCompleto = decodeURIComponent(nombreCompleto);
 
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
@@ -97,7 +97,7 @@ function enviarWhatsapp(telefono,nombre,numeros,pedido,cantidad,extras){
   }
 
   const mensaje = `
-Hola, ${nombre}
+Hola, ${nombreCompleto}
 
 Agradecemos por tu compra
 
@@ -155,16 +155,18 @@ async function cargarDatos() {
 
   data.forEach(item => {
 
-    // ✅ SOLO CONTAR APROBADOS
-   if(item.estado === "aprobado" || item.estado === "pendiente"){
-  totalNumerosVendidos += Number(item.cantidad || 0);
-  }
+    if(item.estado === "aprobado" || item.estado === "pendiente"){
+      totalNumerosVendidos += Number(item.cantidad || 0);
+    }
+
+    const nombreCompleto =
+      `${item.nombres || item.nombre || ""} ${item.apellidos || ""}`.trim();
 
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
-      <td>${item.nombres || item.nombre || "-"} ${item.apellidos || ""}</td>
+      <td>${nombreCompleto || "-"}</td>
       <td>${item.whatsapp || "-"}</td>
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
@@ -182,7 +184,7 @@ async function cargarDatos() {
               ? `
               <button onclick="enviarWhatsapp(
                 '${item.whatsapp}',
-                '${encodeURIComponent(item.nombre)}',
+                '${encodeURIComponent(nombreCompleto)}',
                 '${encodeURIComponent(item.numeros)}',
                 '${item.id}',
                 '${item.cantidad}',
