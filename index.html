@@ -17,70 +17,78 @@
 
 <body>
 
-  <div class="top-bar" id="topBarText">
-    <div class="top-bar-content">
-      <div class="top-line"></div>
-      <div class="top-main"></div>
-      <div class="top-sub"></div>
-    </div>
+<!-- BARRA SUPERIOR ESTRUCTURA -->
+<div class="top-bar" id="topBarText0">
+  <div class="top-bar-content">
+    <div class="top-line"></div>
+    <div class="top-main"></div>
+    <div class="top-sub"></div>
   </div>
+</div>
 
-  <!--
+<!--
 TEXTOS DINÁMICOS TOP BAR
 Se cargan desde la base de datos (tabla configuracion)
 clave: top_bar_text
 valor: JSON con frases que cambian automáticamente
 -->
+
 <div class="top-bar">
 <span id="topBarText"></span>
 </div>
 
 
+<header class="main-header">
+  <div class="logo-box">
+    <span class="logo-text"></span>
+    <span class="logo-highlight">TRUJILLOGROUP</span>
+    <p class="slogan">Alcanza tus metas..</p>
+  </div>
+</header>
 
-  <header class="main-header">
-    <div class="logo-box">
-      <span class="logo-text"></span>
-      <span class="logo-highlight">TRUJILLOGROUP</span>
-      <p class="slogan">Alcanza tus metas..</p>
-    </div>
-  </header>
 
-  <section class="hero">
+<section class="hero">
 
-    <div class="container hero-box">
+<div class="container hero-box">
 
-      <h2>Llevate contigo - IPhone 17 Pro Max</h2>
-      <p>Sorteos transparentes · Pagos verificados · Premios reales</p>
+<h2>Llevate contigo - IPhone 17 Pro Max</h2>
+<p>Sorteos transparentes · Pagos verificados · Premios reales</p>
+
 
 <section class="sorteo-imagen">
 
 <div class="slider">
 
-    <img src="images/sorteos/igm.jpg" class="slide active">
-    <img src="images/sorteos/igm3.jpg" class="slide">
+<img src="images/sorteos/igm.jpg" class="slide active">
+<img src="images/sorteos/igm3.jpg" class="slide">
 
 </div>
 
 </section>
-      <div class="progreso-sorteo">
-        <h3>¡CANTIDADES LIMITADAS!</h3>
 
-        <p id="porcentajeTexto">
-          Números vendidos: 0%
-        </p>
 
-        <div class="barra">
-          <div class="barra-fill" id="barraFill"></div>
-        </div>
+<div class="progreso-sorteo">
 
-        <span id="disponibles">Boletos disponibles: --</span>
+<h3>¡CANTIDADES LIMITADAS!</h3>
 
-        <p class="nota">
-          Los premios se jugarán una vez vendida la totalidad de los números.
-        </p>
-      </div>
+<p id="porcentajeTexto">
+Números vendidos: 0%
+</p>
 
-      <div class="premios-instantaneos">
+<div class="barra">
+<div class="barra-fill" id="barraFill"></div>
+</div>
+
+<span id="disponibles">Boletos disponibles: --</span>
+
+<p class="nota">
+Los premios se jugarán una vez vendida la totalidad de los números.
+</p>
+
+</div>
+
+
+<div class="premios-instantaneos">
 
 <h2>¡PREMIOS INSTANTÁNEOS!</h2>
 
@@ -93,26 +101,34 @@ Realiza tu compra y revisa si tienes uno de los siguientes números:
 <div class="numeros-premio" id="numerosPremio"></div>
 
 <p class="participacion">
+
 <h1>¿Cómo participar?</h1>
+
 1. Selecciona el paquete de números que desees, recuerda que mientras más números tengas, más oportunidades tendrás de ganar. <br>
 
 2. Serás redirigido a una página donde seleccionarás tu forma de pago y llenarás tus datos. <br>
+
 3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
 También podrás consultarlos en la sección «Consulta tus números.
+
 </p>
 
- </div>
+</div>
 
 </div>
+
 
 <section class="paquetes-compra">
 
 <h2>¡ADQUIERE TUS NÚMEROS!</h2>
+
 <p class="precio-unitario">
 VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 </p>
 
+
 <div class="grid-paquetes">
+
 
 <div class="card">
 <h3>X6 NÚMEROS</h3>
@@ -120,11 +136,13 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 <button onclick="comprar(6)">COMPRAR</button>
 </div>
 
+
 <div class="card">
 <h3>X8 NÚMEROS</h3>
 <p class="precio">$16</p>
 <button onclick="comprar(8)">COMPRAR</button>
 </div>
+
 
 <div class="card destacado">
 <span class="tag">★ Más Vendido ★</span>
@@ -133,17 +151,20 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 <button onclick="comprar(10)">COMPRAR</button>
 </div>
 
+
 <div class="card">
 <h3>X20 NÚMEROS</h3>
 <p class="precio">$40</p>
 <button onclick="comprar(20)">COMPRAR</button>
 </div>
 
+
 <div class="card">
 <h3>X30 NÚMEROS</h3>
 <p class="precio">$60</p>
 <button onclick="comprar(30)">COMPRAR</button>
 </div>
+
 
 <div class="card destacado-verde">
 <span class="tag">★★★★★</span>
@@ -152,7 +173,9 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 <button onclick="comprar(50)">COMPRAR</button>
 </div>
 
+
 </div>
+
 
 <div class="mas-numeros">
 
@@ -165,6 +188,7 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 
 </div>
 
+
 <div class="consulta-numeros">
 
 <h2>CONSULTA TUS NÚMEROS</h2>
@@ -174,11 +198,7 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 Ingresa tu número de WhatsApp para consultar tus boletos.
 </p>
 
-<input 
-type="text"
-id="consultaWhatsapp"
-placeholder="WhatsApp"
->
+<input type="text" id="consultaWhatsapp" placeholder="WhatsApp">
 
 <button onclick="consultarNumeros()" class="btn-consultar">
 CONSULTAR
@@ -188,11 +208,12 @@ CONSULTAR
 
 </div>
 
-</section>  
+</section>
 
 </div>
 
 </section>
+
 
 <main class="container">
 
@@ -214,40 +235,48 @@ CONSULTAR
 
 </div>
 
+
 <div class="field">
 <label>Número Cédula / Pasaporte *</label>
 <input type="text" id="numero_documento" placeholder="Número de documento">
 </div>
+
 
 <div class="field">
 <label>Nombres *</label>
 <input type="text" id="nombre" placeholder="Tu nombre">
 </div>
 
+
 <div class="field">
 <label>Apellidos *</label>
 <input type="text" id="apellidos" placeholder="Apellido">
 </div>
+
 
 <div class="field full">
 <label>Correo electrónico *</label>
 <input type="email" id="email" placeholder="Email">
 </div>
 
+
 <div class="field full">
 <label>Confirmar Email *</label>
 <input type="email" id="confirmar_email" placeholder="Confirmar Email">
 </div>
+
 
 <div class="field full">
 <label>Teléfono *</label>
 <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
 </div>
 
+
 <div class="field full">
 <label>Dirección *</label>
 <input type="text" id="direccion" placeholder="Dirección">
 </div>
+
 
 <div class="field">
 <label>País *</label>
@@ -256,6 +285,7 @@ CONSULTAR
 <input type="text" value="Ecuador" disabled>
 
 </div>
+
 
 <div class="field">
 <label>Seleccionar *</label>
@@ -290,10 +320,12 @@ CONSULTAR
 
 </div>
 
+
 <div class="field">
 <label>Ciudad *</label>
 <input type="text" id="ciudad" placeholder="Ciudad">
 </div>
+
 
 <div class="field full">
 <label>Cantidad de boletos</label>
@@ -301,6 +333,7 @@ CONSULTAR
 </div>
 
 </div>
+
 
 <div class="checkout-right">
 
@@ -355,6 +388,7 @@ PAGAR
 </section>
 
 </main>
+
 
 <footer class="footer">
 

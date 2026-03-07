@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad = Number(cantidadInput?.value);
         const voucher = voucherInput ? voucherInput.value.trim() : "";
 
-        // NUEVOS CAMPOS
         const email = emailInput?.value.trim();
         const direccion = direccionInput?.value.trim();
         const provincia = provinciaInput?.value;
@@ -220,7 +219,6 @@ Extras:
 ${data.extras}`
         );
 
-        // LIMPIAR FORMULARIO
         nombreInput.value="";
         apellidosInput.value="";
         whatsappInput.value="";
@@ -251,11 +249,7 @@ ${data.extras}`
   }
 
 
-  // =========================
-  // INICIO
-  // =========================
   (async ()=>{
-
     try{
       await obtenerSorteoActivo();
       await actualizarDisponibles();
@@ -263,7 +257,6 @@ ${data.extras}`
     catch(err){
       console.error(err);
     }
-
   })();
 
 });
@@ -307,7 +300,6 @@ async function consultarNumeros(){
     </div>
     `;
 
-    // DETECTAR SI HAY PREMIO
     if(compra.premio){
 
       html += `
@@ -341,27 +333,6 @@ Comunícate con nosotros para reclamarlo.
 }
 
 
-// =========================
-// COMPRA PERSONALIZADA
-// =========================
-function comprarPersonalizado(){
-
-  const input = document.getElementById("cantidadPersonalizada");
-
-  if(!input) return;
-
-  const cantidad = Number(input.value);
-
-  if(!cantidad || cantidad <= 0){
-    alert("Ingresa una cantidad válida");
-    return;
-  }
-
-  comprar(cantidad);
-
-}
-
-
 // slider iamgen 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -387,8 +358,9 @@ setInterval(cambiarImagen,3000);
 });
 
 
-// TEXTOS  DINAMICOS  DESDE BASE DE  DATOS
-
+// =========================
+// TEXTOS DINAMICOS
+// =========================
 async function cargarTopBar(){
 
 const res = await fetch("/api/config");
@@ -429,15 +401,24 @@ cargarTopBar();
 
 
 // =========================
-// CARGAR NUMEROS PREMIOS DESDE  LA BASE DE  DATOS
+// CARGAR NUMEROS PREMIOS
 // =========================
 async function cargarNumerosPremio(){
 
-  const res = await fetch("/api/premios");
+  if(!window.supabaseClient){
+    console.warn("Supabase no está cargado");
+    return;
+  }
 
-  if(!res.ok) return;
+  const { data, error } = await window.supabaseClient
+  .from("tickets")
+  .select("numero,premio")
+  .order("numero",{ascending:true});
 
-  const data = await res.json();
+  if(error){
+    console.error("Error cargando premios",error);
+    return;
+  }
 
   const contenedor = document.getElementById("numerosPremio");
 
@@ -463,5 +444,4 @@ async function cargarNumerosPremio(){
 
 }
 
-// ejecutar
 cargarNumerosPremio();
