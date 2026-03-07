@@ -385,6 +385,8 @@ setInterval(cambiarImagen,3000);
 });
 
 
+// TEXTOS  DINAMICOS  DESDE BASE DE  DATOS
+
 async function cargarTopBar(){
 
 const res = await fetch("/api/config");
@@ -417,7 +419,7 @@ i = 0;
 
 el.textContent = frases[i];
 
-},3000);
+},1000);
 
 }
 
