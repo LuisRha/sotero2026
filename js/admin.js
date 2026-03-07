@@ -176,10 +176,15 @@ async function cargarDatos() {
       <td>
         ${
           item.estado === "pendiente"
-            ? `
-              <button onclick="aprobar(${item.id})">Aprobar</button>
-              <button onclick="rechazar(${item.id})">Rechazar</button>
-            `
+        ? `
+        <button class="btn-aprobar" onclick="aprobar(${item.id})">
+        Aprobar
+        </button>
+
+       <button class="btn-rechazar" onclick="rechazar(${item.id})">
+        Rechazar
+       </button>
+        `
             : item.estado === "aprobado"
               ? `
               <button onclick="enviarWhatsapp(
