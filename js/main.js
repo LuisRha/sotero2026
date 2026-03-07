@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try{
 
       const nombres = nombreInput.value.trim();
+      const apellidos = apellidosInput.value.trim();
       const telefono = whatsappInput.value.trim();
       const cantidad = Number(cantidadInput.value);
       const voucher = voucherInput ? voucherInput.value.trim() : "";
@@ -147,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if(!nombres || !telefono || !cantidad){
+      if(!nombres || !apellidos || !telefono || !cantidad){
         alert("Completa todos los campos");
         return;
       }
@@ -172,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           sorteo_id: SORTEO_ID,
 
-          nombre: nombres,      // 👈 IMPORTANTE (la BD lo exige)
+          nombre: nombres,
           nombres: nombres,
-          apellidos: "",
+          apellidos: apellidos,
 
           telefono: telefono,
           whatsapp: telefono,
@@ -205,6 +206,7 @@ ${data.extras}`
       );
 
       nombreInput.value="";
+      apellidosInput.value="";
       whatsappInput.value="";
       cantidadInput.value="";
       if(voucherInput) voucherInput.value="";
