@@ -105,7 +105,6 @@ export default async function handler(req, res) {
         tipo_documento,
         numero_documento,
 
-        nombre,        // 👈 agregado
         nombres,
         apellidos,
 
@@ -129,6 +128,7 @@ export default async function handler(req, res) {
       if (
         !sorteo_id ||
         !nombres ||
+        !apellidos ||
         !telefono ||
         !cantidad ||
         !voucher
@@ -188,8 +188,6 @@ export default async function handler(req, res) {
 
       const ocupados = numerosOcupados.length;
 
-
-
       if (ocupados >= totalNumeros) {
 
         return res.status(400).json({
@@ -202,8 +200,6 @@ export default async function handler(req, res) {
 
       const extrasPorCompra = 4;
       const boletosNecesarios = Number(cantidad) + extrasPorCompra;
-
-
 
       if (ocupados + boletosNecesarios > totalNumeros) {
 
@@ -241,7 +237,6 @@ export default async function handler(req, res) {
 
             sorteo_id,
 
-            nombre: nombre || nombres,   // 👈 SOLUCIÓN
             nombres,
             apellidos,
 
