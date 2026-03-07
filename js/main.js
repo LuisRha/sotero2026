@@ -479,3 +479,20 @@ function comprar(cantidad){
   });
 
 }
+
+
+// FUNCIÓN COMPRAR PERSONALIZADO
+function comprarPersonalizado(){
+
+  const cantidad = Number(
+    document.getElementById("cantidadPersonalizada").value
+  );
+
+  if(!cantidad || cantidad <= 0){
+    alert("Ingresa una cantidad válida");
+    return;
+  }
+
+  comprar(cantidad);
+
+}
