@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const cantidadInput = document.getElementById("cantidad");
   const voucherInput = document.getElementById("voucher");
 
-  // NUEVOS CAMPOS
   const emailInput = document.getElementById("email");
   const direccionInput = document.getElementById("direccion");
   const provinciaInput = document.getElementById("provincia");
@@ -264,6 +263,7 @@ ${data.extras}`
     try{
       await obtenerSorteoActivo();
       await actualizarDisponibles();
+      await cargarNumerosPremio();
     }
     catch(err){
       console.error(err);
@@ -416,43 +416,41 @@ cargarTopBar();
 // =========================
 async function cargarNumerosPremio(){
 
-  if(!window.supabaseClient){
-    console.warn("Supabase no está cargado");
-    return;
-  }
+  try{
 
-  const { data, error } = await window.supabaseClient
-  .from("tickets")
-  .select("numero,premio")
-  .order("numero",{ascending:true});
+    const res = await fetch("/api/premios");
 
-  if(error){
-    console.error("Error cargando premios",error);
-    return;
-  }
-
-  const contenedor = document.getElementById("numerosPremio");
-
-  if(!contenedor) return;
-
-  contenedor.innerHTML = "";
-
-  data.forEach(n => {
-
-    const span = document.createElement("span");
-
-    span.textContent = n.numero;
-
-    if(n.premio){
-      span.classList.add("activo");
-    }else{
-      span.classList.add("entregado");
+    if(!res.ok){
+      console.error("Error cargando premios");
+      return;
     }
 
-    contenedor.appendChild(span);
+    const data = await res.json();
 
-  });
+    const contenedor = document.getElementById("numerosPremio");
+
+    if(!contenedor) return;
+
+    contenedor.innerHTML = "";
+
+    data.forEach(n => {
+
+      const span = document.createElement("span");
+
+      span.textContent = n.numero;
+
+      if(n.premio){
+        span.classList.add("activo");
+      }else{
+        span.classList.add("entregado");
+      }
+
+      contenedor.appendChild(span);
+
+    });
+
+  }catch(err){
+    console.error("Error leyendo premios",err);
+  }
 
 }
-
-cargarNumerosPremio();
