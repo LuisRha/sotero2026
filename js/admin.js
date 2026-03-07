@@ -164,7 +164,7 @@ async function cargarDatos() {
 
     tr.innerHTML = `
       <td>${new Date(item.created_at).toLocaleString()}</td>
-      <td>${item.nombre || "-"}</td>
+      <td>${item.nombres || item.nombre || "-"} ${item.apellidos || ""}</td>
       <td>${item.whatsapp || "-"}</td>
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
