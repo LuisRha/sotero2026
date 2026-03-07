@@ -50,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if(premio) premio.textContent = activo.premio;
     if(imagen) imagen.src = activo.imagen;
     if(precio) precio.textContent = activo.precio_ticket;
-
   }
 
   // =========================
@@ -60,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(!SORTEO_ID) return 0;
 
-    // Llamamos a tu API de compras filtrando por el sorteo actual
     const res = await fetch(`/api/compras?sorteo_id=${SORTEO_ID}&estados=pendiente,aprobado`);
 
     if(!res.ok) return 0;
@@ -71,11 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
       (sum, fila) => sum + Number(fila.cantidad || 0),
       0
     );
-
   }
 
   // =========================
-  // DISPONIBLES + BARRA (ACTUALIZADO)
+  // DISPONIBLES + BARRA
   // =========================
   async function actualizarDisponibles(){
 
@@ -87,41 +84,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (disponibles < 0) disponibles = 0;
 
-      // Cálculo del porcentaje basado en los vendidos reales
       let porcentaje = TOTAL_BOLETOS > 0
-? (vendidos / TOTAL_BOLETOS) * 100
-: 0;
+      ? (vendidos / TOTAL_BOLETOS) * 100
+      : 0;
 
-if (porcentaje > 100) porcentaje = 100;
+      if (porcentaje > 100) porcentaje = 100;
 
-porcentaje = porcentaje.toFixed(2);
+      porcentaje = porcentaje.toFixed(2);
 
       const barra = document.getElementById("barraFill");
       const texto = document.getElementById("porcentajeTexto");
 
-      // Aplicamos el ancho a la barra visualmente
-      if(barra) {
+      if(barra){
         barra.style.width = porcentaje + "%";
-        barra.style.transition = "width 1s ease-in-out"; // Para que se vea fluido
+        barra.style.transition = "width 1s ease-in-out";
       }
 
-      if(texto) {
+      if(texto){
         texto.textContent = `Números vendidos: ${porcentaje}%`;
+      }
+
+      if(disponiblesEl){
+        disponiblesEl.textContent = `Boletos disponibles: ${disponibles}`;
       }
 
     }
     catch(err){
       console.error("Error al actualizar barra:", err);
-      if(disponiblesEl){
-        disponiblesEl.textContent =
-        "Boletos disponibles: --";
-      }
     }
-
   }
 
   // =========================
-  // MOSTRAR FORMULARIO
+  // BOTÓN RESERVAR ANTIGUO
   // =========================
   if(btnComprar && formulario){
 
@@ -197,8 +191,7 @@ porcentaje = porcentaje.toFixed(2);
 
           while(numeros.length < cantidad){
 
-            const n =
-            Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
+            const n = Math.floor(Math.random() * TOTAL_BOLETOS) + 1;
 
             if(!usados.has(n)){
               usados.add(n);
@@ -255,7 +248,6 @@ VOUCHER: ${voucher}
           "_blank"
         );
 
-        // Limpiar campos
         nombreInput.value = "";
         whatsappInput.value = "";
         cantidadInput.value = "";
@@ -264,7 +256,6 @@ VOUCHER: ${voucher}
 
         formulario.classList.add("oculto");
 
-        // Actualizar la barra inmediatamente después de comprar
         actualizarDisponibles();
 
       }
@@ -282,16 +273,11 @@ VOUCHER: ${voucher}
   (async ()=>{
 
     try{
-
       await obtenerSorteoActivo();
-
       await actualizarDisponibles();
-
     }
     catch(err){
-
       console.error(err);
-
     }
 
   })();
@@ -324,46 +310,26 @@ VOUCHER: ${voucher}
 
   }, 3000);
 
-  // =========================
-  // AUTO SCROLL GALERÍA
-  // =========================
-  const galeria = document.getElementById("galeriaSorteo");
-
-  if(galeria){
-
-    let scrollPos = 0;
-
-    setInterval(()=>{
-
-      scrollPos += 1;
-
-      galeria.scrollLeft = scrollPos;
-
-      if(scrollPos >=
-         galeria.scrollWidth -
-         galeria.clientWidth){
-
-        scrollPos = 0;
-
-      }
-
-    }, 30);
-
-  }
-
 });
 
-// comprar boletos en combo
-
+// =========================
+// COMPRAR DESDE CUADROS
+// =========================
 function comprar(cantidad){
 
-// colocar cantidad en el formulario
-document.getElementById("cantidad").value = cantidad;
+const cantidadInput = document.getElementById("cantidad");
+const totalPagarEl = document.getElementById("totalPagar");
 
-// mostrar formulario
+cantidadInput.value = cantidad;
+
+if(totalPagarEl){
+const precio = document.getElementById("precio");
+const precioUnidad = precio ? Number(precio.textContent) : 0;
+totalPagarEl.textContent = `$${cantidad * precioUnidad}`;
+}
+
 document.getElementById("formulario").classList.remove("oculto");
 
-// hacer scroll al formulario
 document.getElementById("formulario").scrollIntoView({
 behavior:"smooth"
 });
