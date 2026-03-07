@@ -5,6 +5,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE
 );
 
+
 // =========================
 // MOTOR GENERADOR DE TICKETS
 // =========================
@@ -31,12 +32,10 @@ function generarTickets(cantidad, numerosYaVendidos = [], totalNumeros = 99999) 
     return num;
   }
 
-  // números principales
   for (let i = 0; i < cantidad; i++) {
     principales.push(generarNumero());
   }
 
-  // extras
   for (let i = 0; i < 4; i++) {
     extras.push(generarNumero());
   }
@@ -46,6 +45,8 @@ function generarTickets(cantidad, numerosYaVendidos = [], totalNumeros = 99999) 
     extras
   };
 }
+
+
 
 export default async function handler(req, res) {
 
@@ -57,42 +58,41 @@ export default async function handler(req, res) {
       body = JSON.parse(body);
     }
 
+
     // =========================
     // GET → LISTAR COMPRAS
     // =========================
-    // =========================
-// GET → LISTAR COMPRAS
-// =========================
-if (req.method === "GET") {
+    if (req.method === "GET") {
 
-const { sorteo_id, estados, whatsapp } = req.query;
+      const { sorteo_id, estados, whatsapp } = req.query;
 
-let query = supabase
-.from("compras")
-.select("*")
-.order("created_at", { ascending: false });
+      let query = supabase
+        .from("compras")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-if (sorteo_id) {
-query = query.eq("sorteo_id", sorteo_id);
-}
+      if (sorteo_id) {
+        query = query.eq("sorteo_id", sorteo_id);
+      }
 
-if (estados) {
-query = query.in("estado", estados.split(","));
-}
+      if (estados) {
+        query = query.in("estado", estados.split(","));
+      }
 
-if (whatsapp) {
-query = query.eq("whatsapp", whatsapp);
-}
+      if (whatsapp) {
+        query = query.eq("whatsapp", whatsapp);
+      }
 
-const { data, error } = await query;
+      const { data, error } = await query;
 
-if (error) {
-return res.status(500).json({ error: error.message });
-}
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
 
-return res.status(200).json(data);
+      return res.status(200).json(data);
+    }
 
-}
+
 
     // =========================
     // POST → CREAR COMPRA
@@ -100,24 +100,44 @@ return res.status(200).json(data);
     if (req.method === "POST") {
 
       const {
+
         sorteo_id,
-        nombre,
+
+        tipo_documento,
+        numero_documento,
+
+        nombres,
+        apellidos,
+
+        email,
+        telefono,
         whatsapp,
+
+        direccion,
+        pais,
+        provincia,
+        ciudad,
+
         cantidad,
         voucher,
         total
+
       } = body;
+
+
 
       if (
         !sorteo_id ||
-        !nombre ||
-        !whatsapp ||
+        !nombres ||
+        !apellidos ||
+        !telefono ||
         !cantidad ||
-        !voucher ||
-        !total
+        !voucher
       ) {
         return res.status(400).json({ error: "Datos incompletos" });
       }
+
+
 
       // =========================
       // OBTENER CONFIG SORTEO
@@ -130,15 +150,18 @@ return res.status(200).json(data);
 
       const totalNumeros = sorteo?.total_numeros || 99999;
 
+
+
       // =========================
       // OBTENER NUMEROS OCUPADOS
-      // pendiente + aprobado
       // =========================
       const { data: vendidosData } = await supabase
         .from("compras")
         .select("numeros, extras")
         .eq("sorteo_id", sorteo_id)
-        .in("estado", ["pendiente","aprobado"]);
+        .in("estado", ["pendiente", "aprobado"]);
+
+
 
       let numerosOcupados = [];
 
@@ -158,11 +181,12 @@ return res.status(200).json(data);
 
       }
 
+
+
       const ocupados = numerosOcupados.length;
 
-      // =========================
-      // BLOQUEAR SI SE LLENÓ
-      // =========================
+
+
       if (ocupados >= totalNumeros) {
 
         return res.status(400).json({
@@ -171,8 +195,13 @@ return res.status(200).json(data);
 
       }
 
+
+
       const extrasPorCompra = 4;
+
       const boletosNecesarios = Number(cantidad) + extrasPorCompra;
+
+
 
       if (ocupados + boletosNecesarios > totalNumeros) {
 
@@ -181,6 +210,8 @@ return res.status(200).json(data);
         });
 
       }
+
+
 
       // =========================
       // GENERAR TICKETS
@@ -191,8 +222,12 @@ return res.status(200).json(data);
         totalNumeros
       );
 
+
+
       const numeros = tickets.principales.join(",");
       const extras = tickets.extras.join(",");
+
+
 
       // =========================
       // INSERTAR COMPRA
@@ -201,25 +236,61 @@ return res.status(200).json(data);
         .from("compras")
         .insert([
           {
+
             sorteo_id,
-            nombre,
+
+            tipo_documento,
+            numero_documento,
+
+            nombres,
+            apellidos,
+
+            email,
+            telefono,
             whatsapp,
+
+            direccion,
+            pais,
+            provincia,
+            ciudad,
+
             cantidad: Number(cantidad),
+
             numeros,
             extras,
+
             voucher,
+
             total: Number(total),
+
             estado: "pendiente"
           }
         ]);
 
+
+
       if (error) {
+
+        console.error(error);
+
         return res.status(500).json({ error: error.message });
+
       }
 
-      return res.status(200).json({ ok: true });
+
+
+      return res.status(200).json({
+
+        ok: true,
+
+        numeros,
+        extras
+
+      });
 
     }
+
+
 
     // =========================
     // PUT → APROBAR / RECHAZAR
@@ -245,11 +316,18 @@ return res.status(200).json(data);
 
     }
 
+
+
     return res.status(405).json({ error: "Método no permitido" });
 
+
+
   } catch (err) {
+
+    console.error(err);
 
     return res.status(500).json({ error: err.message });
 
   }
+
 }
