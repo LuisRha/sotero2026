@@ -2,81 +2,76 @@
 <html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<title>Trujillogroup</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="favicon-v2.png">
+  <meta charset="UTF-8">
+  <title>Trujillogroup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon-v2.png">
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/premiosinstantaneos.css">
-<link rel="stylesheet" href="css/comprar-boletos.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/premiosinstantaneos.css">
+  <link rel="stylesheet" href="css/comprar-boletos.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 
 <body>
 
-<div class="top-bar" id="topBarText">
-<div class="top-bar-content">
-<div class="top-line"></div>
-<div class="top-main"></div>
-<div class="top-sub"></div>
-</div>
-</div>
+  <div class="top-bar" id="topBarText">
+    <div class="top-bar-content">
+      <div class="top-line"></div>
+      <div class="top-main"></div>
+      <div class="top-sub"></div>
+    </div>
+  </div>
 
+  <header class="main-header">
+    <div class="logo-box">
+      <span class="logo-text"></span>
+      <span class="logo-highlight">TRUJILLOGROUP</span>
+      <p class="slogan">Alcanza tus metas..</p>
+    </div>
+  </header>
 
-<header class="main-header">
-<div class="logo-box">
-<span class="logo-text"></span>
-<span class="logo-highlight">TRUJILLOGROUP</span>
-<p class="slogan">Alcanza tus metas..</p>
-</div>
-</header>
+  <section class="hero">
 
+    <div class="container hero-box">
 
-<section class="hero">
+      <h2>Llevate contigo - IPhone 17 Pro Max</h2>
+      <p>Sorteos transparentes · Pagos verificados · Premios reales</p>
 
-<div class="container hero-box">
+      <section class="sorteo-imagen">
+        <div class="galeria-sorteo" id="galeriaSorteo">
+          <img src="images/sorteos/igm.jpg" alt="Imagen 1">
+          <img src="images/sorteos/igm2.jpg" alt="Imagen 2">
+        </div>
+      </section>
 
-<h2 id="titulo">Llevate contigo - IPhone 17 Pro Max</h2>
-<p>Sorteos transparentes · Pagos verificados · Premios reales</p>
+      <div class="progreso-sorteo">
+        <h3>¡CANTIDADES LIMITADAS!</h3>
 
-<section class="sorteo-imagen">
-<div class="galeria-sorteo" id="galeriaSorteo">
-<img id="imagen" src="images/sorteos/igm.jpg" alt="Imagen 1">
-<img src="images/sorteos/igm2.jpg" alt="Imagen 2">
-</div>
-</section>
+        <p id="porcentajeTexto">
+          Números vendidos: 0%
+        </p>
 
+        <div class="barra">
+          <div class="barra-fill" id="barraFill"></div>
+        </div>
 
-<div class="progreso-sorteo">
-<h3>¡CANTIDADES LIMITADAS!</h3>
+        <span id="disponibles">Boletos disponibles: --</span>
 
-<p id="porcentajeTexto">
-Números vendidos: 0%
-</p>
-
-<div class="barra">
-<div class="barra-fill" id="barraFill"></div>
-</div>
-
-<span id="disponibles">Boletos disponibles: --</span>
-
-<p class="nota">
-Los premios se jugarán una vez vendida la totalidad de los números.
-</p>
-</div>
-
+        <p class="nota">
+          Los premios se jugarán una vez vendida la totalidad de los números.
+        </p>
+      </div>
 
 <!-- premios instantaneos -->
 
-<div class="premios-instantaneos">
+      <div class="premios-instantaneos">
 
 <h2>¡PREMIOS INSTANTÁNEOS!</h2>
 
 <p class="descripcion">
-¡Hay 10 números bendecidos con premios en efectivo!
+¡Hay 10 números bendecidos con premios en efectivo! 
 Realiza tu compra y revisa si tienes uno de los siguientes números:
 </p>
 
@@ -97,26 +92,20 @@ Realiza tu compra y revisa si tienes uno de los siguientes números:
 </div>
 
 <p class="participacion">
-
 <h1>¿Cómo participar?</h1>
-
 1. Selecciona el paquete de números que desees, recuerda que mientras más números tengas, más oportunidades tendrás de ganar. <br>
 
 2. Serás redirigido a una página donde seleccionarás tu forma de pago y llenarás tus datos. <br>
-
-3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra.
+3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
 También podrás consultarlos en la sección «Consulta tus números.
-
 </p>
 
-</div>
+ </div>
 
 </div>
 
-
-<!-- comprar boletos -->
-
-<section class="paquetes-compra">
+  <!-- comprar boletos -->
+    <section class="paquetes-compra">
 
 <h2>¡ADQUIERE TUS NÚMEROS!</h2>
 <p class="precio-unitario">VALOR DE LA UNIDAD: $2</p>
@@ -163,7 +152,6 @@ También podrás consultarlos en la sección «Consulta tus números.
 
 </div>
 
-
 <div class="mas-numeros">
 
 <h3>¿MÁS NÚMEROS?</h3>
@@ -174,7 +162,6 @@ También podrás consultarlos en la sección «Consulta tus números.
 <button onclick="comprarPersonalizado()">COMPRAR</button>
 
 </div>
-
 
 <!-- consultas tus numeros -->
 
@@ -187,7 +174,11 @@ También podrás consultarlos en la sección «Consulta tus números.
 Ingresa tu número de WhatsApp para consultar tus boletos.
 </p>
 
-<input type="text" id="consultaWhatsapp" placeholder="WhatsApp">
+<input 
+type="text"
+id="consultaWhatsapp"
+placeholder="WhatsApp"
+>
 
 <button onclick="consultarNumeros()" class="btn-consultar">
 CONSULTAR
@@ -197,146 +188,210 @@ CONSULTAR
 
 </div>
 
-</section>
+</section>  
 
-</div>
+    </div>
 
-</section>
+  </section>
 
+  <main class="container">
 
-<main class="container">
+    <section id="formulario" class="card oculto">
 
-<section id="formulario" class="card oculto">
+      <div class="checkout">
 
-<div class="checkout">
+        <div class="checkout-left">
 
-<div class="checkout-left">
+          <h2>Datos de Facturación</h2>
 
-<h2>Datos de Facturación</h2>
+          <div class="field">
+            <label>Tipo Documento *</label>
+            <select>
+              <option>Cédula</option>
+              <option>Pasaporte</option>
+            </select>
+          </div>
 
-<div class="field">
-<label>Nombres *</label>
-<input type="text" id="nombre" placeholder="Tu nombre">
-</div>
+          <div class="field">
+            <label>Número Cédula / Pasaporte *</label>
+            <input type="text" placeholder="Número de documento">
+          </div>
 
-<div class="field full">
-<label>Teléfono *</label>
-<input type="text" id="whatsapp" placeholder="Tu WhatsApp">
-</div>
+          <div class="field">
+            <label>Nombres *</label>
+            <input type="text" id="nombre" placeholder="Tu nombre">
+          </div>
 
-<div class="field full">
-<label>Cantidad de boletos</label>
-<input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
-</div>
+          <div class="field">
+            <label>Apellidos *</label>
+            <input type="text" placeholder="Apellido">
+          </div>
 
-</div>
+          <div class="field full">
+            <label>Correo electrónico *</label>
+            <input type="email" placeholder="Email">
+          </div>
 
+          <div class="field full">
+            <label>Confirmar Email *</label>
+            <input type="email" placeholder="Confirmar Email">
+          </div>
 
-<div class="checkout-right">
+          <div class="field full">
+            <label>Teléfono *</label>
+            <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
+          </div>
 
-<h3>Tu pedido</h3>
+          <div class="field full">
+            <label>Dirección *</label>
+            <input type="text" placeholder="Dirección">
+          </div>
 
-<div class="pedido">
+          <div class="field">
+            <label>País *</label>
+            <input type="text" value="Ecuador" disabled>
+          </div>
 
-<div class="pedido-row">
+          <div class="field">
+            <label>Seleccionar *</label>
 
-<span id="nombreSorteoPedido">
-Nombre del sorteo
-</span>
+            <select>
+              <option>Seleccionar</option>
+              <option>Azuay</option>
+              <option>Bolívar</option>
+              <option>Cañar</option>
+              <option>Carchi</option>
+              <option>Chimborazo</option>
+              <option>Cotopaxi</option>
+              <option>El Oro</option>
+              <option>Esmeraldas</option>
+              <option>Galápagos</option>
+              <option>Guayas</option>
+              <option>Imbabura</option>
+              <option>Loja</option>
+              <option>Los Ríos</option>
+              <option>Manabí</option>
+              <option>Morona Santiago</option>
+              <option>Napo</option>
+              <option>Orellana</option>
+              <option>Pastaza</option>
+              <option>Pichincha</option>
+              <option>Santa Elena</option>
+              <option>Santo Domingo de los Tsáchilas</option>
+              <option>Sucumbíos</option>
+              <option>Tungurahua</option>
+              <option>Zamora Chinchipe</option>
+            </select>
 
-<span id="totalPagar">$0</span>
+          </div>
 
-</div>
+          <div class="field">
+            <label>Ciudad *</label>
+            <input type="text" placeholder="Ciudad">
+          </div>
 
-</div>
+          <div class="field full">
+            <label>Cantidad de boletos</label>
+            <input type="number" id="cantidad" min="1" max="50" placeholder="Cantidad de boletos">
+          </div>
 
-<div class="metodo-pago">
+        </div>
 
-<label>
-<input type="radio" checked>
-Transferencia bancaria o depósito
-</label>
+        <div class="checkout-right">
 
-<p>
-Tu pedido se procesará una vez confirmado el pago.
-</p>
+          <h3>Tu pedido</h3>
 
-</div>
+          <div class="pedido">
 
+            <div class="pedido-row">
 
-<label class="terminos">
+              <span id="nombreSorteoPedido">Nombre del sorteo</span>
 
-<input type="checkbox" id="aceptarTerminos">
+              <span id="totalPagar">$0</span>
 
-He leído y acepto los términos y condiciones
+            </div>
 
-</label>
+          </div>
 
-<button id="btnEnviar" class="btn-pagar">
-PAGAR
-</button>
+          <div class="metodo-pago">
 
-</div>
+            <label>
+              <input type="radio" checked>
+              Transferencia bancaria o depósito
+            </label>
 
-</div>
+            <p>
+              Tu pedido se procesará una vez confirmado el pago.
+            </p>
 
-</section>
+          </div>
 
-</main>
+          <label class="terminos">
 
+            <input type="checkbox" id="aceptarTerminos">
 
-<footer class="footer">
+            He leído y acepto los términos y condiciones
 
-<div class="footer-container">
+          </label>
 
-<div class="footer-brand">
+          <button id="btnEnviar" class="btn-pagar">
+            PAGAR
+          </button>
 
-<h3>SorteoEC</h3>
+        </div>
 
-<p>Sorteos digitales con transparencia y confianza.</p>
+      </div>
 
-</div>
+    </section>
 
+  </main>
 
-<div class="footer-contact">
+  <footer class="footer">
 
-<p>
-📞 WhatsApp:
-<a href="https://wa.me/5939XXXXXXXX" target="_blank">
-+593 9XXXXXXX
-</a>
-</p>
+    <div class="footer-container">
 
-<div class="footer-social">
+      <div class="footer-brand">
 
-<a href="#">Facebook</a>
-<a href="#">Instagram</a>
-<a href="#">TikTok</a>
+        <h3>SorteoEC</h3>
 
-</div>
+        <p>Sorteos digitales con transparencia y confianza.</p>
 
-</div>
+      </div>
 
-</div>
+      <div class="footer-contact">
 
+        <p>
+          📞 WhatsApp:
+          <a href="https://wa.me/5939XXXXXXXX" target="_blank">
+            +593 9XXXXXXX
+          </a>
+        </p>
 
-<div class="footer-bottom">
+        <div class="footer-social">
 
-© 2026 SorteoEC.online – Todos los derechos reservados |
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
 
-<a href="https://www.facebook.com/ImpulsoDigital19" target="_blank" class="impulso-link">
+        </div>
 
-Impulso Digital
+      </div>
 
-</a>
+    </div>
 
-</div>
+    <div class="footer-bottom">
 
-</footer>
+      © 2026 SorteoEC.online – Todos los derechos reservados |
 
+      <a href="https://www.facebook.com/ImpulsoDigital19" target="_blank" class="impulso-link">
+        Impulso Digital
+      </a>
 
-<script src="js/main.js"></script>
+    </div>
+
+  </footer>
+
+  <script src="js/main.js"></script>
 
 </body>
-
 </html>
