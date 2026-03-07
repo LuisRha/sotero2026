@@ -1,0 +1,11 @@
+#topBarText{
+  display:block;
+  text-align:center;     /* centra el texto */
+
+  font-size:20px;        /* tamaño */
+  font-weight:600;       /* grosor */
+
+  font-family: "Poppins", sans-serif;
+
+  letter-spacing:1px;    /* espacio entre letras */
+}
