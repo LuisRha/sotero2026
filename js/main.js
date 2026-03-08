@@ -47,33 +47,51 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // OBTENER SORTEO ACTIVO
   // =========================
-  async function obtenerSorteoActivo(){
+async function obtenerSorteoActivo(){
 
-    const res = await fetch("/api/sorteos");
+  const res = await fetch("/api/sorteos");
 
-    if(!res.ok) throw new Error("Error obteniendo sorteos");
+  if(!res.ok) throw new Error("Error obteniendo sorteos");
 
-    const data = await res.json();
+  const data = await res.json();
 
-    const activo = data.find(s => s.estado === "activo");
+  const activo = data.find(s => s.estado === "activo");
 
-    if(!activo) throw new Error("No hay sorteo activo");
+  if(!activo) throw new Error("No hay sorteo activo");
 
-    SORTEO_ID = activo.id;
-    TOTAL_BOLETOS = Number(activo.total_numeros);
-    PRECIO_BOLETO = Number(activo.precio_ticket);
+  SORTEO_ID = activo.id;
+  TOTAL_BOLETOS = Number(activo.total_numeros);
+  PRECIO_BOLETO = Number(activo.precio_ticket);
 
-    const precioUnidad = document.getElementById("precioUnidad");
+  const precioUnidad = document.getElementById("precioUnidad");
 
-    if(precioUnidad){
-      precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
-    }
-
-    if(nombreSorteoPedido){
-      nombreSorteoPedido.textContent = activo.nombre;
-    }
-
+  if(precioUnidad){
+    precioUnidad.textContent = PRECIO_BOLETO.toFixed(2);
   }
+
+  if(nombreSorteoPedido){
+    nombreSorteoPedido.textContent = activo.nombre;
+  }
+
+  // =========================
+  // ACTUALIZAR PRECIOS PAQUETES
+  // =========================
+
+  const p6  = document.getElementById("precio6");
+  const p8  = document.getElementById("precio8");
+  const p10 = document.getElementById("precio10");
+  const p20 = document.getElementById("precio20");
+  const p30 = document.getElementById("precio30");
+  const p50 = document.getElementById("precio50");
+
+  if(p6)  p6.textContent  = "$" + (PRECIO_BOLETO * 6);
+  if(p8)  p8.textContent  = "$" + (PRECIO_BOLETO * 8);
+  if(p10) p10.textContent = "$" + (PRECIO_BOLETO * 10);
+  if(p20) p20.textContent = "$" + (PRECIO_BOLETO * 20);
+  if(p30) p30.textContent = "$" + (PRECIO_BOLETO * 30);
+  if(p50) p50.textContent = "$" + (PRECIO_BOLETO * 50);
+
+}
 
 
   // =========================
