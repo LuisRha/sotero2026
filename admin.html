@@ -7,6 +7,8 @@
 <title>Admin Sorteo 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <!-- CSS -->
 <link rel="stylesheet" href="css/admin.css">
 
@@ -293,6 +295,27 @@ LOADING PANEL
 
 <div id="loadingPanel" class="loading oculto">
 Cargando datos...
+</div>
+
+
+
+<!-- =========================
+TICKET PARA GENERAR IMAGEN
+========================= -->
+
+<div id="ticketImagen" style="display:none;width:500px;background:white;color:black;padding:30px">
+
+<h2 style="text-align:center">TRUJILLOGROUP</h2>
+
+<p id="imgPedido"></p>
+<p id="imgSorteo"></p>
+
+<h3>TICKETS</h3>
+<p id="imgNumeros"></p>
+
+<h3>PREMIOS EXTRA</h3>
+<pre id="imgPremios"></pre>
+
 </div>
 
 

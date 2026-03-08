@@ -459,3 +459,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
 
 });
+
+// =========================
+// 3️⃣ Función para generar la imagen
+// =========================
+////
+
+function generarTicketImagen(pedido,nombreSorteo,numeros,premios){
+
+document.getElementById("imgPedido").innerText =
+"Pedido: " + pedido;
+
+document.getElementById("imgSorteo").innerText =
+nombreSorteo;
+
+document.getElementById("imgNumeros").innerText =
+numeros;
+
+document.getElementById("imgPremios").innerText =
+premios;
+
+html2canvas(document.getElementById("ticketImagen"))
+.then(canvas=>{
+
+const link = document.createElement("a");
+
+link.download = "ticket.png";
+link.href = canvas.toDataURL();
+
+link.click();
+
+});
+
+}
