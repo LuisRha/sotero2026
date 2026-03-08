@@ -260,7 +260,7 @@ lista.forEach((n,i)=>{
 
 linea += n + "    ";
 
-if((i+1)%12===0){
+if((i+1)%11===0){
 
 doc.text(linea,20,y);
 
