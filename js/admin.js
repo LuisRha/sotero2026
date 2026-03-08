@@ -163,12 +163,20 @@ ${premiosTexto}
 Con el respaldo de DADE'S Y TRUJILLOGROUP
 `;
 
-  const telefonoFinal = "593" + telefono.replace(/^0/, "");
+// GENERAR IMAGEN DEL TICKET
+generarTicketImagen(
+  pedido,
+  nombreSorteo,
+  numerosFormato,
+  premiosTexto
+);
 
-  window.open(
-    `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
-    "_blank"
-  );
+const telefonoFinal = "593" + telefono.replace(/^0/, "");
+
+window.open(
+  `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
+  "_blank"
+);
 
 }
 // =========================
