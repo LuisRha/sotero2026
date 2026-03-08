@@ -140,7 +140,8 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
   // =========================
   // MENSAJE WHATSAPP
   // =========================
-  const mensaje = `
+ const mensaje = `
+Hola ${nombreCompleto} 👋
 Agradecemos por tu compra
 
 Pedido número : ${pedido}
