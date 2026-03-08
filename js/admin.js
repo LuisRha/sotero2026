@@ -90,28 +90,44 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  // obtener números de premio desde la API
-  const res = await fetch("/api/premios");
-  const data = await res.json();
+  // obtener premios
+  const resPremios = await fetch("/api/premios");
+  const premios = await resPremios.json();
 
   let premiosTexto = "";
 
-  data.forEach(n => {
+  premios.forEach(n=>{
     premiosTexto += n.numero + "\n";
   });
+
+  // obtener sorteo activo
+  const resSorteo = await fetch("/api/sorteos");
+  const sorteos = await resSorteo.json();
+
+  const activo = sorteos.find(s => s.estado === "activo");
+
+  let nombreDinamica = "PRIMERA";
+
+  if(activo){
+
+    const etapas = ["PRIMERA","SEGUNDA","TERCERA","CUARTA","QUINTA"];
+
+    nombreDinamica = etapas[(activo.id || 1) - 1] || "PRIMERA";
+
+  }
 
   const mensaje = `
 Agradecemos por tu compra
 
 Pedido número : ${pedido}
 
-Moto IGM CR 200
+Moto IGM CR 200 adicional
 
 🎟 TICKETS COMPRADOS : ${cantidad}
 
 ${numerosFormato}
 
-🍀 SUERTE EN NUESTRA PRIMER DINÁMICA
+🍀 SUERTE EN NUESTRA ${nombreDinamica} DINÁMICA
 
 Revisa los siguientes números y compáralos con los tuyos
 si tienes alguno automáticamente ganas el premio extra
