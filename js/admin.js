@@ -105,7 +105,7 @@ Agradecemos por tu compra
 
 Pedido número : ${pedido}
 
-Moto IGM CR 200 adicional
+Moto IGM CR 200
 
 🎟 TICKETS COMPRADOS : ${cantidad}
 
