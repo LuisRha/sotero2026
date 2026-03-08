@@ -467,16 +467,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
 
 });
-
-// =========================
-// 3️⃣ Función para generar la imagen
-// =========================
-
 // =========================
 // 3️⃣ Función para generar la imagen
 // =========================
 
 function generarTicketImagen(pedido,nombreSorteo,numeros,premios){
+
+const ticket = document.getElementById("ticketImagen");
+
+if(!ticket){
+console.error("No existe el elemento ticketImagen");
+return;
+}
 
 document.getElementById("imgPedido").innerText =
 "Pedido: " + pedido;
@@ -490,19 +492,38 @@ numeros;
 document.getElementById("imgPremios").innerText =
 premios;
 
-// esperamos que el ticket se renderice
+// esperar que el contenido se actualice
 setTimeout(()=>{
 
-html2canvas(document.getElementById("ticketImagen"),{
+if(typeof html2canvas === "undefined"){
+console.error("html2canvas no está cargado");
+alert("Error: html2canvas no está cargado");
+return;
+}
+
+html2canvas(ticket,{
 scale:2,
-useCORS:true
+useCORS:true,
+backgroundColor:"#ffffff"
 })
 .then(canvas=>{
 
+if(!canvas){
+console.error("Canvas vacío");
+return;
+}
+
+const imagen = canvas.toDataURL("image/png");
+
+if(!imagen || imagen.length < 100){
+console.error("Imagen vacía o corrupta");
+return;
+}
+
 const link = document.createElement("a");
 
-link.download = "ticket.png";
-link.href = canvas.toDataURL("image/png");
+link.download = "ticket_"+pedido+".png";
+link.href = imagen;
 
 document.body.appendChild(link);
 
@@ -510,8 +531,11 @@ link.click();
 
 document.body.removeChild(link);
 
+})
+.catch(err=>{
+console.error("Error generando imagen",err);
 });
 
-},300);
+},500);
 
 }
