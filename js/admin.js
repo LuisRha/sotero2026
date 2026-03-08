@@ -114,28 +114,47 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
   // =========================
   const resSorteo = await fetch("/api/sorteos");
 
-  if(!resSorteo.ok){
-    alert("Error cargando sorteo");
-    return;
-  }
+if(!resSorteo.ok){
+  alert("Error cargando sorteo");
+  return;
+}
 
-  const sorteos = await resSorteo.json();
+const sorteos = await resSorteo.json();
 
-  const activo = sorteos.find(s => s.estado === "activo");
+const activo = sorteos.find(s => s.estado === "activo");
 
-  let nombreSorteo = "SORTEO";
-  let nombreDinamica = "PRIMERA";
+let nombreSorteo = "SORTEO";
+let nombreDinamica = "PRIMERA";
 
-  if(activo){
+if(activo){
 
-    nombreSorteo = activo.nombre;
+  nombreSorteo = activo.nombre;
 
-    const etapas = ["PRIMERA","SEGUNDA","TERCERA","CUARTA","QUINTA"];
+  const etapas = ["PRIMERA","SEGUNDA","TERCERA","CUARTA","QUINTA"];
 
-    nombreDinamica = etapas[(activo.id || 1) - 1] || "PRIMERA";
+  nombreDinamica = etapas[(activo.id || 1) - 1] || "PRIMERA";
 
-  }
 
+  // =========================
+  // ACTUALIZAR PRECIOS
+  // =========================
+  const precio = Number(activo.precio_ticket || 0);
+
+  const p6  = document.getElementById("precio6");
+  const p8  = document.getElementById("precio8");
+  const p10 = document.getElementById("precio10");
+  const p20 = document.getElementById("precio20");
+  const p30 = document.getElementById("precio30");
+  const p50 = document.getElementById("precio50");
+
+  if(p6)  p6.innerText  = "$" + (precio * 6);
+  if(p8)  p8.innerText  = "$" + (precio * 8);
+  if(p10) p10.innerText = "$" + (precio * 10);
+  if(p20) p20.innerText = "$" + (precio * 20);
+  if(p30) p30.innerText = "$" + (precio * 30);
+  if(p50) p50.innerText = "$" + (precio * 50);
+
+}
 
   // =========================
   // MENSAJE WHATSAPP
