@@ -249,20 +249,38 @@ y+=10;
 doc.text("TICKETS:",20,y);
 y+=8;
 
+
+// ==========================
+// FORMATEAR NUMEROS EN FILAS
+// ==========================
 let lista = numeros.split(" - ");
+let linea = "";
 
-lista.forEach((n)=>{
+lista.forEach((n,i)=>{
 
-doc.text(n,20,y);
+linea += n + "    ";
 
-y+=6;
+if((i+1)%6===0){
+
+doc.text(linea,20,y);
+
+linea = "";
+
+y += 6;
 
 if(y>280){
 doc.addPage();
 y=20;
 }
 
+}
+
 });
+
+// si quedan numeros que no completan la fila
+if(linea !== ""){
+doc.text(linea,20,y);
+}
 
 y+=10;
 
@@ -281,6 +299,11 @@ premiosLista.forEach(p=>{
 doc.text(p,20,y);
 
 y+=6;
+
+if(y>280){
+doc.addPage();
+y=20;
+}
 
 });
 
