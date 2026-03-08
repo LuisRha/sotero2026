@@ -107,7 +107,7 @@ Pedido número : ${pedido}
 
 ${numerosFormato}
 
-🎁 NÚMEROS EXTRA (BONO)
+🎁 NÚMEROS EXTRA
 
 ${extrasTexto}
 `;
