@@ -90,8 +90,16 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  // obtener premios
+  // =========================
+  // OBTENER PREMIOS
+  // =========================
   const resPremios = await fetch("/api/premios");
+
+  if(!resPremios.ok){
+    alert("Error cargando premios");
+    return;
+  }
+
   const premios = await resPremios.json();
 
   let premiosTexto = "";
@@ -100,15 +108,27 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
     premiosTexto += n.numero + "\n";
   });
 
-  // obtener sorteo activo
+
+  // =========================
+  // OBTENER SORTEO ACTIVO
+  // =========================
   const resSorteo = await fetch("/api/sorteos");
+
+  if(!resSorteo.ok){
+    alert("Error cargando sorteo");
+    return;
+  }
+
   const sorteos = await resSorteo.json();
 
   const activo = sorteos.find(s => s.estado === "activo");
 
+  let nombreSorteo = "SORTEO";
   let nombreDinamica = "PRIMERA";
 
   if(activo){
+
+    nombreSorteo = activo.nombre;
 
     const etapas = ["PRIMERA","SEGUNDA","TERCERA","CUARTA","QUINTA"];
 
@@ -116,12 +136,16 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
 
   }
 
+
+  // =========================
+  // MENSAJE WHATSAPP
+  // =========================
   const mensaje = `
 Agradecemos por tu compra
 
 Pedido número : ${pedido}
 
-Moto IGM CR 200 adicional
+${nombreSorteo}
 
 🎟 TICKETS COMPRADOS : ${cantidad}
 
