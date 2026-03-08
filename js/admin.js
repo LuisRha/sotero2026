@@ -169,7 +169,10 @@ generarTicketImagen(
   pedido,
   nombreSorteo,
   numerosFormato,
-  premiosTexto
+  premiosTexto,
+  nombreCompleto,
+  cantidad,
+  nombreDinamica
 );
 
 const telefonoFinal = "593" + telefono.replace(/^0/, "");
@@ -468,11 +471,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
 
 });
+
+
 // =========================
 // 3️⃣ Función para generar la imagen
 // =========================
 
-function generarTicketImagen(pedido,nombreSorteo,numeros,premios){
+function generarTicketImagen(
+pedido,
+nombreSorteo,
+numeros,
+premios,
+nombreCompleto,
+cantidad,
+nombreDinamica
+){
 
 const ticket = document.getElementById("ticketImagen");
 
@@ -481,14 +494,23 @@ console.error("No existe el elemento ticketImagen");
 return;
 }
 
+document.getElementById("imgSaludo").innerText =
+"Hola " + nombreCompleto;
+
 document.getElementById("imgPedido").innerText =
 "Pedido: " + pedido;
 
 document.getElementById("imgSorteo").innerText =
 nombreSorteo;
 
+document.getElementById("imgCantidad").innerText =
+"TICKETS COMPRADOS : " + cantidad;
+
 document.getElementById("imgNumeros").innerText =
 numeros;
+
+document.getElementById("imgDinamica").innerText =
+"SUERTE EN NUESTRA " + nombreDinamica + " DINÁMICA";
 
 document.getElementById("imgPremios").innerText =
 premios;
@@ -498,7 +520,6 @@ setTimeout(()=>{
 
 if(typeof html2canvas === "undefined"){
 console.error("html2canvas no está cargado");
-alert("Error: html2canvas no está cargado");
 return;
 }
 
@@ -509,17 +530,7 @@ backgroundColor:"#ffffff"
 })
 .then(canvas=>{
 
-if(!canvas){
-console.error("Canvas vacío");
-return;
-}
-
 const imagen = canvas.toDataURL("image/png");
-
-if(!imagen || imagen.length < 100){
-console.error("Imagen vacía o corrupta");
-return;
-}
 
 const link = document.createElement("a");
 
@@ -527,14 +538,9 @@ link.download = "ticket_"+pedido+".png";
 link.href = imagen;
 
 document.body.appendChild(link);
-
 link.click();
-
 document.body.removeChild(link);
 
-})
-.catch(err=>{
-console.error("Error generando imagen",err);
 });
 
 },500);
