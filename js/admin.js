@@ -165,15 +165,37 @@ Con el respaldo de DADE'S Y TRUJILLOGROUP
 `;
 
 // GENERAR IMAGEN DEL TICKET
-generarTicketImagen(
-  pedido,
-  nombreSorteo,
-  numerosFormato,
-  premiosTexto,
-  nombreCompleto,
-  cantidad,
-  nombreDinamica
-);
+// =========================
+// ==========================
+// GENERAR TICKET (IMAGEN O PDF)
+// ==========================
+let lista = numerosFormato.split(" - ");
+
+if(lista.length <= 500){
+
+  generarTicketImagen(
+    pedido,
+    nombreSorteo,
+    numerosFormato,
+    premiosTexto,
+    nombreCompleto,
+    cantidad,
+    nombreDinamica
+  );
+
+}else{
+
+  generarTicketPDF(
+    pedido,
+    nombreSorteo,
+    numerosFormato,
+    premiosTexto,
+    nombreCompleto,
+    cantidad,
+    nombreDinamica
+  );
+
+}
 
 const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
@@ -183,7 +205,88 @@ window.open(
 );
 
 }
-// =========================
+
+
+
+// ==========================
+// GENERAR PDF DEL TICKET
+// ==========================
+function generarTicketPDF(
+pedido,
+nombreSorteo,
+numeros,
+premios,
+nombreCompleto,
+cantidad,
+nombreDinamica
+){
+
+const { jsPDF } = window.jspdf;
+
+const doc = new jsPDF();
+
+let y = 20;
+
+doc.setFontSize(18);
+doc.text("TRUJILLOGROUP",105,y,null,null,"center");
+
+y += 10;
+
+doc.setFontSize(12);
+
+doc.text("Hola " + nombreCompleto,20,y);
+y+=8;
+
+doc.text("Pedido: " + pedido,20,y);
+y+=8;
+
+doc.text(nombreSorteo,20,y);
+y+=8;
+
+doc.text("TICKETS COMPRADOS: " + cantidad,20,y);
+y+=10;
+
+doc.text("TICKETS:",20,y);
+y+=8;
+
+let lista = numeros.split(" - ");
+
+lista.forEach((n)=>{
+
+doc.text(n,20,y);
+
+y+=6;
+
+if(y>280){
+doc.addPage();
+y=20;
+}
+
+});
+
+y+=10;
+
+doc.text("SUERTE EN NUESTRA " + nombreDinamica + " DINÁMICA",20,y);
+
+y+=10;
+
+doc.text("PREMIOS EXTRA:",20,y);
+
+y+=8;
+
+let premiosLista = premios.split("\n");
+
+premiosLista.forEach(p=>{
+
+doc.text(p,20,y);
+
+y+=6;
+
+});
+
+doc.save("ticket_" + pedido + ".pdf");
+
+}
 // CARGAR COMPRAS
 // =========================
 async function cargarDatos() {
