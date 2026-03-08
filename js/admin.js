@@ -471,7 +471,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 // =========================
 // 3️⃣ Función para generar la imagen
 // =========================
-////
+
+// =========================
+// 3️⃣ Función para generar la imagen
+// =========================
 
 function generarTicketImagen(pedido,nombreSorteo,numeros,premios){
 
@@ -487,16 +490,28 @@ numeros;
 document.getElementById("imgPremios").innerText =
 premios;
 
-html2canvas(document.getElementById("ticketImagen"))
+// esperamos que el ticket se renderice
+setTimeout(()=>{
+
+html2canvas(document.getElementById("ticketImagen"),{
+scale:2,
+useCORS:true
+})
 .then(canvas=>{
 
 const link = document.createElement("a");
 
 link.download = "ticket.png";
-link.href = canvas.toDataURL();
+link.href = canvas.toDataURL("image/png");
+
+document.body.appendChild(link);
 
 link.click();
 
+document.body.removeChild(link);
+
 });
+
+},300);
 
 }
