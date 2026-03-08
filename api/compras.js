@@ -36,7 +36,7 @@ function generarTickets(cantidad, numerosYaVendidos = [], totalNumeros = 99999) 
     principales.push(generarNumero());
   }
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 0; i++) {
     extras.push(generarNumero());
   }
 
