@@ -83,18 +83,22 @@ async function cargarSorteos() {
 // =========================
 // ENVIAR WHATSAPP
 // =========================
-function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad,extras){
+async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
 
   nombreCompleto = decodeURIComponent(nombreCompleto);
 
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  let extrasTexto = "----\n----\n----\n----\n----\n----\n----\n----\n----\n----";
+  // obtener números de premio desde la API
+  const res = await fetch("/api/premios");
+  const data = await res.json();
 
-  if(extras){
-    extrasTexto = extras.split(",").join("\n");
-  }
+  let premiosTexto = "";
+
+  data.forEach(n => {
+    premiosTexto += n.numero + "\n";
+  });
 
   const mensaje = `
 Agradecemos por tu compra
@@ -114,7 +118,7 @@ si tienes alguno automáticamente ganas el premio extra
 
 🎁 PREMIO EXTRA
 
-${extrasTexto}
+${premiosTexto}
 
 Con el respaldo de DADE'S Y TRUJILLOGROUP
 `;
@@ -127,7 +131,6 @@ Con el respaldo de DADE'S Y TRUJILLOGROUP
   );
 
 }
-
 // =========================
 // CARGAR COMPRAS
 // =========================
