@@ -90,26 +90,33 @@ function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad,extras){
   const numerosOriginales = decodeURIComponent(numeros);
   const numerosFormato = numerosOriginales.split(",").join(" - ");
 
-  let extrasTexto = "----\n----\n----\n----";
+  let extrasTexto = "----\n----\n----\n----\n----\n----\n----\n----\n----\n----";
 
   if(extras){
     extrasTexto = extras.split(",").join("\n");
   }
 
   const mensaje = `
-Hola, ${nombreCompleto}
-
 Agradecemos por tu compra
 
 Pedido número : ${pedido}
 
-🎟️ TICKETS COMPRADOS : ${cantidad}
+Moto IGM CR 200 adicional
+
+🎟 TICKETS COMPRADOS : ${cantidad}
 
 ${numerosFormato}
 
-🎁 NÚMEROS EXTRA
+🍀 SUERTE EN NUESTRA PRIMER DINÁMICA
+
+Revisa los siguientes números y compáralos con los tuyos
+si tienes alguno automáticamente ganas el premio extra
+
+🎁 PREMIO EXTRA
 
 ${extrasTexto}
+
+Con el respaldo de DADE'S Y TRUJILLOGROUP
 `;
 
   const telefonoFinal = "593" + telefono.replace(/^0/, "");
