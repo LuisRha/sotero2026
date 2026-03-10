@@ -716,11 +716,17 @@ async function revisarGanadores(){
 
     const res = await fetch("/api/tickets_ganadores");
 
-    if(!res.ok) return;
+    if(!res.ok){
+      console.error("Error en la respuesta del servidor");
+      return;
+    }
 
     const data = await res.json();
 
     const alerta = document.getElementById("alertaAdmin");
+
+    // Verificar si existe el contenedor
+    if(!alerta) return;
 
     if(data && data.length > 0){
 
@@ -729,9 +735,15 @@ async function revisarGanadores(){
       data.forEach(g => {
 
         html += `
-        🏆 Número: <b>${g.numero}</b><br>
-        👤 Ganador: <b>${g.ganador}</b><br>
-        📱 WhatsApp: <b>${g.telefono}</b><br><br>
+          🏆 Número: <b>${g.numero}</b><br>
+          👤 Ganador: <b>${g.ganador}</b><br>
+          📱 WhatsApp: <b>${g.telefono}</b><br>
+
+          <button onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
+            📲 Notificar ganador
+          </button>
+
+          <br><br><hr>
         `;
 
       });
@@ -746,8 +758,41 @@ async function revisarGanadores(){
 
   }catch(err){
 
-    console.error("Error revisando ganadores", err);
+    console.error("Error revisando ganadores:", err);
 
   }
+
+}
+
+
+
+// notificador
+
+function notificarGanador(telefono,nombre,numero){
+
+  if(!telefono){
+    alert("No hay número de WhatsApp para este ganador");
+    return;
+  }
+
+  telefono = telefono.trim();
+
+  const mensaje = `
+Hola ${nombre} 🎉
+
+¡Felicidades!
+Tu número ${numero} ha ganado un premio instantáneo.
+
+Por favor contáctanos para reclamar tu premio.
+
+SorteoEC
+`;
+
+  const telefonoFinal = "593" + telefono.replace(/^0/, "");
+
+  window.open(
+    `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
+    "_blank"
+  );
 
 }
