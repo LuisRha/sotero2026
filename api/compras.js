@@ -274,19 +274,23 @@ if (error) {
 }
 
 
-// =========================
+/// =========================
 // ACTUALIZAR TICKETS AUTOMÁTICAMENTE
 // =========================
 const listaNumeros = numeros ? numeros.replace(/\s/g, "").split(",") : [];
 
-await supabase
-  .from("tickets")
-  .update({
-    usado: true,
-    ganador: nombres,
-    telefono: whatsapp || telefono
-  })
-  .in("numero", listaNumeros);
+if (listaNumeros.length > 0) {
+
+  await supabase
+    .from("tickets")
+    .update({
+      usado: true,
+      ganador: nombres,
+      telefono: whatsapp || telefono
+    })
+    .in("numero", listaNumeros);
+
+}
 
 
 // =========================
