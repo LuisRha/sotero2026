@@ -616,8 +616,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
   await revisarGanadores();
 
-});
+  // revisar cada 5 segundos si hay ganadores
+  setInterval(revisarGanadores, 5000);
 
+});
 
 // =========================
 // 3️⃣ Función para generar la imagen
