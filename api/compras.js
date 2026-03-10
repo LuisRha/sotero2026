@@ -277,7 +277,7 @@ if (error) {
 // =========================
 // ACTUALIZAR TICKETS AUTOMÁTICAMENTE
 // =========================
-const listaNumeros = numeros.replace(/\s/g, "").split(",");
+const listaNumeros = numeros ? numeros.replace(/\s/g, "").split(",") : [];
 
 await supabase
   .from("tickets")
