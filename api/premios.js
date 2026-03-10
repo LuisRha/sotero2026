@@ -13,8 +13,9 @@ export default async function handler(req, res) {
 
       const { data, error } = await supabase
         .from("tickets")
-        .select("numero,premio")
-        .order("numero",{ascending:true});
+        .select("numero, ganador, telefono")
+        .eq("premio", true)
+        .eq("usado", true);
 
       if(error){
         return res.status(500).json({error:error.message});
