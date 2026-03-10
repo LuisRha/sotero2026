@@ -734,19 +734,20 @@ async function revisarGanadores(){
 
       data.forEach(g => {
 
-        html += `
-          🏆 Número: <b>${g.numero}</b><br>
-          👤 Ganador: <b>${g.ganador}</b><br>
-          📱 WhatsApp: <b>${g.telefono}</b><br>
+  html += `
+    🏆 Número: <b>${g.numero}</b><br>
+    👤 Ganador: <b>${g.ganador}</b><br>
+    📱 WhatsApp: <b>${g.telefono}</b><br>
+    🧾 Compra ID: <b>${g.compra_id}</b><br>
 
-          <button onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
-            📲 Notificar ganador
-          </button>
+    <button onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
+      📲 Notificar ganador
+    </button>
 
-          <br><br><hr>
-        `;
+    <br><br><hr>
+  `;
 
-      });
+});
 
       alerta.innerHTML = html;
 

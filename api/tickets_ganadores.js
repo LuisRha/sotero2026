@@ -9,11 +9,17 @@ export default async function handler(req, res) {
 
   try {
 
+    // Solo permitir GET
+    if(req.method !== "GET"){
+      return res.status(405).json({ error: "Método no permitido" });
+    }
+
     const { data, error } = await supabase
       .from("tickets")
-      .select("numero, ganador, telefono")
+      .select("numero, ganador, telefono, compra_id, created_at")
       .eq("premio", true)
-      .eq("usado", true);
+      .eq("usado", true)
+      .order("created_at", { ascending: false });
 
     if (error) {
       return res.status(500).json({ error: error.message });
