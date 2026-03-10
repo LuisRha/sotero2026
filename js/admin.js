@@ -88,7 +88,9 @@ async function enviarWhatsapp(telefono,nombreCompleto,numeros,pedido,cantidad){
   nombreCompleto = decodeURIComponent(nombreCompleto);
 
   const numerosOriginales = decodeURIComponent(numeros);
-  const numerosFormato = numerosOriginales.split(",").join(" - ");
+  const numerosFormato = numerosOriginales
+  ? numerosOriginales.split(",").join(" - ")
+  : "";
 
   // =========================
   // OBTENER PREMIOS
@@ -188,7 +190,7 @@ Con el respaldo de DADE'S Y TRUJILLOGROUP
 // ==========================
 // GENERAR TICKET (IMAGEN O PDF)
 // ==========================
-let lista = numerosFormato.split(" - ");
+let lista = numerosFormato ? numerosFormato.split(" - ") : [];
 
 if(lista.length <= 500){
 
