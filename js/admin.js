@@ -614,6 +614,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await cargarSorteos();
   await cargarDatos();
+  await revisarGanadores();
 
 });
 
@@ -689,5 +690,34 @@ document.body.removeChild(link);
 });
 
 },500);
+
+}
+
+
+// =========================
+// ALERTA GANADORES
+// =========================
+async function revisarGanadores(){
+
+  try{
+
+    const res = await fetch("/api/tickets_ganadores");
+
+    if(!res.ok) return;
+
+    const data = await res.json();
+
+    if(data.length > 0){
+
+      document.getElementById("alertaAdmin").innerHTML =
+      "🔔 Hay " + data.length + " premios instantáneos ganados";
+
+    }
+
+  }catch(err){
+
+    console.error("Error revisando ganadores",err);
+
+  }
 
 }

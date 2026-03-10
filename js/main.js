@@ -16,6 +16,25 @@ let TOTAL_BOLETOS = 0;
 let PRECIO_BOLETO = 0;
 let SORTEO_ID = null;
 
+// =========================
+// Detectar premio cuando compran
+// =========================
+async function verificarPremio(numero){
+
+const { data, error } = await supabaseClient
+.from("tickets")
+.select("numero,premio")
+.eq("numero", numero)
+.eq("sorteo_id", SORTEO_ID);
+
+if(data.length > 0 && data[0].premio){
+
+alert("🎉 ¡FELICIDADES! Número premiado: " + numero);
+
+}
+
+}
+
 
 // =========================
 // INICIO DOM
@@ -157,7 +176,7 @@ async function obtenerSorteoActivo(){
   }
 
 
-  // =========================
+    // =========================
   // BOTON PAGAR
   // =========================
   if(btnEnviar){
@@ -237,6 +256,23 @@ async function obtenerSorteoActivo(){
           throw new Error(data.error || "Error al registrar compra");
         }
 
+
+        // =========================
+        // VERIFICAR PREMIOS
+        // =========================
+        if(data.numeros){
+
+        const lista = data.numeros.split(",");
+
+        for(const numero of lista){
+
+        await verificarPremio(numero.trim());
+
+        }
+
+        }
+
+
         alert(
 `Compra registrada correctamente
 
@@ -289,7 +325,6 @@ ${data.extras}`
   })();
 
 });
-
 
 // =========================
 // CONSULTAR BOLETOS
@@ -453,17 +488,52 @@ async function cargarNumerosPremio(){
 
     data.forEach(n => {
 
-      const span = document.createElement("span");
+      const div = document.createElement("div");
+      div.classList.add("numeroBox");
 
+      const span = document.createElement("span");
       span.textContent = n.numero;
 
-      if(n.premio){
+      // -------------------------
+      // PREMIO GANADO
+      // -------------------------
+      if(n.premio && !n.entregado){
+
         span.classList.add("activo");
-      }else{
-        span.classList.add("entregado");
+
       }
 
-      contenedor.appendChild(span);
+      // -------------------------
+      // PREMIO ENTREGADO
+      // -------------------------
+      else if(n.premio && n.entregado){
+
+        span.classList.add("entregado");
+
+        const texto = document.createElement("div");
+        texto.textContent = "ENTREGADO";
+        texto.classList.add("estadoPremio");
+
+        div.appendChild(span);
+        div.appendChild(texto);
+
+        contenedor.appendChild(div);
+
+        return;
+
+      }
+
+      // -------------------------
+      // NORMAL
+      // -------------------------
+      else{
+
+        span.classList.add("normal");
+
+      }
+
+      div.appendChild(span);
+      contenedor.appendChild(div);
 
     });
 
@@ -472,7 +542,6 @@ async function cargarNumerosPremio(){
   }
 
 }
-
 
 
 // FUNCIÓN COMPRAR
