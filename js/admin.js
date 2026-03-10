@@ -447,6 +447,7 @@ async function aprobar(id) {
 
   if(compra && compra.numeros){
 
+    // convertir string a array de números
     const numeros = compra.numeros.split(",");
 
     for(const numero of numeros){
@@ -455,8 +456,9 @@ async function aprobar(id) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          numero,
-          ganador: compra.nombres
+          numero: numero.trim(),      // número comprado
+          ganador: compra.nombres,    // nombre del ganador
+          telefono: compra.whatsapp   // telefono del comprador
         })
       });
 
@@ -464,7 +466,10 @@ async function aprobar(id) {
 
   }
 
+  // recargar panel
   cargarDatos();
+
+  // revisar si hay premios ganados
   revisarGanadores();
 
 }
