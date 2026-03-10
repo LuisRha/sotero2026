@@ -289,10 +289,10 @@ export default async function handler(req, res) {
 
 
 
-    // =========================
-    // PUT → APROBAR / RECHAZAR
-    // =========================
-    if (req.method === "PUT") {
+  // =========================
+// PUT → APROBAR / RECHAZAR
+// =========================
+if (req.method === "PUT") {
 
   const { id, estado } = body;
 
@@ -300,23 +300,32 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "ID o estado faltante" });
   }
 
-  // actualizar estado de compra
-  const { data: compra, error: compraError } = await supabase
+  // actualizar estado
+  const { error } = await supabase
     .from("compras")
     .update({ estado })
+    .eq("id", id);
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  // obtener datos de la compra
+  const { data: compra, error: compraError } = await supabase
+    .from("compras")
+    .select("*")
     .eq("id", id)
-    .select()
     .single();
 
   if (compraError) {
     return res.status(500).json({ error: compraError.message });
   }
 
-  // SOLO si la compra fue aprobada
+  // si la compra fue aprobada
   if (estado === "aprobado" && compra) {
 
     const numeros = compra.numeros
-      ? compra.numeros.replace(/\s/g,'').split(",")
+      ? compra.numeros.replace(/\s/g, "").split(",")
       : [];
 
     const telefono = compra.whatsapp || compra.telefono || "";
@@ -337,5 +346,20 @@ export default async function handler(req, res) {
   }
 
   return res.status(200).json({ ok: true });
+
+}
+
+return res.status(405).json({ error: "Método no permitido" });
+
+} catch (err) {
+
+  console.error("Error general:", err);
+
+  return res.status(500).json({
+    error: "Error interno",
+    detalle: err.message
+  });
+
+}
 
 }
