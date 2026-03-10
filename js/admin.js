@@ -707,16 +707,21 @@ async function revisarGanadores(){
 
     const data = await res.json();
 
-    if(data.length > 0){
+    if(data && data.length > 0){
 
       document.getElementById("alertaAdmin").innerHTML =
       "🔔 Hay " + data.length + " premios instantáneos ganados";
+
+    }else{
+
+      document.getElementById("alertaAdmin").innerHTML =
+      "✔ No hay premios instantáneos reclamados";
 
     }
 
   }catch(err){
 
-    console.error("Error revisando ganadores",err);
+    console.error("Error revisando ganadores", err);
 
   }
 
