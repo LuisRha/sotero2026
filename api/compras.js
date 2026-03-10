@@ -330,19 +330,22 @@ if (req.method === "PUT") {
 
     const telefono = (compra.whatsapp ?? compra.telefono ?? "").toString().trim();
 
-    for (const numero of numeros) {
+    if (estado === "aprobado" && compra) {
 
-      await supabase
-  .from("tickets")
-  .update({
-    usado: true,
-    ganador: compra.nombres,
-    telefono: telefono
-  })
-  .in("numero", numeros);
+  const numeros = compra.numeros
+    ? compra.numeros.replace(/\s/g, "").split(",")
+    : [];
 
-    }
+  await supabase
+    .from("tickets")
+    .update({
+      usado: true,
+      ganador: compra.nombres,
+      telefono: compra.whatsapp || compra.telefono
+    })
+    .in("numero", numeros);
 
+}
   }
 
   return res.status(200).json({ ok: true });
