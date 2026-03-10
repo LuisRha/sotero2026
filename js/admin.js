@@ -720,15 +720,27 @@ async function revisarGanadores(){
 
     const data = await res.json();
 
+    const alerta = document.getElementById("alertaAdmin");
+
     if(data && data.length > 0){
 
-      document.getElementById("alertaAdmin").innerHTML =
-      "🔔 Hay " + data.length + " premios instantáneos ganados";
+      let html = "🎉 <b>Premios instantáneos ganados</b><br><br>";
+
+      data.forEach(g => {
+
+        html += `
+        🏆 Número: <b>${g.numero}</b><br>
+        👤 Ganador: <b>${g.ganador}</b><br>
+        📱 WhatsApp: <b>${g.telefono}</b><br><br>
+        `;
+
+      });
+
+      alerta.innerHTML = html;
 
     }else{
 
-      document.getElementById("alertaAdmin").innerHTML =
-      "✔ No hay premios instantáneos reclamados";
+      alerta.innerHTML = "✔ No hay premios instantáneos reclamados";
 
     }
 
