@@ -333,13 +333,13 @@ if (req.method === "PUT") {
     for (const numero of numeros) {
 
       await supabase
-        .from("tickets")
-        .update({
-          usado: true,
-          ganador: compra.nombres,
-          telefono: telefono
-        })
-        .eq("numero", numero);
+  .from("tickets")
+  .update({
+    usado: true,
+    ganador: compra.nombres,
+    telefono: telefono
+  })
+  .in("numero", numeros);
 
     }
 
