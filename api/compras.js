@@ -294,37 +294,48 @@ export default async function handler(req, res) {
     // =========================
     if (req.method === "PUT") {
 
-      const { id, estado } = body;
+  const { id, estado } = body;
 
-      if (!id || !estado) {
-        return res.status(400).json({ error: "ID o estado faltante" });
-      }
+  if (!id || !estado) {
+    return res.status(400).json({ error: "ID o estado faltante" });
+  }
 
-      const { error } = await supabase
-        .from("compras")
-        .update({ estado })
-        .eq("id", id);
+  // actualizar estado de compra
+  const { data: compra, error: compraError } = await supabase
+    .from("compras")
+    .update({ estado })
+    .eq("id", id)
+    .select()
+    .single();
 
-      if (error) {
-        return res.status(500).json({ error: error.message });
-      }
+  if (compraError) {
+    return res.status(500).json({ error: compraError.message });
+  }
 
-      return res.status(200).json({ ok: true });
+  // SOLO si la compra fue aprobada
+  if (estado === "aprobado" && compra) {
+
+    const numeros = compra.numeros
+      ? compra.numeros.replace(/\s/g,'').split(",")
+      : [];
+
+    const telefono = compra.whatsapp || compra.telefono || "";
+
+    for (const numero of numeros) {
+
+      await supabase
+        .from("tickets")
+        .update({
+          usado: true,
+          ganador: compra.nombres,
+          telefono: telefono
+        })
+        .eq("numero", numero);
 
     }
 
-
-
-    return res.status(405).json({ error: "Método no permitido" });
-
-
-
-  } catch (err) {
-
-    console.error("Error general:", err);
-
-    return res.status(500).json({ error: err.message });
-
   }
+
+  return res.status(200).json({ ok: true });
 
 }
