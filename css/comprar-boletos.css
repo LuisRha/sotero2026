@@ -207,16 +207,12 @@ text-align:center;
 /* =========================
 ALERTA PREMIOS ADMIN
 ========================= */
-
 .alerta-admin{
-
-background:#ffe8a1;
-padding:12px;
-margin:10px 20px;
-font-weight:bold;
+background:#fff3cd;
+color:#856404;
+padding:10px;
+margin:10px;
 border-radius:6px;
-border:1px solid #f1c40f;
-color:#6b4f00;
-display:none;
-
+font-weight:bold;
+text-align:center;
 }
