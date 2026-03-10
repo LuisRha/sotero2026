@@ -328,7 +328,7 @@ if (req.method === "PUT") {
       ? compra.numeros.replace(/\s/g, "").split(",")
       : [];
 
-    const telefono = compra.whatsapp || compra.telefono || "";
+    const telefono = (compra.whatsapp ?? compra.telefono ?? "").toString().trim();
 
     for (const numero of numeros) {
 
