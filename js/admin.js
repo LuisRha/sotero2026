@@ -710,6 +710,9 @@ document.body.removeChild(link);
 // =========================
 // ALERTA GANADORES
 // =========================
+// ==========================
+// REVISAR GANADORES
+// ==========================
 async function revisarGanadores(){
 
   try{
@@ -730,29 +733,34 @@ async function revisarGanadores(){
 
     if(data && data.length > 0){
 
+      // Título del aviso en el panel admin
       let html = "🎉 <b>Premios instantáneos ganados</b><br><br>";
 
+      // Recorrer cada ganador
       data.forEach(g => {
 
-  html += `
-    🏆 Número: <b>${g.numero}</b><br>
-    👤 Ganador: <b>${g.ganador}</b><br>
-    📱 WhatsApp: <b>${g.telefono}</b><br>
-    🧾 Compra ID: <b>${g.compra_id}</b><br>
+        html += `
+        🏆 Número: <b>${g.numero}</b><br>
+        👤 Ganador: <b>${g.ganador}</b><br>
+        📱 WhatsApp: <b>${g.telefono}</b><br>
 
-    <button onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
-      📲 Notificar ganador
-    </button>
+        <!-- BOTON PARA NOTIFICAR POR WHATSAPP -->
+        <button class="btn-whatsapp"
+        onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
+        📲 Notificar ganador
+        </button>
 
-    <br><br><hr>
-  `;
+        <br><br>
+        `;
 
-});
+      });
 
+      // Mostrar la información en el panel admin
       alerta.innerHTML = html;
 
     }else{
 
+      // Mensaje si no hay ganadores
       alerta.innerHTML = "✔ No hay premios instantáneos reclamados";
 
     }
@@ -767,10 +775,12 @@ async function revisarGanadores(){
 
 
 
+// ==========================
 // notificador
-
+// ==========================
 function notificarGanador(telefono,nombre,numero){
 
+  // Verificar si existe número
   if(!telefono){
     alert("No hay número de WhatsApp para este ganador");
     return;
@@ -778,6 +788,7 @@ function notificarGanador(telefono,nombre,numero){
 
   telefono = telefono.trim();
 
+  // Mensaje que se enviará al ganador
   const mensaje = `
 Hola ${nombre} 🎉
 
@@ -789,8 +800,10 @@ Por favor contáctanos para reclamar tu premio.
 SorteoEC
 `;
 
+  // Convertir número ecuatoriano a formato internacional
   const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
+  // Abrir WhatsApp con el mensaje listo
   window.open(
     `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
     "_blank"
