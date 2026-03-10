@@ -227,67 +227,80 @@ export default async function handler(req, res) {
 
 
 
-      // =========================
-      // INSERTAR COMPRA
-      // =========================
-      const { error } = await supabase
-        .from("compras")
-        .insert([
-          {
+// =========================
+// INSERTAR COMPRA
+// =========================
+const { error } = await supabase
+  .from("compras")
+  .insert([
+    {
 
-            sorteo_id,
+      sorteo_id,
 
-            nombres: nombres || "",
-            apellidos: apellidos || "",
+      nombres: nombres || "",
+      apellidos: apellidos || "",
 
-            tipo_documento: tipo_documento || "",
-            numero_documento: numero_documento || "",
+      tipo_documento: tipo_documento || "",
+      numero_documento: numero_documento || "",
 
-            email: email || "",
-            telefono: telefono || "",
-            whatsapp: whatsapp || telefono || "",
+      email: email || "",
+      telefono: telefono || "",
+      whatsapp: whatsapp || telefono || "",
 
-            direccion: direccion || "",
-            pais: pais || "",
-            provincia: provincia || "",
-            ciudad: ciudad || "",
+      direccion: direccion || "",
+      pais: pais || "",
+      provincia: provincia || "",
+      ciudad: ciudad || "",
 
-            cantidad: Number(cantidad),
+      cantidad: Number(cantidad),
 
-            numeros,
-            extras,
+      numeros,
+      extras,
 
-            voucher: voucher || "",
-            total: Number(total),
+      voucher: voucher || "",
+      total: Number(total),
 
-            estado: "pendiente"
-
-          }
-        ]);
-
-
-
-      if (error) {
-
-        console.error("Error insert:", error);
-
-        return res.status(500).json({ error: error.message });
-
-      }
-
-
-
-      return res.status(200).json({
-
-        ok: true,
-        numeros,
-        extras
-
-      });
+      estado: "pendiente"
 
     }
+  ]);
+
+if (error) {
+
+  console.error("Error insert:", error);
+
+  return res.status(500).json({ error: error.message });
+
+}
 
 
+// =========================
+// ACTUALIZAR TICKETS AUTOMÁTICAMENTE
+// =========================
+const listaNumeros = numeros.replace(/\s/g, "").split(",");
+
+await supabase
+  .from("tickets")
+  .update({
+    usado: true,
+    ganador: nombres,
+    telefono: whatsapp || telefono
+  })
+  .in("numero", listaNumeros);
+
+
+// =========================
+// RESPUESTA
+// =========================
+return res.status(200).json({
+
+  ok: true,
+  numeros,
+  extras
+
+});
+
+}
 
   // =========================
 // PUT → APROBAR / RECHAZAR
