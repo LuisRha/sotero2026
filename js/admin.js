@@ -434,27 +434,38 @@ function verVoucher(v) {
 // =========================
 async function aprobar(id) {
 
+  // aprobar compra
   await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, estado: "aprobado" })
   });
 
+  // obtener datos de la compra
+  const res = await fetch("/api/compras?id=" + id);
+  const compra = await res.json();
+
+  if(compra && compra.numeros){
+
+    const numeros = compra.numeros.split(",");
+
+    for(const numero of numeros){
+
+      await fetch("/api/verificar_premio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          numero,
+          ganador: compra.nombres
+        })
+      });
+
+    }
+
+  }
+
   cargarDatos();
-
-}
-
-async function rechazar(id) {
-
-  if (!confirm("¿Rechazar esta compra?")) return;
-
-  await fetch("/api/compras", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, estado: "rechazado" })
-  });
-
-  cargarDatos();
+  revisarGanadores();
 
 }
 
