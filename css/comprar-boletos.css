@@ -23,7 +23,7 @@ gap:25px;
 /* TARJETAS */
 
 .card{
-background:#c540df;
+background:#ed9edf;
 padding:35px 25px;
 border-radius:10px;
 color:#111;
@@ -75,10 +75,11 @@ transform:scale(1.05);
 /* MÁS VENDIDO */
 
 .destacado{
-border:2px solid #000;
+border:2px solid #00d08b;
 }
 
 .destacado .tag{
+  border:2px solid #00d08b;
 color:#000;
 font-weight:700;
 }
