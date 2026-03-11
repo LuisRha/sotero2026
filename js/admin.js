@@ -434,15 +434,67 @@ function verVoucher(v) {
 // =========================
 // APROBAR / RECHAZAR
 // =========================
+
 async function aprobar(id) {
 
-  // aprobar compra
+  const confirmar = confirm("¿Seguro que deseas aprobar esta compra?");
+
+  if(!confirmar) return;
+
   await fetch("/api/compras", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, estado: "aprobado" })
   });
 
+  const res = await fetch("/api/compras?id=" + id);
+  const compra = await res.json();
+
+  if(compra && compra.numeros){
+
+    const numeros = compra.numeros.split(",");
+
+    for(const numero of numeros){
+
+      await fetch("/api/verificar_premio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          numero: numero.trim(),
+          ganador: compra.nombres,
+          telefono: compra.whatsapp
+        })
+      });
+
+    }
+
+  }
+
+  cargarDatos();
+  revisarGanadores();
+
+}
+
+
+// 🔴 RECHAZAR
+async function rechazar(id){
+
+  const confirmar = confirm("¿Seguro que deseas rechazar esta compra?");
+
+  if(!confirmar) return;
+
+  await fetch("/api/compras", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id,
+      estado: "rechazado"
+    })
+  });
+
+  cargarDatos();
+
+}
   // obtener datos de la compra
   const res = await fetch("/api/compras?id=" + id);
   const compra = await res.json();
@@ -474,7 +526,6 @@ async function aprobar(id) {
   // revisar si hay premios ganados
   revisarGanadores();
 
-}
 
 // =========================
 // BOTONES PANEL
