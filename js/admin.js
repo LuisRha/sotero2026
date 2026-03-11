@@ -495,6 +495,25 @@ async function rechazar(id){
   cargarDatos();
 
 }
+
+// 🔴 RECHAZAR
+async function rechazar(id){
+
+  const confirmar = confirm("¿Seguro que deseas rechazar esta compra?");
+
+  if(!confirmar) return;
+
+  await fetch("/api/compras", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id,
+      estado: "rechazado"
+    })
+  });
+
+  cargarDatos();
+
   // obtener datos de la compra
   const res = await fetch("/api/compras?id=" + id);
   const compra = await res.json();
@@ -525,6 +544,8 @@ async function rechazar(id){
 
   // revisar si hay premios ganados
   revisarGanadores();
+
+}
 
 
 // =========================
