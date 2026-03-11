@@ -76,11 +76,11 @@ transform:scale(1.05);
 /* MÁS VENDIDO */
 
 .destacado{
+  border:2px solid #00d08b;
 border:2px solid #000;
 }
 
 .destacado .tag{
-border:2px solid #00d08b;
 color:#000;
 font-weight:700;
 }
