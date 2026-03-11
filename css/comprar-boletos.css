@@ -22,31 +22,22 @@ gap:25px;
 
 /* TARJETAS */
 
-.card::before{
+.card{
+background:#c540df;
+padding:35px 25px;
+border-radius:10px;
+color:#111;
+transition:all .25s ease;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+position:relative;
+}
 
-content:"";
-position:absolute;
-inset:0;
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 18px 35px rgba(0,0,0,0.25);
+}
 
-border-radius:12px;
-padding:2px;
-
-background:linear-gradient(90deg,#3a6cff,#b400ff);
-
--webkit-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
-
-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
-
--webkit-mask-composite:xor;
-mask-composite:exclude;
-
-pointer-events:none;
-
-}/* TITULO */
+/* TITULO */
 
 .card h3{
 font-size:18px;
