@@ -575,7 +575,8 @@ function comprarPersonalizado(){
     document.getElementById("cantidadPersonalizada").value
   );
 
-  if(!cantidad || cantidad <= 0){
+  // if(!cantidad || cantidad <= 0){
+  if(!cantidad || cantidad < 50){
     alert("Ingresa una cantidad válida");
     return;
   }
