@@ -162,14 +162,14 @@ if(activo){
   // MENSAJE WHATSAPP
   // =========================
 const mensaje = `
-Hola *${nombreCompleto}* 👋
+Hola *${nombreCompleto}* 👋🏻
 Agradecemos por tu compra
 
-🧾 Pedido número : *${pedido}*
+📓 Pedido número : *${pedido}*
 
 *${nombreSorteo}*
 
-🎟 TICKETS COMPRADOS : *${cantidad}*
+💴 TICKETS COMPRADOS : *${cantidad}*
 
 ${numerosFormato}
 
