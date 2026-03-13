@@ -511,10 +511,54 @@ async function cargarNumerosPremio(){
       const span = document.createElement("span");
       span.textContent = n.numero;
 
-      
+      // -------------------------
+      // PREMIO GANADO
+      // -------------------------
+      if(n.premio && !n.usado){
+        span.classList.add("activo");
+      }
+
+      // -------------------------
+      // PREMIO ENTREGADO
+      // -------------------------
+      else if(n.premio && n.usado){
+
+        span.classList.add("entregado");
+
+        const texto = document.createElement("div");
+        texto.textContent = "ENTREGADO";
+        texto.classList.add("estadoPremio");
+
+        div.appendChild(span);
+        div.appendChild(texto);
+
+        contenedor.appendChild(div);
+
+        return;
+      }
+
+      // -------------------------
+      // NORMAL
+      // -------------------------
+      else{
+        span.classList.add("normal");
+      }
+
+      div.appendChild(span);
+      contenedor.appendChild(div);
+
+    }); // ← cierre forEach
+
+  }catch(err){
+    console.error("Error leyendo premios",err);
+  }
+
+} // ← cierre cargarNumerosPremio
 
 
+// =========================
 // FUNCIÓN COMPRAR
+// =========================
 function comprar(cantidad){
 
   const formulario = document.getElementById("formulario");
@@ -538,14 +582,15 @@ function comprar(cantidad){
 }
 
 
+// =========================
 // FUNCIÓN COMPRAR PERSONALIZADO
+// =========================
 function comprarPersonalizado(){
 
   const cantidad = Number(
     document.getElementById("cantidadPersonalizada").value
   );
 
-  // if(!cantidad || cantidad <= 0){
   if(!cantidad || cantidad < 50){
     alert("Ingresa una cantidad válida");
     return;
