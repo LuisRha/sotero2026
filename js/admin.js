@@ -496,8 +496,7 @@ Estado: ${resultado.estado || "-"}
 '${resultado.whatsapp}',
 '${valor}',
 '${resultado.nombres}',
-'${resultado.id}',
-'${resultado.numeros}'
+'${resultado.id}'
 )">
 Enviar por WhatsApp
 </button>
