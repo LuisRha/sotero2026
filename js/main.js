@@ -27,6 +27,11 @@ const { data, error } = await supabaseClient
 .eq("numero", numero)
 .eq("sorteo_id", SORTEO_ID);
 
+if(error){
+console.error("Error consultando premio:", error);
+return;
+}
+
 if(data && data.length > 0 && data[0].premio){
 
 alert("🎉 ¡FELICIDADES! Número premiado: " + numero);
@@ -34,7 +39,6 @@ alert("🎉 ¡FELICIDADES! Número premiado: " + numero);
 }
 
 }
-
 // =========================
 // INICIO DOM
 // =========================
