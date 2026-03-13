@@ -24,11 +24,15 @@ padding:8px 14px;
 border-radius:6px;
 }
 
+/* numero entregado */
 .entregado{
+background:#444;
 color:#aaa;
 text-decoration:line-through;
+opacity:0.6;
 }
 
+/* numero activo */
 .activo{
 color:#1fd760;
 }
