@@ -492,7 +492,13 @@ Estado: ${resultado.estado || "-"}
 
 <br><br>
 
-<button onclick="enviarWhats('${resultado.whatsapp}','${resultado.numeros}')">
+<button onclick="enviarWhats(
+'${resultado.whatsapp}',
+'${valor}',
+'${resultado.nombres}',
+'${resultado.id}',
+'${resultado.numeros}'
+)">
 Enviar por WhatsApp
 </button>
 
