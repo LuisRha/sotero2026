@@ -444,7 +444,6 @@ return;
 }
 
 const res = await fetch("/api/compras");
-
 const data = await res.json();
 
 let resultado = null;
@@ -457,8 +456,8 @@ const lista = compra.numeros.split(",");
 
 if(
 lista.includes(valor) ||
-compra.nombres.toLowerCase().includes(valor.toLowerCase()) ||
-compra.whatsapp.includes(valor)
+(compra.nombres && compra.nombres.toLowerCase().includes(valor.toLowerCase())) ||
+(compra.whatsapp && compra.whatsapp.includes(valor))
 ){
 resultado = compra;
 break;
@@ -474,17 +473,22 @@ return;
 }
 
 cont.innerHTML = `
-<div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px">
+<div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px;position:relative">
+
+<button onclick="cerrarBusqueda()"
+style="position:absolute;top:8px;right:10px;background:red;color:white;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-weight:bold">
+✖
+</button>
 
 <h3>Información de compra</h3>
 
-Nombre: ${resultado.nombres} ${resultado.apellidos}<br>
-WhatsApp: ${resultado.whatsapp}<br>
-Email: ${resultado.email}<br>
-Cantidad: ${resultado.cantidad}<br>
-Números: ${resultado.numeros}<br>
-Voucher: ${resultado.voucher}<br>
-Estado: ${resultado.estado}
+Nombre: ${resultado.nombres || ""} ${resultado.apellidos || ""}<br>
+WhatsApp: ${resultado.whatsapp || "-"}<br>
+Email: ${resultado.email || "-"}<br>
+Cantidad: ${resultado.cantidad || 0}<br>
+Números: ${resultado.numeros || "-"}<br>
+Voucher: ${resultado.voucher || "-"}<br>
+Estado: ${resultado.estado || "-"}
 
 <br><br>
 
@@ -501,19 +505,42 @@ Enviar por WhatsApp
 // =========================
 // ENVIAR WHATSAPP BUSQUEDA
 // =========================
-function enviarWhats(telefono,numeros){
+async function enviarWhats(telefono,numero,nombre,pedido){
 
 const tel = "593" + telefono.replace(/^0/, "");
 
-const mensaje = `🎟 Sorteo
+// obtener sorteo activo
+const res = await fetch("/api/sorteos");
+const sorteos = await res.json();
 
-Tus números registrados son:
+let nombreSorteo = "SORTEO";
 
-${numeros}
+const activo = sorteos.find(s => s.estado === "activo");
 
-Guarda este mensaje como comprobante`;
+if(activo){
+nombreSorteo = activo.nombre;
+}
 
-window.open(`https://wa.me/${tel}?text=${encodeURIComponent(mensaje)}`);
+const mensaje = `
+🎉 *FELICIDADES ${nombre}*
+
+Tu número ha sido seleccionado en nuestro sistema.
+
+🎟 Número ganador: *${numero}*
+
+🧾 Pedido: *${pedido}*
+
+🏷 Sorteo: *${nombreSorteo}*
+
+Guarda este mensaje como comprobante oficial.
+
+Gracias por participar 🍀
+`;
+
+window.open(
+`https://wa.me/${tel}?text=${encodeURIComponent(mensaje)}`,
+"_blank"
+);
 
 }
 
