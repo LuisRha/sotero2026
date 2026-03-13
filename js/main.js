@@ -96,16 +96,16 @@ async function obtenerSorteoActivo(){
   // ACTUALIZAR PRECIOS PAQUETES
   // =========================
 
-  const p6  = document.getElementById("precio6");
-  const p8  = document.getElementById("precio8");
-  const p10 = document.getElementById("precio10");
+  const p5  = document.getElementById("precio5");
+  const p10  = document.getElementById("precio10");
+  const p15 = document.getElementById("precio15");
   const p20 = document.getElementById("precio20");
   const p30 = document.getElementById("precio30");
   const p50 = document.getElementById("precio50");
 
-  if(p6)  p6.textContent  = "$" + (PRECIO_BOLETO * 6);
-  if(p8)  p8.textContent  = "$" + (PRECIO_BOLETO * 8);
-  if(p10) p10.textContent = "$" + (PRECIO_BOLETO * 10);
+  if(p5)  p5.textContent  = "$" + (PRECIO_BOLETO * 5);
+  if(p10) p10.textContent  = "$" + (PRECIO_BOLETO * 10);
+  if(p15) p15.textContent = "$" + (PRECIO_BOLETO * 15);
   if(p20) p20.textContent = "$" + (PRECIO_BOLETO * 20);
   if(p30) p30.textContent = "$" + (PRECIO_BOLETO * 30);
   if(p50) p50.textContent = "$" + (PRECIO_BOLETO * 50);
