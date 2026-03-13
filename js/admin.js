@@ -496,6 +496,7 @@ Estado: ${resultado.estado}
 '${resultado.whatsapp}',
 '${valor}',
 '${resultado.nombres}',
+'${resultado.apellidos}',
 '${resultado.id}'
 )">
 Enviar por WhatsApp
