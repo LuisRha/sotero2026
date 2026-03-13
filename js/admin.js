@@ -162,27 +162,27 @@ if(activo){
   // MENSAJE WHATSAPP
   // =========================
  const mensaje = `
-Hola ${nombreCompleto} 👋
+Hola *${nombreCompleto}* 👋
 Agradecemos por tu compra
 
-Pedido número : ${pedido}
+Pedido número : *${pedido}*
 
-${nombreSorteo}
+*${nombreSorteo}*
 
-🎟 TICKETS COMPRADOS : ${cantidad}
+🎟 TICKETS COMPRADOS : *${cantidad}*
 
 ${numerosFormato}
 
-🍀 SUERTE EN NUESTRA ${nombreDinamica} DINÁMICA
+🍀  *SUERTE EN NUESTRA ${nombreDinamica} DINÁMICA*
 
 Revisa los siguientes números y compáralos con los tuyos
 si tienes alguno automáticamente ganas el premio extra
 
-🎁 PREMIO EXTRA
+🎁 *PREMIO EXTRA*
 
 ${premiosTexto}
 
-Con el respaldo de DADE'S Y TRUJILLOGROUP
+Con el respaldo de *DADE'S Y TRUJILLOGROUP*
 `;
 
 // GENERAR IMAGEN DEL TICKET
@@ -530,7 +530,7 @@ nombreSorteo = activo.nombre;
 const mensaje = `
 🎉 *FELICIDADES ${nombre} ${apellido}*
 
-Tu número ha sido seleccionado en nuestro sistema.
+Nos complace informarte que tu número ha resultado ganador.
 
 🎟 Número ganador: *${numeroBuscado}*
 
@@ -594,26 +594,6 @@ async function aprobar(id) {
 
 }
 
-
-// 🔴 RECHAZAR
-async function rechazar(id){
-
-  const confirmar = confirm("¿Seguro que deseas rechazar esta compra?");
-
-  if(!confirmar) return;
-
-  await fetch("/api/compras", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id,
-      estado: "rechazado"
-    })
-  });
-
-  cargarDatos();
-
-}
 
 // 🔴 RECHAZAR
 async function rechazar(id){
@@ -915,10 +895,6 @@ document.body.removeChild(link);
 
 }
 
-
-// =========================
-// ALERTA GANADORES
-// =========================
 // ==========================
 // REVISAR GANADORES
 // ==========================
