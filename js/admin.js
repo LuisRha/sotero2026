@@ -432,6 +432,92 @@ function verVoucher(v) {
 }
 
 // =========================
+// BUSCAR COMPRA
+// =========================
+async function buscarCompra(){
+
+const valor = document.getElementById("buscarInput").value.trim();
+
+if(!valor){
+alert("Ingresa un número o cliente");
+return;
+}
+
+const res = await fetch("/api/compras");
+
+const data = await res.json();
+
+let resultado = null;
+
+for(const compra of data){
+
+if(!compra.numeros) continue;
+
+const lista = compra.numeros.split(",");
+
+if(
+lista.includes(valor) ||
+compra.nombres.toLowerCase().includes(valor.toLowerCase()) ||
+compra.whatsapp.includes(valor)
+){
+resultado = compra;
+break;
+}
+
+}
+
+const cont = document.getElementById("resultadoBusqueda");
+
+if(!resultado){
+cont.innerHTML = "<b>No encontrado</b>";
+return;
+}
+
+cont.innerHTML = `
+<div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px">
+
+<h3>Información de compra</h3>
+
+Nombre: ${resultado.nombres} ${resultado.apellidos}<br>
+WhatsApp: ${resultado.whatsapp}<br>
+Email: ${resultado.email}<br>
+Cantidad: ${resultado.cantidad}<br>
+Números: ${resultado.numeros}<br>
+Voucher: ${resultado.voucher}<br>
+Estado: ${resultado.estado}
+
+<br><br>
+
+<button onclick="enviarWhats('${resultado.whatsapp}','${resultado.numeros}')">
+Enviar por WhatsApp
+</button>
+
+</div>
+`;
+
+}
+
+
+// =========================
+// ENVIAR WHATSAPP BUSQUEDA
+// =========================
+function enviarWhats(telefono,numeros){
+
+const tel = "593" + telefono.replace(/^0/, "");
+
+const mensaje = `🎟 Sorteo
+
+Tus números registrados son:
+
+${numeros}
+
+Guarda este mensaje como comprobante`;
+
+window.open(`https://wa.me/${tel}?text=${encodeURIComponent(mensaje)}`);
+
+}
+
+// =========================
 // APROBAR / RECHAZAR
 // =========================
 
@@ -551,6 +637,17 @@ async function rechazar(id){
 // =========================
 // BOTONES PANEL
 // =========================
+btnNuevoSorteo?.addEventListener("click", () => {
+  modalNuevoSorteo.classList.remove("oculto");
+});
+
+btnCancelarSorteo?.addEventListener("click", () => {
+  modalNuevoSorteo.classList.add("oculto");
+});
+
+// BOTON BUSCAR COMPRA
+document.getElementById("btnBuscar")?.addEventListener("click", buscarCompra);
+
 btnNuevoSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.remove("oculto");
 });
