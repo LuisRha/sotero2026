@@ -176,14 +176,26 @@ async function obtenerSorteoActivo(){
   }
 
 
-    // =========================
-  // BOTON PAGAR
   // =========================
-  if(btnEnviar){
+// BOTON PAGAR
+// =========================
+if(btnEnviar){
 
-    btnEnviar.addEventListener("click", async (e)=>{
+  btnEnviar.addEventListener("click", async (e)=>{
 
-  let confirmar = confirm("¿Estás seguro de comprar estos números?");
+  e.preventDefault();
+
+  const cantidad = Number(cantidadInput?.value);
+  const totalCompra = cantidad * PRECIO_BOLETO;
+
+  let confirmar = confirm(
+`⚠️ CONFIRMAR COMPRA
+
+Cantidad: ${cantidad} números
+Total: $${totalCompra.toFixed(2)}
+
+¿Deseas continuar?`
+  );
 
   if(!confirmar){
     return;
@@ -194,7 +206,6 @@ async function obtenerSorteoActivo(){
         const nombres = nombreInput?.value.trim();
         const apellidos = apellidosInput?.value.trim();
         const telefono = whatsappInput?.value.trim();
-        const cantidad = Number(cantidadInput?.value);
         const voucher = voucherInput ? voucherInput.value.trim() : "";
 
         const email = emailInput?.value.trim();
@@ -262,7 +273,6 @@ async function obtenerSorteoActivo(){
           throw new Error(data.error || "Error al registrar compra");
         }
 
-
         // =========================
         // VERIFICAR PREMIOS
         // =========================
@@ -277,7 +287,6 @@ async function obtenerSorteoActivo(){
         }
 
         }
-
 
         alert(
 `Compra registrada correctamente
@@ -331,7 +340,6 @@ ${data.extras}`
   })();
 
 });
-
 // =========================
 // CONSULTAR BOLETOS
 // =========================
