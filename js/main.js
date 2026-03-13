@@ -181,9 +181,15 @@ async function obtenerSorteoActivo(){
   // =========================
   if(btnEnviar){
 
-    btnEnviar.addEventListener("click", async ()=>{
+    btnEnviar.addEventListener("click", async (e)=>{
 
-      try{
+  let confirmar = confirm("¿Estás seguro de comprar estos números?");
+
+  if(!confirmar){
+    return;
+  }
+
+  try{
 
         const nombres = nombreInput?.value.trim();
         const apellidos = apellidosInput?.value.trim();
