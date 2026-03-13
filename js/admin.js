@@ -161,11 +161,11 @@ if(activo){
   // =========================
   // MENSAJE WHATSAPP
   // =========================
- const mensaje = `
+const mensaje = `
 Hola *${nombreCompleto}* 👋
 Agradecemos por tu compra
 
-Pedido número : *${pedido}*
+🧾 Pedido número : *${pedido}*
 
 *${nombreSorteo}*
 
@@ -173,7 +173,7 @@ Pedido número : *${pedido}*
 
 ${numerosFormato}
 
-🍀  *SUERTE EN NUESTRA ${nombreDinamica} DINÁMICA*
+🍀 *SUERTE EN NUESTRA ${nombreDinamica} DINÁMICA*
 
 Revisa los siguientes números y compáralos con los tuyos
 si tienes alguno automáticamente ganas el premio extra
@@ -185,8 +185,6 @@ ${premiosTexto}
 Con el respaldo de *DADE'S Y TRUJILLOGROUP*
 `;
 
-// GENERAR IMAGEN DEL TICKET
-// =========================
 // ==========================
 // GENERAR TICKET (IMAGEN O PDF)
 // ==========================
