@@ -482,13 +482,13 @@ style="position:absolute;top:8px;right:10px;background:red;color:white;border:no
 
 <h3>Información de compra</h3>
 
-Nombre: ${resultado.nombres || ""} ${resultado.apellidos || ""}<br>
-WhatsApp: ${resultado.whatsapp || "-"}<br>
-Email: ${resultado.email || "-"}<br>
-Cantidad: ${resultado.cantidad || 0}<br>
-Números: ${resultado.numeros || "-"}<br>
-Voucher: ${resultado.voucher || "-"}<br>
-Estado: ${resultado.estado || "-"}
+Nombre: ${resultado.nombres} ${resultado.apellidos}<br>
+WhatsApp: ${resultado.whatsapp}<br>
+Email: ${resultado.email}<br>
+Cantidad de tickets: ${resultado.cantidad}<br>
+Número encontrado: <b>${valor}</b><br>
+Voucher: ${resultado.voucher}<br>
+Estado: ${resultado.estado}
 
 <br><br>
 
