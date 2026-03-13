@@ -511,7 +511,7 @@ Enviar por WhatsApp
 // =========================
 // ENVIAR WHATSAPP BUSQUEDA
 // =========================
-async function enviarWhats(telefono,numero,nombre,pedido){
+async function enviarWhats(telefono,numeroBuscado,nombre,pedido){
 
 const tel = "593" + telefono.replace(/^0/, "");
 
@@ -532,7 +532,7 @@ const mensaje = `
 
 Tu número ha sido seleccionado en nuestro sistema.
 
-🎟 Número ganador: *${numero}*
+🎟 Número ganador: *${numeroBuscado}*
 
 🧾 Pedido: *${pedido}*
 
