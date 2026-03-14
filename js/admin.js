@@ -377,7 +377,7 @@ async function cargarDatos() {
       <td>${item.whatsapp || "-"}</td>
       <td>${item.cantidad ?? 0}</td>
       <td>${item.numeros ? `<button onclick="verNumeros('${encodeURIComponent(item.numeros)}')">Ver</button>` : "-"}</td>
-      <td>${item.voucher ? `<button onclick="verVoucher('${encodeURIComponent(item.voucher)}')">Ver</button>` : "-"}</td>
+      <td>#${item.id}</td>
       <td>${item.estado || "pendiente"}</td>
 
       <td>
