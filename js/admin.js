@@ -658,7 +658,7 @@ btnCancelarSorteo?.addEventListener("click", () => {
 
 // BOTON BUSCAR COMPRA
 document.getElementById("btnBuscar")?.addEventListener("click", buscarCompra);
-
+document.getElementById("btnBuscarOrden")?.addEventListener("click", buscarOrden);
 btnNuevoSorteo?.addEventListener("click", () => {
   modalNuevoSorteo.classList.remove("oculto");
 });
@@ -991,5 +991,67 @@ SorteoEC
     `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
     "_blank"
   );
+
+}
+
+
+
+// =========================
+// BUSCAR POR NUMERO DE ORDEN
+// =========================
+async function buscarOrden(){
+
+const id = document.getElementById("buscarOrden").value.trim();
+
+if(!id){
+alert("Ingresa el número de orden");
+return;
+}
+
+const res = await fetch("/api/compras");
+const data = await res.json();
+
+const compra = data.find(c => String(c.id) === id);
+
+const cont = document.getElementById("resultadoBusqueda");
+
+if(!compra){
+cont.innerHTML = "<b>No se encontró esa orden</b>";
+return;
+}
+
+cont.innerHTML = `
+<div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px;position:relative">
+
+<button onclick="cerrarBusqueda()"
+style="position:absolute;top:8px;right:10px;background:red;color:white;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-weight:bold">
+✖
+</button>
+
+<h3>Información de compra</h3>
+
+Orden: <b>#${compra.id}</b><br>
+Nombre: ${compra.nombres} ${compra.apellidos}<br>
+WhatsApp: ${compra.whatsapp}<br>
+Email: ${compra.email}<br>
+Cantidad de tickets: ${compra.cantidad}<br>
+Números: ${compra.numeros}<br>
+Voucher: ${compra.voucher}<br>
+Estado: ${compra.estado}
+
+<br><br>
+
+<button onclick="enviarWhatsapp(
+'${compra.whatsapp}',
+'${encodeURIComponent(compra.nombres + " " + compra.apellidos)}',
+'${encodeURIComponent(compra.numeros)}',
+'${compra.id}',
+'${compra.cantidad}'
+)">
+Enviar por WhatsApp
+</button>
+
+</div>
+`;
 
 }
