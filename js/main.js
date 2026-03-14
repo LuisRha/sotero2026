@@ -229,12 +229,12 @@ Total: $${totalCompra.toFixed(2)}
         }
 
         const vendidos = await obtenerVendidos();
-        const disponibles = TOTAL_BOLETOS - vendidos;
+const disponibles = TOTAL_BOLETOS - vendidos;
 
-        if(cantidad > disponibles){
-          alert(`Solo quedan ${disponibles} boletos`);
-          return;
-        }
+if(cantidad > disponibles){
+  alert(`⚠️ Solo quedan ${disponibles} boletos disponibles.\nPor favor ingresa una cantidad menor para continuar.`);
+  return;
+}
 
         const res = await fetch("/api/compras",{
 
