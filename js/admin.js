@@ -307,7 +307,7 @@ doc.text("SUERTE EN NUESTRA " + nombreDinamica + " DINÁMICA",20,y);
 
 y+=10;
 
-doc.text("PREMIOS EXTRA:",20,y);
+doc.text("PREMIOS INSTANTÁNEOS :",20,y);
 
 y+=8;
 
