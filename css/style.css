@@ -550,9 +550,7 @@ body {
 
 /* pedido */
 .pedido {
-  border-bottom: 1px solid #c0c6d3;
-  padding-bottom: 12px;
-  margin-bottom: 16px;
+  border-bottom: none;
 }
 
 .pedido-row {
