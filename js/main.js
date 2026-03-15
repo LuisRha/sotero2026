@@ -276,25 +276,26 @@ if(cantidad > disponibles){
 
 
         // =========================
-        // ENVIAR CORREO AUTOMATICO
-        // =========================
-fetch("/api/enviarCorreo", {
+       // ENVIAR CORREO AUTOMATICO
+      // =========================
 
-  method: "POST",
+await fetch("/api/enviar-correo", {
 
-  headers: {
-    "Content-Type": "application/json"
-  },
+method: "POST",
 
-  body: JSON.stringify({
+headers: {
+"Content-Type": "application/json"
+},
 
-    email: email,
-    nombre: nombres,
-    numero: data.numeros,
-    id_compra: data.id_compra,
-    valor: cantidad * PRECIO_BOLETO
+body: JSON.stringify({
 
-  })
+email: email,
+nombre: nombres,
+numero: data.numeros,
+id_compra: data.id_compra,
+valor: cantidad * PRECIO_BOLETO
+
+})
 
 });
 

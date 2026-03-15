@@ -1,16 +1,1 @@
-{
-"name": "sorteos2026",
-"version": "1.0.0",
-"main": "index.js",
-"scripts": {
-"test": "echo \"Error: no test specified\" && exit 1"
-},
-"keywords": [],
-"author": "",
-"license": "ISC",
-"description": "",
-"dependencies": {
-"@supabase/supabase-js": "^2.91.1",
-"nodemailer": "^6.9.8"
-}
-}
+{"name":"sorteos2026","version":"1.0.0","main":"index.js","scripts":{"test":"echo \"Error: no test specified\" && exit 1"},"keywords":[],"author":"","license":"ISC","description":"","dependencies":{"@supabase/supabase-js":"^2.91.1","nodemailer":"^6.10.1"}}
