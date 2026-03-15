@@ -1035,7 +1035,11 @@ Nombre: ${compra.nombres} ${compra.apellidos}<br>
 WhatsApp: ${compra.whatsapp}<br>
 Email: ${compra.email}<br>
 Cantidad de tickets: ${compra.cantidad}<br>
-Números: ${compra.numeros}<br>
+Números:
+<div class="numeros-box">
+${compra.numeros.split(",").map(n => `<span class="numero">${n}</span>`).join("")}
+</div>
+<br>
 Voucher: ${compra.voucher}<br>
 Estado: ${compra.estado}
 

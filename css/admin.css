@@ -269,3 +269,20 @@ border:none;
 padding:6px 10px;
 border-radius:4px;
 }
+
+
+/* Resultado numeros ordenados  */
+
+.numeros-box{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-top:5px;
+}
+
+.numero{
+background:#222;
+padding:4px 8px;
+border-radius:4px;
+font-size:13px;
+}
