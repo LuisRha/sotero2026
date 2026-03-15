@@ -424,10 +424,10 @@ async function consultarNumeros(){
   data.forEach(compra => {
 
     html += `
-    <div style="margin-bottom:10px;">
-    🎟 ${compra.numeros}
-    </div>
-    `;
+<div class="numeros-box">
+${compra.numeros.split(",").map(n => `<span class="numero">${n}</span>`).join("")}
+</div>
+`;
 
     if(compra.premio){
 

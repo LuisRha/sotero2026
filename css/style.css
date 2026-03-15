@@ -626,3 +626,18 @@ body {
     padding: 22px;
   }
 }
+
+/* busqueda numeros comprados */
+.numeros-box{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-top:10px;
+}
+
+.numero{
+background:#1e1e1e;
+padding:5px 8px;
+border-radius:4px;
+font-size:13px;
+}
