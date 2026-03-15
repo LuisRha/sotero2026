@@ -339,7 +339,9 @@ ${data.extras}`
 
         totalPagarEl.textContent="$0";
 
-        formulario.classList.add("oculto");
+        if(formulario){
+         formulario.classList.add("oculto");
+          }
 
         actualizarDisponibles();
 
