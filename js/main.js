@@ -337,8 +337,6 @@ ${data.extras}`
         if(provinciaInput) provinciaInput.selectedIndex = 0;
         if(tipoDocumentoInput) tipoDocumentoInput.selectedIndex = 0;
 
-        if(voucherInput) voucherInput.value="";
-
         totalPagarEl.textContent="$0";
 
         formulario.classList.add("oculto");
