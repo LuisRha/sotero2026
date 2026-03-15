@@ -461,6 +461,8 @@ Comunícate con nosotros para reclamarlo.
 
 }
 
+// hacer la función visible para el botón HTML
+window.consultarNumeros = consultarNumeros;
 
 /// slider imagen
 document.addEventListener("DOMContentLoaded", function(){
