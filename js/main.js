@@ -354,17 +354,41 @@ ${data.extras}`
 
 
   (async ()=>{
-    try{
-      await obtenerSorteoActivo();
-      await actualizarDisponibles();
-      await cargarNumerosPremio();
-    }
-    catch(err){
-      console.error(err);
-    }
-  })();
+  try{
 
-});
+    await obtenerSorteoActivo();
+
+    // =========================
+    // LEER CANTIDAD DESDE URL
+    // =========================
+    const params = new URLSearchParams(window.location.search);
+    const cantidadURL = params.get("cantidad");
+
+    if(cantidadURL){
+
+      const campoCantidad = document.getElementById("cantidad");
+      const totalPagar = document.getElementById("totalPagar");
+
+      if(campoCantidad){
+        campoCantidad.value = cantidadURL;
+      }
+
+      const total = cantidadURL * PRECIO_BOLETO;
+
+      if(totalPagar){
+        totalPagar.textContent = "$" + total.toFixed(2);
+      }
+
+    }
+
+    await actualizarDisponibles();
+    await cargarNumerosPremio();
+
+  }
+  catch(err){
+    console.error(err);
+  }
+})();
 // =========================
 // CONSULTAR BOLETOS
 // =========================
@@ -436,10 +460,14 @@ Comunícate con nosotros para reclamarlo.
 }
 
 
-// slider iamgen 
+/// slider imagen
 document.addEventListener("DOMContentLoaded", function(){
 
 let slides = document.querySelectorAll(".slide");
+
+// 🔹 si no hay slides en la página, salir
+if(slides.length === 0) return;
+
 let index = 0;
 
 function cambiarImagen(){
@@ -459,7 +487,6 @@ slides[index].classList.add("active");
 setInterval(cambiarImagen,3000);
 
 });
-
 
 // =========================
 // TEXTOS DINAMICOS
@@ -621,29 +648,5 @@ function comprarPersonalizado(){
   comprar(cantidad);
 
 }
+});
 
-
-// =========================
-// LEER CANTIDAD DESDE URL
-// =========================
-
-const params = new URLSearchParams(window.location.search);
-const cantidadURL = params.get("cantidad");
-
-if(cantidadURL){
-
-const campoCantidad = document.getElementById("cantidad");
-const totalPagar = document.getElementById("totalPagar");
-
-if(campoCantidad){
-campoCantidad.value = cantidadURL;
-
-const total = cantidadURL * PRECIO_BOLETO;
-
-if(totalPagar){
-totalPagar.textContent = "$" + total.toFixed(2);
-}
-
-}
-
-}
