@@ -276,6 +276,32 @@ if(cantidad > disponibles){
           throw new Error(data.error || "Error al registrar compra");
         }
 
+
+        // =========================
+        // ENVIAR CORREO AUTOMATICO
+        // =========================
+fetch("/api/enviarCorreo", {
+
+  method: "POST",
+
+  headers: {
+    "Content-Type": "application/json"
+  },
+
+  body: JSON.stringify({
+
+    email: email,
+    nombre: nombres,
+    numero: data.numeros,
+    id_compra: data.id_compra,
+    valor: cantidad * PRECIO_BOLETO
+
+  })
+
+});
+
+        
+
         // =========================
         // VERIFICAR PREMIOS
         // =========================
