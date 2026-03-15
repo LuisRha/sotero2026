@@ -2,7 +2,7 @@
 // CONEXIÓN SUPABASE
 // =========================
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-const SUPABASE_KEY = "TU_KEY";
+const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
 window.supabaseClient = supabase.createClient(
   SUPABASE_URL,
