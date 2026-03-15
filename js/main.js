@@ -4,7 +4,7 @@
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
-window.supabaseClient = supabase.createClient(
+const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -623,5 +623,31 @@ function comprarPersonalizado(){
   }
 
   comprar(cantidad);
+
+}
+
+
+// =========================
+// LEER CANTIDAD DESDE URL
+// =========================
+
+const params = new URLSearchParams(window.location.search);
+const cantidadURL = params.get("cantidad");
+
+if(cantidadURL){
+
+const campoCantidad = document.getElementById("cantidad");
+const totalPagar = document.getElementById("totalPagar");
+
+if(campoCantidad){
+campoCantidad.value = cantidadURL;
+
+const total = cantidadURL * PRECIO_BOLETO;
+
+if(totalPagar){
+totalPagar.textContent = "$" + total.toFixed(2);
+}
+
+}
 
 }
