@@ -1055,3 +1055,8 @@ Enviar por WhatsApp
 `;
 
 }
+
+// cerrar busqueda //
+function cerrarBusqueda(){
+document.getElementById("resultadoBusqueda").innerHTML = "";
+}
