@@ -254,8 +254,6 @@ const { error } = await supabase
 
       numeros,
       extras,
-
-      voucher: voucher || "",
       total: Number(total),
 
       estado: "pendiente"
