@@ -262,8 +262,6 @@ if(cantidad > disponibles){
             tipo_documento,
 
             cantidad,
-            voucher,
-
             total: cantidad * PRECIO_BOLETO
 
           })
