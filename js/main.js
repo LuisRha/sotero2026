@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const apellidosInput = document.getElementById("apellidos");
   const whatsappInput = document.getElementById("whatsapp");
   const cantidadInput = document.getElementById("cantidad");
-  const voucherInput = document.getElementById("voucher");
+  
 
   const emailInput = document.getElementById("email");
   const direccionInput = document.getElementById("direccion");
@@ -209,7 +209,7 @@ Total: $${totalCompra.toFixed(2)}
         const nombres = nombreInput?.value.trim();
         const apellidos = apellidosInput?.value.trim();
         const telefono = whatsappInput?.value.trim();
-        const voucher = voucherInput ? voucherInput.value.trim() : "";
+      
 
         const email = emailInput?.value.trim();
         const direccion = direccionInput?.value.trim();

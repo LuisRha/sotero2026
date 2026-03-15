@@ -118,7 +118,6 @@ export default async function handler(req, res) {
         ciudad,
 
         cantidad,
-        voucher,
         total
 
       } = body;
@@ -130,8 +129,7 @@ export default async function handler(req, res) {
         !nombres ||
         !apellidos ||
         !telefono ||
-        !cantidad ||
-        !voucher
+        !cantidad
       ) {
         return res.status(400).json({ error: "Datos incompletos" });
       }
