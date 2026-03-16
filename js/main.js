@@ -665,6 +665,14 @@ if(confirmar){
 
 document.getElementById("procesando").style.display = "flex";
 
+setTimeout(function(){
+
+document.getElementById("procesando").style.display = "none";
+
+alert("Pedido generado correctamente");
+
+},3000);
+
 }
 
 });
