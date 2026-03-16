@@ -7,7 +7,7 @@
 body {
   margin: 0;
   background: #f8fafc;
-  color: #111;
+  color: #11111120;
 }
 
 .container {
@@ -76,7 +76,26 @@ body {
 .slogan {
   margin-top: 5px;
   font-size: 14px;
-  color: #ccc;
+  font-weight: bold;
+
+  background: linear-gradient(90deg, #ff0000, #ffcc00, #00ffcc, #00aaff, #ff00ff);
+  background-size: 300%;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  animation: brillo 4s linear infinite;
+}
+
+@keyframes brillo {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 300%;
+  }
 }
 
 /* ===== HERO ===== */
