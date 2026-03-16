@@ -83,23 +83,19 @@ body {
 
   background-clip: text;
   -webkit-background-clip: text;
+
   -webkit-text-fill-color: transparent;
 
-  animation: brillo 4s linear infinite, sacudir 0.15s infinite;
+  animation: brillo 4s linear infinite;
 }
 
 @keyframes brillo {
-  0% { background-position: 0%; }
-  100% { background-position: 300%; }
-}
-
-@keyframes sacudir {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 300%;
+  }
 }
 
 /* ===== HERO ===== */
