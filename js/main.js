@@ -655,23 +655,42 @@ function comprarPersonalizado(){
 }
 });
 
-// Activarlo animacioncuando hagan clic en PAGAR //
+// Activar animación cuando hagan clic en PAGAR
 
-document.getElementById("btnEnviar").addEventListener("click", function(){
+document.getElementById("btnEnviar").addEventListener("click", async function(e){
+
+e.preventDefault();
 
 let confirmar = confirm("¿Confirmar compra?");
 
-if(confirmar){
+if(!confirmar) return;
 
+// mostrar animación
 document.getElementById("procesando").style.display = "flex";
 
+try{
+
+// aquí se ejecuta tu función que guarda el pedido
+await generarPedido();
+
+// cambiar texto
+document.querySelector("#procesando h2").innerText = "Proceso completado";
+document.querySelector("#procesando p").innerText = "Tu pedido fue generado correctamente";
+
+// ocultar después de 2 segundos
 setTimeout(function(){
 
 document.getElementById("procesando").style.display = "none";
 
-alert("Pedido generado correctamente");
+},2000);
 
-},3000);
+}
+catch(error){
+
+document.querySelector("#procesando h2").innerText = "Error en la compra";
+document.querySelector("#procesando p").innerText = "Intenta nuevamente";
+
+console.error(error);
 
 }
 
