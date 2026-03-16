@@ -655,3 +655,16 @@ function comprarPersonalizado(){
 }
 });
 
+// Activarlo animacioncuando hagan clic en PAGAR //
+
+document.getElementById("btnEnviar").addEventListener("click", function(){
+
+let confirmar = confirm("¿Confirmar compra?");
+
+if(confirmar){
+
+document.getElementById("procesando").style.display = "flex";
+
+}
+
+});
