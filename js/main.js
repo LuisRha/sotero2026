@@ -570,31 +570,33 @@ async function cargarNumerosPremio(){
       const span = document.createElement("span");
       span.textContent = n.numero;
 
+      // ✅ NUEVA LOGICA (IMPORTANTE)
+      const usado = n.ganador === "entregado";
+
       // -------------------------
-      // PREMIO GANADO
+      // PREMIO DISPONIBLE
       // -------------------------
-      if(n.premio && !n.usado){
+      if(n.premio && !usado){
         span.classList.add("activo");
       }
 
       // -------------------------
       // PREMIO ENTREGADO
       // -------------------------
-      
-      else if(n.premio && n.usado){
+      else if(n.premio && usado){
 
-  span.classList.add("entregado");
+        span.classList.add("entregado");
 
-  const texto = document.createElement("div");
-  texto.textContent = "¡Premio entregado!";
-  texto.classList.add("estadoPremio");
+        const texto = document.createElement("div");
+        texto.textContent = "¡Premio entregado!";
+        texto.classList.add("estadoPremio");
 
-  div.appendChild(span);
-  div.appendChild(texto);
+        div.appendChild(span);
+        div.appendChild(texto);
 
-  contenedor.appendChild(div);
-  return;
-}
+        contenedor.appendChild(div);
+        return;
+      }
 
       // -------------------------
       // NORMAL
@@ -606,13 +608,13 @@ async function cargarNumerosPremio(){
       div.appendChild(span);
       contenedor.appendChild(div);
 
-    }); // ← cierre forEach
+    });
 
   }catch(err){
     console.error("Error leyendo premios",err);
   }
 
-} // ← cierre cargarNumerosPremio
+}
 
 
 // =========================
