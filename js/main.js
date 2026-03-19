@@ -570,42 +570,32 @@ async function cargarNumerosPremio(){
       const span = document.createElement("span");
       span.textContent = n.numero;
 
-      // ✅ NUEVA LOGICA (IMPORTANTE)
-      const usado = n.ganador === "entregado";
+      // 🔥 SIEMPRE mostrar
+      span.classList.add("normal");
 
-      // -------------------------
-// PREMIO DISPONIBLE
-// -------------------------
-if(n.premio && !n.usado){
-  span.classList.add("activo");
-}
-
-// -------------------------
-// PREMIO ENTREGADO
-// -------------------------
-else if(n.premio && n.usado){
-
-  span.classList.add("entregado");
-
-  const texto = document.createElement("div");
-  texto.textContent = "¡Premio entregado!";
-  texto.classList.add("estadoPremio");
-
-  div.appendChild(span);
-  div.appendChild(texto);
-
-  contenedor.appendChild(div);
-  return;
-}
-
-      // -------------------------
-      // NORMAL
-      // -------------------------
-      else{
-        span.classList.add("normal");
+      // 🟢 PREMIO DISPONIBLE
+      if(n.premio && !n.usado){
+        span.classList.add("activo");
       }
 
-      div.appendChild(span);
+      // 🔴 PREMIO ENTREGADO
+      if(n.usado){
+
+        span.classList.add("entregado");
+
+        const texto = document.createElement("div");
+        texto.textContent = "Premio entregado";
+        texto.classList.add("estadoPremio");
+
+        div.appendChild(span);
+        div.appendChild(texto);
+
+      } else {
+
+        div.appendChild(span);
+
+      }
+
       contenedor.appendChild(div);
 
     });
