@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Confirmación de Compra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="css/confirmacion.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✅ ¡Gracias! Tu compra ha sido recibida</h1>
+
+<div class="info">
+  <div><strong>Pedido:</strong> <span id="pedido"></span></div>
+  <div><strong>Total:</strong> $<span id="total"></span></div>
+</div>
+
+<p><strong>Método de pago:</strong> Transferencia bancaria o depósito</p>
+
+<div class="alerta">
+⚠️ <b>¡ATENCIÓN!</b><br>
+NO envíes tu comprobante por WhatsApp.  
+Sigue las instrucciones en esta pantalla.
+</div>
+
+<h2>INSTRUCCIONES DE PAGO:</h2>
+
+<p>
+1. Transfiere o deposita el monto total del pedido a cualquiera de nuestras cuentas:
+</p>
+
+<div class="cuenta">
+<b>Banco Pichincha</b><br>
+Cuenta: 2201820430<br>
+Nombre: Richard Trujillo<br>
+CI: 1805295415
+</div>
+
+<p>
+2. Realiza el pago dentro de 30 minutos o tu pedido será cancelado.
+</p>
+
+<div class="timer">
+⏱ Tiempo restante: <span id="contador">30:00</span>
+</div>
+
+<h2>Tus números:</h2>
+
+<div class="numeros" id="listaNumeros"></div>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const pedido = params.get("id");
+const total = params.get("total");
+const nums = params.get("nums");
+
+document.getElementById("pedido").innerText = pedido;
+document.getElementById("total").innerText = total;
+
+// mostrar números
+if(nums){
+  const lista = nums.split(",");
+  const contenedor = document.getElementById("listaNumeros");
+
+  lista.forEach(n=>{
+    const span = document.createElement("span");
+    span.className = "numero";
+    span.innerText = n;
+    contenedor.appendChild(span);
+  });
+}
+
+// contador
+let tiempo = 1800;
+
+setInterval(()=>{
+  let min = Math.floor(tiempo/60);
+  let seg = tiempo % 60;
+
+  document.getElementById("contador").innerText =
+    min + ":" + (seg<10?"0":"") + seg;
+
+  tiempo--;
+
+},1000);
+
+</script>
+
+</body>
+</html>
