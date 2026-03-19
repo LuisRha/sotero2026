@@ -197,13 +197,13 @@ PREMIOS INSTANTANEOS */
 
 .entregado{
 text-decoration: line-through;
-color: #aaa(207, 155, 155);
+color: #756a6ad5(207, 155, 155);
 font-weight: bold;
 }
 
 .estadoPremio{
 font-size:12px;
-color:#aaa;
+color:#756a6ad5;
 text-align:center;
 }
 
