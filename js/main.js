@@ -188,6 +188,11 @@ if(btnEnviar){
 
   e.preventDefault();
 
+  // 🔄 MOSTRAR PROCESANDO
+document.getElementById("procesando").style.display = "flex";
+document.querySelector("#procesando h2").innerText = "Procesando tu compra...";
+document.querySelector("#procesando p").innerText = "Por favor espera";
+
   const cantidad = Number(cantidadInput?.value);
   const totalCompra = cantidad * PRECIO_BOLETO;
 
@@ -201,8 +206,9 @@ Total: $${totalCompra.toFixed(2)}
   );
 
   if(!confirmar){
-    return;
-  }
+  document.getElementById("procesando").style.display = "none";
+  return;
+}
 
   try{
 
@@ -219,20 +225,22 @@ Total: $${totalCompra.toFixed(2)}
         const tipo_documento = tipoDocumentoInput?.value;
 
         if(!aceptarTerminos.checked){
-          alert("Debes aceptar los términos");
-          return;
-        }
+  alert("Debes aceptar los términos");
+  document.getElementById("procesando").style.display = "none";
+  return;
+}
 
         if(!nombres || !apellidos || !telefono || !cantidad || !email){
-          alert("Completa todos los campos obligatorios");
-          return;
-        }
+  alert("Completa todos los campos obligatorios");
+  document.getElementById("procesando").style.display = "none";
+  return;
+}
 
         const vendidos = await obtenerVendidos();
 const disponibles = TOTAL_BOLETOS - vendidos;
-
 if(cantidad > disponibles){
-  alert(`⚠️ Solo quedan ${disponibles} boletos disponibles.\nPor favor ingresa una cantidad menor para continuar.`);
+  alert(`⚠️ Solo quedan ${disponibles} boletos disponibles...`);
+  document.getElementById("procesando").style.display = "none";
   return;
 }
 
@@ -316,15 +324,11 @@ valor: cantidad * PRECIO_BOLETO
 
         }
 
-        alert(
-`Compra registrada correctamente
+        // ocultar loader
+document.getElementById("procesando").style.display = "none";
 
-Tus números:
-${data.numeros}
-
-Extras:
-${data.extras}`
-        );
+// redirigir a confirmación
+window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}`;
 
         nombreInput.value="";
         apellidosInput.value="";
@@ -348,8 +352,9 @@ ${data.extras}`
 
       }
       catch(err){
-        alert(err.message);
-      }
+  document.getElementById("procesando").style.display = "none";
+  alert(err.message);
+}
 
     });
 
@@ -655,91 +660,91 @@ function comprarPersonalizado(){
 }
 });
 
-// Activar animación cuando hagan clic en PAGAR
+// // Activar animación cuando hagan clic en PAGAR
 
-btnEnviar.addEventListener("click", async (e)=>{
+// btnEnviar.addEventListener("click", async (e)=>{
 
-e.preventDefault();
+// e.preventDefault();
 
-// 🔄 MOSTRAR PROCESANDO
-document.getElementById("procesando").style.display = "flex";
-document.querySelector("#procesando h2").innerText = "Procesando tu compra...";
-document.querySelector("#procesando p").innerText = "Por favor espera";
+// // 🔄 MOSTRAR PROCESANDO
+// document.getElementById("procesando").style.display = "flex";
+// document.querySelector("#procesando h2").innerText = "Procesando tu compra...";
+// document.querySelector("#procesando p").innerText = "Por favor espera";
 
-const cantidad = Number(cantidadInput?.value);
-const totalCompra = cantidad * PRECIO_BOLETO;
+// const cantidad = Number(cantidadInput?.value);
+// const totalCompra = cantidad * PRECIO_BOLETO;
 
-let confirmar = confirm(
-`⚠️ CONFIRMAR COMPRA
+// let confirmar = confirm(
+// `⚠️ CONFIRMAR COMPRA
 
-Cantidad: ${cantidad} números
-Total: $${totalCompra.toFixed(2)}
+// Cantidad: ${cantidad} números
+// Total: $${totalCompra.toFixed(2)}
 
-¿Deseas continuar?`
-);
+// ¿Deseas continuar?`
+// );
 
-if(!confirmar){
-  document.getElementById("procesando").style.display = "none";
-  return;
-}
+// if(!confirmar){
+//   document.getElementById("procesando").style.display = "none";
+//   return;
+// }
 
-try{
+// try{
 
-  const nombres = nombreInput?.value.trim();
-  const apellidos = apellidosInput?.value.trim();
-  const telefono = whatsappInput?.value.trim();
-  const email = emailInput?.value.trim();
+//   const nombres = nombreInput?.value.trim();
+//   const apellidos = apellidosInput?.value.trim();
+//   const telefono = whatsappInput?.value.trim();
+//   const email = emailInput?.value.trim();
 
-  if(!aceptarTerminos.checked){
-    alert("Debes aceptar los términos");
-    document.getElementById("procesando").style.display = "none";
-    return;
-  }
+//   if(!aceptarTerminos.checked){
+//     alert("Debes aceptar los términos");
+//     document.getElementById("procesando").style.display = "none";
+//     return;
+//   }
 
-  if(!nombres || !apellidos || !telefono || !cantidad || !email){
-    alert("Completa todos los campos obligatorios");
-    document.getElementById("procesando").style.display = "none";
-    return;
-  }
+//   if(!nombres || !apellidos || !telefono || !cantidad || !email){
+//     alert("Completa todos los campos obligatorios");
+//     document.getElementById("procesando").style.display = "none";
+//     return;
+//   }
 
-  const res = await fetch("/api/compras",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      sorteo_id: SORTEO_ID,
-      nombres,
-      apellidos,
-      telefono,
-      whatsapp: telefono,
-      email,
-      cantidad,
-      total: cantidad * PRECIO_BOLETO
-    })
-  });
+//   const res = await fetch("/api/compras",{
+//     method:"POST",
+//     headers:{ "Content-Type":"application/json" },
+//     body: JSON.stringify({
+//       sorteo_id: SORTEO_ID,
+//       nombres,
+//       apellidos,
+//       telefono,
+//       whatsapp: telefono,
+//       email,
+//       cantidad,
+//       total: cantidad * PRECIO_BOLETO
+//     })
+//   });
 
-  const data = await res.json();
+//   const data = await res.json();
 
-  if(!res.ok){
-    throw new Error(data.error || "Error al registrar compra");
-  }
+//   if(!res.ok){
+//     throw new Error(data.error || "Error al registrar compra");
+//   }
 
-  // ✅ ÉXITO
-  document.querySelector("#procesando h2").innerText = "Compra exitosa";
-  document.querySelector("#procesando p").innerText = "Tus números fueron generados";
+//   // ✅ ÉXITO
+//   document.querySelector("#procesando h2").innerText = "Compra exitosa";
+//   document.querySelector("#procesando p").innerText = "Tus números fueron generados";
 
-  setTimeout(()=>{
-    document.getElementById("procesando").style.display = "none";
+//   setTimeout(()=>{
+//     document.getElementById("procesando").style.display = "none";
 
-    window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}`;
+//     window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}`;
 
-  },2000);
+//   },2000);
 
-}catch(error){
+// }catch(error){
 
-  document.querySelector("#procesando h2").innerText = "Error en la compra";
-  document.querySelector("#procesando p").innerText = "Intenta nuevamente";
+//   document.querySelector("#procesando h2").innerText = "Error en la compra";
+//   document.querySelector("#procesando p").innerText = "Intenta nuevamente";
 
-  console.error(error);
+//   console.error(error);
 
-}
-});
+// }
+// });
