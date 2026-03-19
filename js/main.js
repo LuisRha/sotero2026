@@ -730,7 +730,7 @@ try{
   setTimeout(()=>{
     document.getElementById("procesando").style.display = "none";
 
-    alert(`Compra registrada correctamente\n\nTus números:\n${data.numeros}`);
+    window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}`;
 
   },2000);
 
