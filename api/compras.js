@@ -224,11 +224,10 @@ export default async function handler(req, res) {
       const extras = tickets.extras.join(",");
 
 
-
 // =========================
 // INSERTAR COMPRA
 // =========================
-const { error } = await supabase
+const { data, error } = await supabase
   .from("compras")
   .insert([
     {
@@ -259,7 +258,8 @@ const { error } = await supabase
       estado: "pendiente"
 
     }
-  ]);
+  ])
+  .select(); // 👈 🔥 ESTA ES LA CLAVE
 
 if (error) {
 
@@ -268,6 +268,9 @@ if (error) {
   return res.status(500).json({ error: error.message });
 
 }
+
+// 🔥 OBTENER EL ID REAL
+const compra = data[0];
 
 
 /// =========================
@@ -295,11 +298,11 @@ if (listaNumeros.length > 0) {
 return res.status(200).json({
 
   ok: true,
+  id_compra: compra.id, // 👈 🔥 ESTE ES EL QUE NECESITAS
   numeros,
-  extras
+  // extras
 
 });
-
 }
 
   // =========================
