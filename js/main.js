@@ -670,18 +670,13 @@ document.getElementById("procesando").style.display = "flex";
 
 try{
 
-// aquí se ejecuta tu función que guarda el pedido
 await generarPedido();
 
-// cambiar texto
 document.querySelector("#procesando h2").innerText = "Proceso completado";
 document.querySelector("#procesando p").innerText = "Tu pedido fue generado correctamente";
 
-// ocultar después de 2 segundos
 setTimeout(function(){
-
 document.getElementById("procesando").style.display = "none";
-
 },2000);
 
 }
