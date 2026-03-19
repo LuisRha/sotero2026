@@ -574,29 +574,29 @@ async function cargarNumerosPremio(){
       const usado = n.ganador === "entregado";
 
       // -------------------------
-      // PREMIO DISPONIBLE
-      // -------------------------
-      if(n.premio && !usado){
-        span.classList.add("activo");
-      }
+// PREMIO DISPONIBLE
+// -------------------------
+if(n.premio && !n.usado){
+  span.classList.add("activo");
+}
 
-      // -------------------------
-      // PREMIO ENTREGADO
-      // -------------------------
-      else if(n.premio && usado){
+// -------------------------
+// PREMIO ENTREGADO
+// -------------------------
+else if(n.premio && n.usado){
 
-        span.classList.add("entregado");
+  span.classList.add("entregado");
 
-        const texto = document.createElement("div");
-        texto.textContent = "¡Premio entregado!";
-        texto.classList.add("estadoPremio");
+  const texto = document.createElement("div");
+  texto.textContent = "¡Premio entregado!";
+  texto.classList.add("estadoPremio");
 
-        div.appendChild(span);
-        div.appendChild(texto);
+  div.appendChild(span);
+  div.appendChild(texto);
 
-        contenedor.appendChild(div);
-        return;
-      }
+  contenedor.appendChild(div);
+  return;
+}
 
       // -------------------------
       // NORMAL
