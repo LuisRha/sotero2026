@@ -66,10 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nombreSorteoPedido = document.getElementById("nombreSorteoPedido");
 
 
-  // =========================
-  // OBTENER SORTEO ACTIVO
-  // =========================
-async function obtenerSorteoActivo(){
+ async function obtenerSorteoActivo(){
 
   const res = await fetch("/api/sorteos");
 
@@ -94,6 +91,20 @@ async function obtenerSorteoActivo(){
   if(nombreSorteoPedido){
     nombreSorteoPedido.textContent = activo.nombre;
   }
+
+  // 🔥 AHORA SÍ (AQUÍ VA)
+  const img = document.getElementById("imagenSorteo");
+
+  if(img){
+    if(activo.imagen){
+      img.src = activo.imagen;
+      img.style.display = "block";
+    }else{
+      img.style.display = "none";
+    }
+  }
+
+}
 
   // =========================
   // ACTUALIZAR PRECIOS PAQUETES
