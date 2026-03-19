@@ -50,3 +50,11 @@ max-width:700px;
 margin:0 auto 30px auto;
 line-height:1.5;
 }
+
+/* TEXTO PREMIO ENTREGADO */
+.estadoPremio{
+  font-size:11px;
+  color:#999; /* 🔥 plomo */
+  margin-top:4px;
+  text-align:center;
+}
