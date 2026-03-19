@@ -16,7 +16,9 @@
 <h1>✅ ¡Gracias! Tu compra ha sido recibida</h1>
 
 <div class="info">
-  <div><strong>Pedido:</strong> <span id="pedido"></span></div>
+  <div><strong>Número de pedido:</strong> <span id="pedido"></span></div>
+  <div><strong>Fecha:</strong> <span id="fecha"></span></div>
+  <div><strong>Cliente:</strong> <span id="cliente"></span></div>
   <div><strong>Total:</strong> $<span id="total"></span></div>
 </div>
 
@@ -73,13 +75,32 @@
 // =========================
 const params = new URLSearchParams(window.location.search);
 
-const pedido = params.get("id") || "000000";
+const pedido = params.get("id") || Math.floor(Math.random()*1000000);
 const total = params.get("total") || "0.00";
 const nums = params.get("nums");
+const cliente = params.get("cliente");
 
-// mostrar datos
+// =========================
+// MOSTRAR DATOS
+// =========================
 document.getElementById("pedido").innerText = pedido;
 document.getElementById("total").innerText = total;
+document.getElementById("cliente").innerText = cliente || "Cliente";
+
+// =========================
+// FECHA ACTUAL
+// =========================
+const ahora = new Date();
+
+const fechaFormateada = ahora.toLocaleString("es-EC", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit"
+});
+
+document.getElementById("fecha").innerText = fechaFormateada;
 
 // =========================
 // MOSTRAR NÚMEROS

@@ -328,7 +328,7 @@ valor: cantidad * PRECIO_BOLETO
 document.getElementById("procesando").style.display = "none";
 
 // redirigir a confirmación
-window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}`;
+window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}&cliente=${encodeURIComponent(nombres + " " + apellidos)}`;
 
         nombreInput.value="";
         apellidosInput.value="";
