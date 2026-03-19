@@ -580,21 +580,21 @@ async function cargarNumerosPremio(){
       // -------------------------
       // PREMIO ENTREGADO
       // -------------------------
+      
       else if(n.premio && n.usado){
 
-        span.classList.add("entregado");
+  span.classList.add("entregado");
 
-        const texto = document.createElement("div");
-        texto.textContent = "ENTREGADO";
-        texto.classList.add("estadoPremio");
+  const texto = document.createElement("div");
+  texto.textContent = "¡Premio entregado!";
+  texto.classList.add("estadoPremio");
 
-        div.appendChild(span);
-        div.appendChild(texto);
+  div.appendChild(span);
+  div.appendChild(texto);
 
-        contenedor.appendChild(div);
-
-        return;
-      }
+  contenedor.appendChild(div);
+  return;
+}
 
       // -------------------------
       // NORMAL
