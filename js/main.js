@@ -657,36 +657,89 @@ function comprarPersonalizado(){
 
 // Activar animación cuando hagan clic en PAGAR
 
-document.getElementById("btnEnviar").addEventListener("click", async function(e){
+btnEnviar.addEventListener("click", async (e)=>{
 
 e.preventDefault();
 
-let confirmar = confirm("¿Confirmar compra?");
-
-if(!confirmar) return;
-
-// mostrar animación
+// 🔄 MOSTRAR PROCESANDO
 document.getElementById("procesando").style.display = "flex";
+document.querySelector("#procesando h2").innerText = "Procesando tu compra...";
+document.querySelector("#procesando p").innerText = "Por favor espera";
+
+const cantidad = Number(cantidadInput?.value);
+const totalCompra = cantidad * PRECIO_BOLETO;
+
+let confirmar = confirm(
+`⚠️ CONFIRMAR COMPRA
+
+Cantidad: ${cantidad} números
+Total: $${totalCompra.toFixed(2)}
+
+¿Deseas continuar?`
+);
+
+if(!confirmar){
+  document.getElementById("procesando").style.display = "none";
+  return;
+}
 
 try{
 
-await generarPedido();
+  const nombres = nombreInput?.value.trim();
+  const apellidos = apellidosInput?.value.trim();
+  const telefono = whatsappInput?.value.trim();
+  const email = emailInput?.value.trim();
 
-document.querySelector("#procesando h2").innerText = "Proceso completado";
-document.querySelector("#procesando p").innerText = "Tu pedido fue generado correctamente";
+  if(!aceptarTerminos.checked){
+    alert("Debes aceptar los términos");
+    document.getElementById("procesando").style.display = "none";
+    return;
+  }
 
-setTimeout(function(){
-document.getElementById("procesando").style.display = "none";
-},2000);
+  if(!nombres || !apellidos || !telefono || !cantidad || !email){
+    alert("Completa todos los campos obligatorios");
+    document.getElementById("procesando").style.display = "none";
+    return;
+  }
+
+  const res = await fetch("/api/compras",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      sorteo_id: SORTEO_ID,
+      nombres,
+      apellidos,
+      telefono,
+      whatsapp: telefono,
+      email,
+      cantidad,
+      total: cantidad * PRECIO_BOLETO
+    })
+  });
+
+  const data = await res.json();
+
+  if(!res.ok){
+    throw new Error(data.error || "Error al registrar compra");
+  }
+
+  // ✅ ÉXITO
+  document.querySelector("#procesando h2").innerText = "Compra exitosa";
+  document.querySelector("#procesando p").innerText = "Tus números fueron generados";
+
+  setTimeout(()=>{
+    document.getElementById("procesando").style.display = "none";
+
+    alert(`Compra registrada correctamente\n\nTus números:\n${data.numeros}`);
+
+  },2000);
+
+}catch(error){
+
+  document.querySelector("#procesando h2").innerText = "Error en la compra";
+  document.querySelector("#procesando p").innerText = "Intenta nuevamente";
+
+  console.error(error);
 
 }
-catch(error){
-
-document.querySelector("#procesando h2").innerText = "Error en la compra";
-document.querySelector("#procesando p").innerText = "Intenta nuevamente";
-
-console.error(error);
-
-}
-
 });
