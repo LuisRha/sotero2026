@@ -22,12 +22,6 @@
 
 <p><strong>Método de pago:</strong> Transferencia bancaria o depósito</p>
 
-<div class="alerta">
-⚠️ <b>¡ATENCIÓN!</b><br>
-NO envíes tu comprobante por WhatsApp.  
-Sigue las instrucciones en esta pantalla.
-</div>
-
 <h2>INSTRUCCIONES DE PAGO:</h2>
 
 <p>
@@ -35,10 +29,27 @@ Sigue las instrucciones en esta pantalla.
 </p>
 
 <div class="cuenta">
-<b>Banco Pichincha</b><br>
-Cuenta: 2201820430<br>
-Nombre: Richard Trujillo<br>
-CI: 1805295415
+
+<h3>🏦 Banco Pichincha</h3>
+<p>
+<strong>Tipo:</strong> Cuenta de Ahorro<br>
+<strong>Número:</strong> <b>2201820430</b><br>
+<strong>Nombre:</strong> Richard Adrian Trujillo<br>
+<strong>CI:</strong> <b>1805295415</b><br>
+<strong>Cel:</strong> <b>0987354472</b>
+</p>
+
+<hr>
+
+<h3>🏦 Produbanco</h3>
+<p>
+<strong>Tipo:</strong> Cuenta de Ahorro<br>
+<strong>Número:</strong> <b>20059631341</b><br>
+<strong>Nombre:</strong> Richard Adrian Trujillo<br>
+<strong>CI:</strong> <b>1805295415</b><br>
+<strong>Cel:</strong> <b>0987354472</b>
+</p>
+
 </div>
 
 <p>
@@ -57,16 +68,22 @@ CI: 1805295415
 
 <script>
 
+// =========================
+// LEER DATOS DE URL
+// =========================
 const params = new URLSearchParams(window.location.search);
 
-const pedido = params.get("id");
-const total = params.get("total");
+const pedido = params.get("id") || "000000";
+const total = params.get("total") || "0.00";
 const nums = params.get("nums");
 
+// mostrar datos
 document.getElementById("pedido").innerText = pedido;
 document.getElementById("total").innerText = total;
 
-// mostrar números
+// =========================
+// MOSTRAR NÚMEROS
+// =========================
 if(nums){
   const lista = nums.split(",");
   const contenedor = document.getElementById("listaNumeros");
@@ -74,22 +91,30 @@ if(nums){
   lista.forEach(n=>{
     const span = document.createElement("span");
     span.className = "numero";
-    span.innerText = n;
+    span.innerText = n.trim();
     contenedor.appendChild(span);
   });
 }
 
-// contador
+// =========================
+// CONTADOR 30 MIN
+// =========================
 let tiempo = 1800;
 
-setInterval(()=>{
-  let min = Math.floor(tiempo/60);
+const intervalo = setInterval(()=>{
+
+  let min = Math.floor(tiempo / 60);
   let seg = tiempo % 60;
 
   document.getElementById("contador").innerText =
-    min + ":" + (seg<10?"0":"") + seg;
+    min + ":" + (seg < 10 ? "0" : "") + seg;
 
   tiempo--;
+
+  if(tiempo < 0){
+    clearInterval(intervalo);
+    document.getElementById("contador").innerText = "Tiempo expirado";
+  }
 
 },1000);
 
