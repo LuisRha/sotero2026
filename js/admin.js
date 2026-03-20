@@ -502,7 +502,9 @@ Estado: <span id="estadoPremio">${resultado.estado}</span>
 
 <br><br>
 
-<button onclick="entregarPremio('${valor}')" style="background:green;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">
+<button id="btnEntregar"
+onclick="entregarPremio('${valor}')"
+style="background:green;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">
 ✅ Entregar premio
 </button>
 
