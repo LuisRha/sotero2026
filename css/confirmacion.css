@@ -79,34 +79,46 @@ p{
   line-height:1.6;
 }
 
+/* 🔥 CONTENEDOR DE CUENTAS (NUEVO) */
+.fila-cuentas {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  flex-wrap: wrap; /* responsive */
+}
+
 /* 🔥 CUENTAS */
-.cuenta{
-  background:#ffffff;
-  padding:20px;
-  margin-top:15px;
-  border-radius:12px;
-  border:1px solid #dcdcdc;
-  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+.cuenta {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+  flex: 1;              /* importante */
+  min-width: 280px;     /* evita que se aplaste */
 }
 
-.cuenta h3{
-  margin-bottom:8px;
-  color:#2c3e50;
-  font-size:16px;
+/* TITULO */
+.cuenta h3 {
+  margin-bottom: 8px;
+  color: #2c3e50;
+  font-size: 16px;
 }
 
-.cuenta p{
-  margin:0;
-  font-size:14px;
-  line-height:1.6;
+/* TEXTO */
+.cuenta p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.cuenta hr{
-  margin:15px 0;
-  border:none;
-  border-top:1px solid #cccccc;
+/* LINEA DIVISORIA (YA NO NECESARIA SI USAS DOS BLOQUES) */
+.cuenta hr {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #cccccc;
 }
-
 /* 🔥 TIMER */
 .timer{
   margin-top:20px;
