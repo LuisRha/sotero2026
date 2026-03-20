@@ -491,15 +491,53 @@ Estado: <span id="estadoPremio">${resultado.estado}</span>
 <br><br>
 
 <button onclick="enviarWhats(
-  '${resultado.whatsapp}',
-  '${valor}',
-  '${resultado.nombres}',
-  '${resultado.apellidos}',
-  '${resultado.id}'
+'${resultado.whatsapp}',
+'${valor}',
+'${resultado.nombres}',
+'${resultado.apellidos}',
+'${resultado.id}'
 )">
-  📲 Enviar por WhatsApp
+📲 Enviar por WhatsApp
 </button>
+
+<br><br>
+
+<button onclick="entregarPremio('${valor}')" style="background:green;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">
+✅ Entregar premio
+</button>
+
+</div>
 `;
+
+}
+
+
+// =========================
+// ENTREGAR PREMIO
+// =========================
+async function entregarPremio(numero){
+
+if(!confirm("¿Marcar como entregado?")) return;
+
+const res = await fetch("/api/entregar_premio", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ numero })
+});
+
+if(!res.ok){
+  alert("Error al actualizar");
+  return;
+}
+
+// actualizar texto en pantalla
+document.getElementById("estadoPremio").innerText = "ENTREGADO";
+
+alert("Premio entregado ✅");
+
+}
+
+
 
 // =========================
 // ENVIAR WHATSAPP BUSQUEDA
