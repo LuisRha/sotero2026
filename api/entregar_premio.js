@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export default async function handler(req, res){
 
@@ -25,7 +25,7 @@ export default async function handler(req, res){
       .eq("numero", numero);
 
     if(error){
-      console.error(error);
+      console.error("ERROR SUPABASE:", error);
       return res.status(500).json({ error: "Error actualizando" });
     }
 
@@ -33,7 +33,7 @@ export default async function handler(req, res){
 
   }catch(err){
 
-    console.error(err);
+    console.error("ERROR GENERAL:", err);
     return res.status(500).json({ error: "Error interno" });
 
   }
