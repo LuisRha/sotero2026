@@ -429,9 +429,6 @@ function verVoucher(v) {
   alert("📄 Voucher:\n\n" + decodeURIComponent(v));
 }
 
-// =========================
-// BUSCAR COMPRA
-// =========================
 async function buscarCompra(){
 
 const valor = document.getElementById("buscarInput").value.trim();
@@ -441,6 +438,7 @@ alert("Ingresa un número o cliente");
 return;
 }
 
+// 🔥 buscar en compras
 const res = await fetch("/api/compras");
 const data = await res.json();
 
@@ -470,6 +468,14 @@ cont.innerHTML = "<b>No encontrado</b>";
 return;
 }
 
+// 🔥 CONSULTAR ESTADO REAL EN tickets
+const resTicket = await fetch("/api/ticket_estado?numero=" + valor);
+const ticket = await resTicket.json();
+
+// 🔥 definir estado real
+const estadoFinal = ticket.usado ? "ENTREGADO" : resultado.estado;
+
+// 🔥 HTML FINAL
 cont.innerHTML = `
 <div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px;position:relative">
 
@@ -486,7 +492,7 @@ Email: ${resultado.email}<br>
 Cantidad de tickets: ${resultado.cantidad}<br>
 Número encontrado: <b>${valor}</b><br>
 
-Estado: <span id="estadoPremio">${resultado.estado}</span>
+Estado: <span id="estadoPremio">${estadoFinal}</span>
 
 <br><br>
 
@@ -502,16 +508,21 @@ Estado: <span id="estadoPremio">${resultado.estado}</span>
 
 <br><br>
 
-<button onclick="entregarPremio('${valor}', this)"
+${
+ticket.usado
+? `<button style="background:gray;color:white;padding:10px;border:none;border-radius:8px;" disabled>
+✔ ENTREGADO
+</button>`
+: `<button onclick="entregarPremio('${valor}', this)"
 style="background:green;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">
 ✅ Entregar premio
-</button>
+</button>`
+}
 
 </div>
 `;
 
 }
-
 
 // =========================
 // ENTREGAR PREMIO
