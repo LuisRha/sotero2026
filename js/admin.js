@@ -502,8 +502,7 @@ Estado: <span id="estadoPremio">${resultado.estado}</span>
 
 <br><br>
 
-<button id="btnEntregar"
-onclick="entregarPremio('${valor}')"
+<button onclick="entregarPremio('${valor}', this)"
 style="background:green;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">
 ✅ Entregar premio
 </button>
@@ -517,7 +516,7 @@ style="background:green;color:white;padding:10px;border:none;border-radius:8px;c
 // =========================
 // ENTREGAR PREMIO
 // =========================
-async function entregarPremio(numero){
+async function entregarPremio(numero, btn){
 
 if(!confirm("¿Marcar como entregado?")) return;
 
@@ -532,8 +531,13 @@ if(!res.ok){
   return;
 }
 
-// actualizar texto en pantalla
+// cambiar estado texto
 document.getElementById("estadoPremio").innerText = "ENTREGADO";
+
+// 🔥 cambiar botón DIRECTAMENTE
+btn.innerText = "✔ ENTREGADO";
+btn.style.background = "gray";
+btn.disabled = true;
 
 alert("Premio entregado ✅");
 
