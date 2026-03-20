@@ -13,23 +13,32 @@ export default async function handler(req, res){
 
   try{
 
-    const { numero } = req.body;
+    let { numero } = req.body;
 
     if(!numero){
       return res.status(400).json({ error: "Número requerido" });
     }
 
-    const { error } = await supabase
+    // 🔥 asegurar formato con ceros (ej: 05673)
+    numero = String(numero).padStart(5, "0");
+
+    const { data, error } = await supabase
       .from("tickets")
       .update({ usado: true })
-      .eq("numero", numero);
+      .eq("numero", numero)
+      .select(); // 👈 importante para verificar si actualizó
 
     if(error){
       console.error("ERROR SUPABASE:", error);
-      return res.status(500).json({ error: "Error actualizando" });
+      return res.status(500).json({ error: "Error en base de datos" });
     }
 
-    return res.status(200).json({ ok: true });
+    // ⚠️ si no actualizó nada
+    if(!data || data.length === 0){
+      return res.status(404).json({ error: "Número no encontrado" });
+    }
+
+    return res.status(200).json({ ok: true, numero });
 
   }catch(err){
 
