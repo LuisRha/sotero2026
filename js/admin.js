@@ -485,26 +485,21 @@ WhatsApp: ${resultado.whatsapp}<br>
 Email: ${resultado.email}<br>
 Cantidad de tickets: ${resultado.cantidad}<br>
 Número encontrado: <b>${valor}</b><br>
-Voucher: ${resultado.voucher}<br>
-Estado: ${resultado.estado}
+
+Estado: <span id="estadoPremio">${resultado.estado}</span>
 
 <br><br>
 
 <button onclick="enviarWhats(
-'${resultado.whatsapp}',
-'${valor}',
-'${resultado.nombres}',
-'${resultado.apellidos}',
-'${resultado.id}'
+  '${resultado.whatsapp}',
+  '${valor}',
+  '${resultado.nombres}',
+  '${resultado.apellidos}',
+  '${resultado.id}'
 )">
-Enviar por WhatsApp
+  📲 Enviar por WhatsApp
 </button>
-
-</div>
 `;
-
-}
-
 
 // =========================
 // ENVIAR WHATSAPP BUSQUEDA
@@ -1040,7 +1035,6 @@ Números:
 ${compra.numeros.split(",").map(n => `<span class="numero">${n}</span>`).join("")}
 </div>
 <br>
-Voucher: ${compra.voucher}<br>
 Estado: ${compra.estado}
 
 <br><br>
