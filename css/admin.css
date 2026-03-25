@@ -291,7 +291,7 @@ font-size:13px;
 .top-admin-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px;
 }
 
 #numerosTopAdmin {
