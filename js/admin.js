@@ -1068,6 +1068,12 @@ const data = await res.json();
 
 const compra = data.find(c => String(c.id) === id);
 
+if(compra && compra.estado && compra.estado.toLowerCase() === "rechazado"){
+  document.getElementById("resultadoBusqueda").innerHTML = "";
+  alert("Esta compra fue rechazada.");
+  return;
+}
+
 const cont = document.getElementById("resultadoBusqueda");
 
 if(!compra){
