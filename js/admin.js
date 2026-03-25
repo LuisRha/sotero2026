@@ -475,6 +475,11 @@ const ticket = await resTicket.json();
 // 🔥 definir estado real
 const estadoFinal = ticket.usado ? "ENTREGADO" : resultado.estado;
 
+if(estadoFinal && estadoFinal.toLowerCase() === "rechazado"){
+  document.getElementById("resultadoBusqueda").innerHTML = "";
+  alert("Esta compra fue rechazada.");
+  return;
+}
 // 🔥 HTML FINAL
 cont.innerHTML = `
 <div style="background:#111;color:white;padding:20px;border-radius:10px;margin-top:15px;position:relative">
