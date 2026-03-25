@@ -291,14 +291,14 @@ font-size:13px;
 .top-admin-bar {
   display: flex;
   align-items: center;
-  gap: 0px;
+  gap: 10px;
 }
 
 #numerosTopAdmin {
   display: flex;
   align-items: center;
-  /* height: 35px; /* 🔥 iguala altura del botón */
-} */
+  height: 35px; /* 🔥 iguala altura del botón */
+}
 
 #numerosTopAdmin span {
   display: flex;
