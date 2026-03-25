@@ -288,21 +288,19 @@ font-size:13px;
 }
 
 /* numeros premios instantaneos */
-
-.admin-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .top-admin-bar {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-
 #numerosTopAdmin {
+  display: flex;
+  align-items: center;
+  height: 35px; /* 🔥 iguala altura del botón */
+}
+
+#numerosTopAdmin span {
   display: flex;
   align-items: center;
 }
