@@ -288,19 +288,40 @@ font-size:13px;
 }
 
 /* numeros premios instantaneos */
+/* CONTENEDOR */
 .top-admin-bar {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap; /* 🔥 permite bajar en pantallas pequeñas */
 }
 
+/* NUMEROS */
 #numerosTopAdmin {
   display: flex;
   align-items: center;
-  height: 35px; /* 🔥 iguala altura del botón */
+  height: 35px;
+  flex-wrap: wrap; /* 🔥 si no entran, bajan */
+  max-width: 100%;
 }
 
+/* CADA NUMERO */
 #numerosTopAdmin span {
   display: flex;
   align-items: center;
+  margin-right: 6px;
+}
+
+/* 📱 MÓVIL */
+@media (max-width: 768px) {
+
+  .top-admin-bar {
+    flex-direction: column; /* 🔥 se acomoda vertical */
+    align-items: flex-start;
+  }
+
+  #numerosTopAdmin {
+    height: auto; /* 🔥 evita que se corte */
+  }
+
 }
