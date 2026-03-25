@@ -869,6 +869,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
   await revisarGanadores();
 
+  await cargarNumerosTopAdmin(); // 🔥 AGREGA ESTA LÍNEA
+
   // revisar cada 5 segundos si hay ganadores
   setInterval(revisarGanadores, 5000);
 
