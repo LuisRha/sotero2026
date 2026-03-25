@@ -1144,12 +1144,12 @@ async function cargarNumerosTopAdmin(){
   cont.innerHTML = data.map(n => {
 
     if(n.usado || n.estado === "entregado"){
-      return `<span style="color:gray; font-size:10px; margin-right:6px;">
+      return `<span style="color:gray; font-size:20px; margin-right:6px;">
         ${n.numero}
       </span>`;
     }
 
-    return `<span style="color:#00ff88; font-size:10px; margin-right:6px;">
+    return `<span style="color:#1b5e20; font-size:20px; margin-right:6px;">
       ${n.numero}
     </span>`;
 
