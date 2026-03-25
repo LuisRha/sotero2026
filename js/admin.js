@@ -477,7 +477,7 @@ const estadoFinal = ticket.usado ? "ENTREGADO" : resultado.estado;
 
 if(estadoFinal && estadoFinal.toLowerCase() === "rechazado"){
   document.getElementById("resultadoBusqueda").innerHTML = "";
-  alert("Esta compra fue rechazada.");
+  alert("Esta compra fue rechazada. Intenta con otro número");
   return;
 }
 // 🔥 HTML FINAL
