@@ -538,7 +538,7 @@ const res = await fetch("/api/entregar_premio", {
 });
 
 if(!res.ok){
-  alert("Error, este  numero no es con suerte");
+  alert("Este número no es ganador. Intenta con otro");
   return;
 }
 
