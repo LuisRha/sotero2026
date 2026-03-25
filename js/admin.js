@@ -1135,7 +1135,6 @@ document.getElementById("resultadoBusqueda").innerHTML = "";
 async function cargarNumerosTopAdmin(){
 
   const cont = document.getElementById("numerosTopAdmin");
-
   if(!cont) return;
 
   const res = await fetch("/api/premios");
@@ -1144,25 +1143,10 @@ async function cargarNumerosTopAdmin(){
   cont.innerHTML = data.map(n => {
 
     if(n.usado || n.estado === "entregado"){
-      return `<span style="
-        color:#777 !important;
-        font-size:20px !important;
-        margin-right:6px;
-        text-decoration: line-through !important;
-        opacity:0.6;
-      ">
-        ${n.numero}
-      </span>`;
+      return `<span class="numero-entregado">${n.numero}</span>`;
     }
 
-    return `<span style="
-      color:#1b5e20 !important;
-      font-size:20px !important;
-      margin-right:6px;
-      font-weight:bold;
-    ">
-      ${n.numero}
-    </span>`;
+    return `<span class="numero-activo">${n.numero}</span>`;
 
   }).join("");
 
