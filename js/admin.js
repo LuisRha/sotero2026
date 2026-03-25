@@ -1146,7 +1146,7 @@ async function cargarNumerosTopAdmin(){
     if(n.usado || n.estado === "entregado"){
       return `<span style="
         color:#777 !important;
-        font-size:15px !important;
+        font-size:10px !important;
         margin-right:6px;
         text-decoration: line-through !important;
         opacity:0.6;
@@ -1157,7 +1157,7 @@ async function cargarNumerosTopAdmin(){
 
     return `<span style="
       color:#1b5e20 !important;
-      font-size:15px !important;
+      font-size:10px !important;
       margin-right:6px;
       font-weight:bold;
     ">
