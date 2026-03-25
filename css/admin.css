@@ -291,14 +291,14 @@ font-size:13px;
 
 .numero-activo {
   color: #1b5e20 !important;
-  font-size: 20px !important;
+  font-size: 10px !important;
   font-weight: bold;
   margin-right: 6px;
 }
 
 .numero-entregado {
   color: #777 !important;
-  font-size: 20px !important;
+  font-size: 10px !important;
   text-decoration: line-through !important;
   opacity: 0.6;
   margin-right: 6px;
