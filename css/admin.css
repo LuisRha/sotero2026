@@ -289,17 +289,20 @@ font-size:13px;
 
 /* numeros premios instantaneos */
 
-.numero-activo {
-  color: #1b5e20 !important;
-  font-size: 10px !important;
-  font-weight: bold;
-  margin-right: 6px;
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.numero-entregado {
-  color: #777 !important;
-  font-size: 10px !important;
-  text-decoration: line-through !important;
-  opacity: 0.6;
-  margin-right: 6px;
+.top-admin-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+#numerosTopAdmin {
+  display: flex;
+  align-items: center;
 }
