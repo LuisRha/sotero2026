@@ -1126,3 +1126,33 @@ Enviar por WhatsApp
 function cerrarBusqueda(){
 document.getElementById("resultadoBusqueda").innerHTML = "";
 }
+
+
+// =========================
+// muestra numero gandores instantes en admin
+// =========================
+
+async function cargarNumerosTopAdmin(){
+
+  const cont = document.getElementById("numerosTopAdmin");
+
+  if(!cont) return;
+
+  const res = await fetch("/api/premios");
+  const data = await res.json();
+
+  cont.innerHTML = data.map(n => {
+
+    if(n.entregado){
+      return `<span style="color:gray; font-size:10px; margin-right:6px;">
+        ${n.numero}
+      </span>`;
+    }
+
+    return `<span style="color:#00ff88; font-size:10px; margin-right:6px;">
+      ${n.numero}
+    </span>`;
+
+  }).join("");
+
+}
