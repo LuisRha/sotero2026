@@ -297,8 +297,8 @@ font-size:13px;
 #numerosTopAdmin {
   display: flex;
   align-items: center;
-  height: 35px; /* 🔥 iguala altura del botón */
-}
+  /* height: 35px; /* 🔥 iguala altura del botón */
+} */
 
 #numerosTopAdmin span {
   display: flex;
