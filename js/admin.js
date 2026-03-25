@@ -1143,7 +1143,7 @@ async function cargarNumerosTopAdmin(){
 
   cont.innerHTML = data.map(n => {
 
-    if(n.entregado){
+    if(n.usado || n.estado === "entregado"){
       return `<span style="color:gray; font-size:10px; margin-right:6px;">
         ${n.numero}
       </span>`;
