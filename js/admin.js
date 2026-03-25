@@ -1143,13 +1143,26 @@ async function cargarNumerosTopAdmin(){
 
   cont.innerHTML = data.map(n => {
 
+    // 🔴 ENTREGADO
     if(n.usado || n.estado === "entregado"){
-      return `<span style="color:gray; font-size:20px; margin-right:6px;">
+      return `<span style="
+        color:#777;
+        font-size:20px;
+        margin-right:6px;
+        text-decoration: line-through;
+        opacity:0.6;
+      ">
         ${n.numero}
       </span>`;
     }
 
-    return `<span style="color:#1b5e20; font-size:20px; margin-right:6px;">
+    // 🟢 DISPONIBLE
+    return `<span style="
+      color:#1b5e20;
+      font-size:20px;
+      margin-right:6px;
+      font-weight:bold;
+    ">
       ${n.numero}
     </span>`;
 
