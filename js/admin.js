@@ -583,11 +583,13 @@ nombreSorteo = activo.nombre;
 const mensaje = `
 🎉 *FELICIDADES ${nombre} ${apellido}*
 
-Nos complace informarte que tu número ha resultado ganador.
+Nos complace informarte que tu número ha resultado ganador del premio extra.
 
 🎟 Número ganador: *${numeroBuscado}*
 
 🧾 Pedido: *${pedido}*
+
+Y suerte en nuestra sorteo principal: 
 
 🏷 Sorteo: *${nombreSorteo}*
 
