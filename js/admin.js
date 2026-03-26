@@ -589,7 +589,7 @@ Nos complace informarte que tu número ha resultado ganador del premio extra.
 
 🧾 Pedido: *${pedido}*
 
-Y suerte en nuestra sorteo principal: 
+Y suerte en nuestro sorteo principal: 
 
 🏷 Sorteo: *${nombreSorteo}*
 

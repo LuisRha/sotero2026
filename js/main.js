@@ -366,6 +366,11 @@ window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad 
 
     await obtenerSorteoActivo();
 
+    cargarSlider(); // 🔥 ACTIVAS EL SLIDER
+
+await actualizarDisponibles();
+await cargarNumerosPremio();
+
     // =========================
     // LEER CANTIDAD DESDE URL
     // =========================
@@ -470,33 +475,55 @@ Comunícate con nosotros para reclamarlo.
 // hacer la función visible para el botón HTML
 window.consultarNumeros = consultarNumeros;
 
-/// slider imagen
-document.addEventListener("DOMContentLoaded", function(){
+// =========================
+// SLIDER DINÁMICO
+// =========================
+function cargarSlider(){
 
-let slides = document.querySelectorAll(".slide");
+  const cont = document.getElementById("slider");
+  if(!cont) return;
 
-// 🔹 si no hay slides en la página, salir
-if(slides.length === 0) return;
+  cont.innerHTML = "";
 
-let index = 0;
+  const total = 8;
 
-function cambiarImagen(){
+  for(let i = 1; i <= total; i++){
 
-slides[index].classList.remove("active");
+    const img = document.createElement("img");
+    img.src = `images/sorteos/s${i}.jpeg`;
+    img.classList.add("slide");
 
-index++;
+    if(i === 1){
+      img.classList.add("active");
+    }
 
-if(index >= slides.length){
-index = 0;
+    cont.appendChild(img);
+  }
+
+  iniciarSlider();
 }
 
-slides[index].classList.add("active");
+function iniciarSlider(){
+
+  const slides = document.querySelectorAll("#slider .slide");
+
+  let index = 0;
+
+  setInterval(() => {
+
+    slides[index].classList.remove("active");
+
+    index++;
+
+    if(index >= slides.length){
+      index = 0;
+    }
+
+    slides[index].classList.add("active");
+
+  }, 3000);
 
 }
-
-setInterval(cambiarImagen,3000);
-
-});
 
 // =========================
 // TEXTOS DINAMICOS
