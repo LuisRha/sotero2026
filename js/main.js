@@ -521,7 +521,7 @@ function iniciarSlider(){
 
     slides[index].classList.add("active");
 
-  }, 3000);
+  }, 5000);
 
 }
 
