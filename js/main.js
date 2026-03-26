@@ -409,7 +409,7 @@ async function consultarNumeros(){
     return;
   }
 
-  const res = await fetch(`/api/compras?whatsapp=${telefono}`);
+  const res = await fetch(`/api/compras?whatsapp=${telefono}&sorteo_id=${SORTEO_ID}`);
 
   if(!res.ok){
     alert("Error consultando números");
