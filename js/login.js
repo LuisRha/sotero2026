@@ -10,43 +10,49 @@ const supabaseClient = window.supabase.createClient(
 // Esperar que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
 
-  const btn = document.getElementById("btnLogin");
+  const form = document.getElementById("loginForm");
+  const msg = document.getElementById("msg");
 
-  if(!btn){
-    console.error("No se encontró el botón btnLogin");
+  if (!form) {
+    console.error("No se encontró el formulario loginForm");
     return;
   }
 
-  btn.addEventListener("click", login);
+  // Evento submit (ENTER o botón)
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-});
+    console.log("Intentando login...");
 
-async function login(){
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-  console.log("Intentando login...");
+    if (!email || !password) {
+      msg.innerText = "Ingrese correo y contraseña";
+      return;
+    }
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+    msg.innerText = "Verificando...";
 
-  if(!email || !password){
-    document.getElementById("msg").innerText = "Ingrese correo y contraseña";
-    return;
-  }
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: email,
-    password: password
+    if (error) {
+      console.error("Error login:", error);
+      msg.innerText = error.message;
+      return;
+    }
+
+    console.log("Login correcto", data);
+
+    msg.innerText = "Login correcto";
+
+    // Redirigir al panel admin
+    setTimeout(() => {
+      window.location.href = "admin.html";
+    }, 800);
   });
 
-  if(error){
-    console.error("Error login:", error);
-    document.getElementById("msg").innerText = error.message;
-    return;
-  }
-
-  console.log("Login correcto", data);
-
-  // Redirigir al panel admin
-  window.location.href = "admin.html";
-
-}
+});
