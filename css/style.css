@@ -432,8 +432,26 @@ main>*:last-child {
 
 body {
   margin: 0;
-  background: #6b6b6b;
-  /* el gris que ya usas */
+  font-family: 'Segoe UI', sans-serif;
+
+  background: linear-gradient(270deg,
+    #0f172a,
+    #1e3a8a,
+    #7c3aed,
+    #ec4899,
+    #f59e0b
+  );
+
+  background-size: 400% 400%;
+  animation: fondoMove 12s ease infinite;
+
+  color: #ffffff;
+}
+
+@keyframes fondoMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 
