@@ -425,35 +425,87 @@ async function consultarNumeros(){
 
   const resultado = document.getElementById("resultadoConsulta");
 
+  // =========================
+  // NO HAY COMPRAS
+  // =========================
   if(!data.length){
-    resultado.innerHTML = "No se encontraron compras.";
+
+    resultado.innerHTML = `
+      <div class="estado sin-compras">
+        <h3>📭 No tienes compras registradas</h3>
+        <p>No encontramos ninguna compra asociada a este número de WhatsApp.</p>
+      </div>
+    `;
+
     return;
   }
 
-  let html = "<h3>Tus números:</h3>";
+  // =========================
+  // HAY COMPRAS PENDIENTES
+  // =========================
+  const pendientes = data.filter(c => c.estado === "pendiente");
+
+  if(pendientes.length){
+
+    resultado.innerHTML = `
+      <div class="estado pendiente">
+
+        <h3>⏳ Compra pendiente de aprobación</h3>
+
+        <p>
+          Tu compra aún no ha sido aprobada por el administrador.
+        </p>
+
+        <p>
+          Realiza el pago mediante <b>transferencia</b> o <b>depósito</b>.
+        </p>
+
+        <p>
+          Luego envíanos el comprobante por WhatsApp para aprobar tu compra.
+        </p>
+
+        <p>
+          Una vez aprobada podrás visualizar tus números.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  // =========================
+  // COMPRAS APROBADAS
+  // =========================
+  let html = `
+    <div class="estado aprobada">
+      <h3>✅ Tus números</h3>
+  `;
 
   data.forEach(compra => {
 
     html += `
-<div class="numeros-box">
-${compra.numeros.split(",").map(n => `<span class="numero">${n}</span>`).join("")}
-</div>
-`;
+      <div class="numeros-box">
+        ${compra.numeros
+          .split(",")
+          .map(n => `<span class="numero">${n}</span>`)
+          .join("")}
+      </div>
+    `;
 
     if(compra.premio){
 
       html += `
-      <div style="color:#00ff88;font-weight:bold;">
-      🎉 ¡GANASTE UN PREMIO!
-      Número ganador: ${compra.numeros}
-      </div>
+        <div style="color:#00ff88;font-weight:bold;margin-top:15px;">
+          🎉 ¡GANASTE UN PREMIO!<br>
+          Número ganador: ${compra.numeros}
+        </div>
       `;
 
       const mensaje = `
 🎉 FELICIDADES
 
-Tu número ${compra.numeros} ha ganado
-un premio instantáneo.
+Tu número ${compra.numeros} ha ganado un premio instantáneo.
 
 Comunícate con nosotros para reclamarlo.
 `;
@@ -461,12 +513,13 @@ Comunícate con nosotros para reclamarlo.
       const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
       window.open(
-      `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`
+        `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`
       );
-
     }
 
   });
+
+  html += "</div>";
 
   resultado.innerHTML = html;
 
