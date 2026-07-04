@@ -402,6 +402,7 @@ await cargarNumerosPremio();
     console.error(err);
   }
 })();
+
 // =========================
 // CONSULTAR BOLETOS (Versión Inteligente: WhatsApp o Orden)
 // =========================
@@ -415,13 +416,11 @@ async function consultarNumeros(){
   }
 
   // 🕵️‍♂️ DETECTAR SI ES UNA ORDEN O UN WHATSAPP
-  // Si empieza con '#' o es un número corto (ej: 168), asumimos que es ID de compra
   const esNumeroOrden = inputUsuario.startsWith("#") || (!isNaN(inputUsuario) && inputUsuario.length <= 4);
   
   let urlApi = "";
   
   if (esNumeroOrden) {
-    // Limpiamos el '#' si lo tiene para dejar solo el número (ej: "168")
     const idCompra = inputUsuario.replace("#", "");
     urlApi = `/api/compras?id=${idCompra}&sorteo_id=${SORTEO_ID}`;
   } else {
@@ -451,14 +450,12 @@ async function consultarNumeros(){
     return;
   }
 
-  // Normalizamos el estado del primer registro para evitar problemas de mayúsculas/espacios
   const estadoPrimerRegistro = data[0].estado ? data[0].estado.toLowerCase().trim() : "";
 
   // =========================
   // HAY COMPRAS PENDIENTES / RECHAZADAS
   // =========================
   if (!esNumeroOrden) {
-    // Si busca por WhatsApp, filtramos de forma segura en minúsculas
     const pendientes = data.filter(c => c.estado && c.estado.toLowerCase().trim() === "pendiente");
     if(pendientes.length && pendientes.length === data.length){
       resultado.innerHTML = `
@@ -473,7 +470,6 @@ async function consultarNumeros(){
       return;
     }
   } else {
-    // Si buscó una orden específica (#168) y su estado real es pendiente
     if (estadoPrimerRegistro === "pendiente") {
       resultado.innerHTML = `
         <div class="estado pendiente">
@@ -484,7 +480,6 @@ async function consultarNumeros(){
       return;
     }
     
-    // Si está rechazada
     if (estadoPrimerRegistro === "rechazado" || estadoPrimerRegistro === "rechazada") {
       resultado.innerHTML = `
         <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
@@ -505,32 +500,61 @@ async function consultarNumeros(){
   `;
 
   let tieneAprobados = false;
+  let totalNumerosComprados = 0;
+
+  // Calculamos el total de números primero para ver si vale la pena poner buscador
+  data.forEach(compra => {
+    const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
+    if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
+      totalNumerosComprados += compra.numeros.split(",").length;
+    }
+  });
+
+  // Si tiene más de 15 números en total, añadimos un mini buscador interactivo inline
+  if (totalNumerosComprados > 15) {
+    html += `
+      <div class="buscador-boletos-box" style="margin-bottom: 15px;">
+        <input type="text" id="filtrarBoletoInput" placeholder="🔍 Buscar mi número..." 
+               onkeyup="filtrarBoletosEnPantalla()" 
+               style="width:100%; padding:8px; border-radius:5px; border:1px solid #444; background:#222; color:#fff;">
+      </div>
+    `;
+  }
 
   data.forEach(compra => {
     const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
 
-    // Acepta "aprobado", "aprobada", "aprobado " de manera segura
     if (est === "aprobado" || est === "aprobada") {
       tieneAprobados = true;
+      const arrayNumeros = compra.numeros.split(",");
+
       html += `
-        <div class="numeros-box">
-          <small style="display:block; color:#aaa; margin-bottom:5px;">Orden #${compra.id}</small>
-          ${compra.numeros
-            .split(",")
-            .map(n => `<span class="numero">${n.trim()}</span>`)
-            .join("")}
+        <div class="numeros-box" style="margin-bottom: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <small style="color:#aaa;">Orden #${compra.id}</small>
+            <span style="font-size:12px; background:#333; padding:2px 8px; border-radius:10px; color:#fff;">
+              ${arrayNumeros.length} boletos
+            </span>
+          </div>
+          
+          <!-- Contenedor con scroll para evitar desbordes si son demasiados -->
+          <div class="boletos-grid-scroll" style="max-height: 200px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; border: 1px solid #333; border-radius: 6px; background: rgba(0,0,0,0.2);">
+            ${arrayNumeros
+              .map(n => `<span class="numero data-boleto-item" style="display:inline-block; padding:4px 8px; background:#00ff88; color:#000; font-weight:bold; border-radius:4px; font-size:14px;">${n.trim()}</span>`)
+              .join("")}
+          </div>
         </div>
       `;
 
       if (compra.premio) {
         html += `
-          <div style="color:#00ff88;font-weight:bold;margin-top:15px;">
-            🎉 ¡GANASTE UN PREMIO!<br>
-            Número ganador: ${compra.numeros}
+          <div style="color:#00ff88;font-weight:bold;margin-top:15px; background: rgba(0,255,136,0.1); padding: 10px; border-radius: 5px; border: 1px solid #00ff88;">
+            🎉 ¡GANASTE UN PREMIO INSTANTÁNEO!<br>
+            Número ganador de la Orden #${compra.id}: ${compra.numeros}
           </div>
         `;
 
-        const mensaje = `🎉 FELICIDADES\n\nTu número ${compra.numeros} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
+        const mensaje = `🎉 FELICIDADES\n\nTu número de orden #${compra.id} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
         const telefonoFinal = "593" + compra.whatsapp.replace(/^0/, "");
 
         window.open(`https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`);
@@ -540,7 +564,6 @@ async function consultarNumeros(){
 
   html += "</div>";
 
-  // Control extra: Si no se detectó como pendiente ni rechazada arriba, pero tampoco entró en aprobada
   if (!tieneAprobados) {
     resultado.innerHTML = `
       <div class="estado pendiente">
@@ -553,9 +576,25 @@ async function consultarNumeros(){
   }
 }
 
+// =========================
+// FILTRADO DINÁMICO (Para cuando salen demasiados números)
+// =========================
+window.filtrarBoletosEnPantalla = function() {
+  const query = document.getElementById("filtrarBoletoInput").value.trim();
+  const spans = document.querySelectorAll(".data-boleto-item");
+  
+  spans.forEach(span => {
+    if (span.textContent.includes(query)) {
+      span.style.display = "inline-block";
+      span.style.opacity = "1";
+    } else {
+      span.style.display = "none";
+    }
+  });
+}
+
 // Hacer la función visible para el botón HTML
 window.consultarNumeros = consultarNumeros;
-
 // =========================
 // SLIDER DINÁMICO
 // =========================
