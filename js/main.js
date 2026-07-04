@@ -429,14 +429,12 @@ async function consultarNumeros(){
   // NO HAY COMPRAS
   // =========================
   if(!data.length){
-
     resultado.innerHTML = `
       <div class="estado sin-compras">
         <h3>📭 No tienes compras registradas</h3>
         <p>No encontramos ninguna compra asociada a este número de WhatsApp.</p>
       </div>
     `;
-
     return;
   }
 
@@ -446,31 +444,15 @@ async function consultarNumeros(){
   const pendientes = data.filter(c => c.estado === "pendiente");
 
   if(pendientes.length){
-
     resultado.innerHTML = `
       <div class="estado pendiente">
-
         <h3>⏳ Compra pendiente de aprobación</h3>
-
-        <p>
-          Tu compra aún no ha sido aprobada por el administrador.
-        </p>
-
-        <p>
-          Realiza el pago mediante <b>transferencia</b> o <b>depósito</b>.
-        </p>
-
-        <p>
-          Luego envíanos el comprobante por WhatsApp para aprobar tu compra.
-        </p>
-
-        <p>
-          Una vez aprobada podrás visualizar tus números.
-        </p>
-
+        <p>Tu compra aún no ha sido aprobada por el administrador.</p>
+        <p>Realiza el pago mediante <b>transferencia</b> o <b>depósito</b>.</p>
+        <p>Luego envíanos el comprobante por WhatsApp para aprobar tu compra.</p>
+        <p>Una vez aprobada podrás visualizar tus números.</p>
       </div>
     `;
-
     return;
   }
 
@@ -482,19 +464,38 @@ async function consultarNumeros(){
       <h3>✅ Tus números</h3>
   `;
 
-  data.forEach(compra => {
+  let comprasFiltradas = data;
+
+  // =========================
+  // 🔥 FILTRO POR TIPO DE CONSULTA (Corregido)
+  // =========================
+  // Definimos valores por defecto por si las variables globales no existen
+  const tipoConsultaActual = typeof tipoConsulta !== 'undefined' ? tipoConsulta : "whatsapp";
+  const valorConsultaActual = typeof valorConsulta !== 'undefined' ? valorConsulta : telefono;
+
+  if (tipoConsultaActual === "whatsapp") {
+    comprasFiltradas = data.filter(c => c.whatsapp === valorConsultaActual);
+  }
+
+  if (tipoConsultaActual === "compra") {
+    comprasFiltradas = data.filter(c => String(c.id) === String(valorConsultaActual));
+  }
+
+  // =========================
+  // RENDER
+  // =========================
+  comprasFiltradas.forEach(compra => {
 
     html += `
       <div class="numeros-box">
         ${compra.numeros
           .split(",")
-          .map(n => `<span class="numero">${n}</span>`)
+          .map(n => `<span class="numero">${n.trim()}</span>`)
           .join("")}
       </div>
     `;
 
-    if(compra.premio){
-
+    if (compra.premio) {
       html += `
         <div style="color:#00ff88;font-weight:bold;margin-top:15px;">
           🎉 ¡GANASTE UN PREMIO!<br>
@@ -502,30 +503,19 @@ async function consultarNumeros(){
         </div>
       `;
 
-      const mensaje = `
-🎉 FELICIDADES
-
-Tu número ${compra.numeros} ha ganado un premio instantáneo.
-
-Comunícate con nosotros para reclamarlo.
-`;
-
+      const mensaje = `🎉 FELICIDADES\n\nTu número ${compra.numeros} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
       const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
-      window.open(
-        `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`
-      );
+      window.open(`https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`);
     }
 
   });
 
   html += "</div>";
-
   resultado.innerHTML = html;
-
 }
 
-// hacer la función visible para el botón HTML
+// Hacer la función visible para el botón HTML (Movido fuera de la función)
 window.consultarNumeros = consultarNumeros;
 
 // =========================
