@@ -35,7 +35,7 @@
 <header class="main-header">
   <div class="logo-box">
     <span class="logo-text"></span>
-    <span class="logo-highlight">TRUJILLOGROUP</span>
+    <span class="logo-highlight">TRUJILLSGROUP</span>
     <p class="slogan">Alcanza tus metas..</p>
   </div>
 </header>
@@ -164,7 +164,7 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 </div>
 
 
-<div class="consulta-numeros">
+<!--<div class="consulta-numeros">
 
 <h2>CONSULTA TUS NÚMEROS</h2>
 
@@ -183,7 +183,50 @@ CONSULTAR
 
 </div>
 
-</section>
+</section> -->
+
+<div class="consulta-numeros">
+
+    <h2>CONSULTA TUS NÚMEROS</h2>
+
+    <p class="consulta-texto">
+        ¿Ya hiciste tu compra?<br>
+        Ingresa tu número de WhatsApp para consultar tus boletos.
+    </p>
+
+    <div class="consulta-form">
+        <input
+            type="text"
+            id="consultaWhatsapp"
+            placeholder="Ingresa tu número de WhatsApp">
+
+        <button
+            class="btn-consultar"
+            onclick="consultarNumeros()">
+            CONSULTAR
+        </button>
+    </div>
+
+    <!-- Aquí se mostrará el resultado -->
+    <div id="resultadoConsulta">
+
+        <!--
+            Si la compra está PENDIENTE:
+            Se mostrará la tarjeta amarilla.
+
+            Si NO EXISTE compra:
+            Se mostrará el mensaje "No tienes compras".
+
+            Si la compra está APROBADA:
+            Se mostrarán los números.
+        -->
+
+    </div>
+
+</div>
+
+</section> <!-- hasta aqui -->
+
 
 </div>
 
