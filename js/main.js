@@ -503,10 +503,10 @@ async function consultarNumeros(){
         return;
       }
       
-      if (estadoAEvaluar === "rechazado" || estadoAEvaluar === "rechazada por  falta  de  pago ") {
+      if (estadoAEvaluar === "rechazado" || estadoAEvaluar === "rechazada") {
         resultado.innerHTML = `
           <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
-            <h3>❌ La Orden #${ordenEspecifica.id} fue Rechazada</h3>
+            <h3>❌ La Orden #${ordenEspecifica.id} fue Rechazada por  falta  de  pago.</h3>
             <p>Esta compra no fue aprobada por el administrador.</p>
           </div>
         `;
