@@ -420,6 +420,7 @@ async function consultarNumeros(){
   
   let urlApi = "";
   
+  // Suponiendo que SORTEO_ID es una variable global ya definida en tu script
   if (esNumeroOrden) {
     const idCompra = inputUsuario.replace("#", "");
     urlApi = `/api/compras?id=${idCompra}&sorteo_id=${SORTEO_ID}`;
@@ -427,164 +428,191 @@ async function consultarNumeros(){
     urlApi = `/api/compras?whatsapp=${inputUsuario}&sorteo_id=${SORTEO_ID}`;
   }
 
-  const res = await fetch(urlApi);
+  try {
+    const res = await fetch(urlApi);
 
-  if(!res.ok){
-    alert("Error consultando la información");
-    return;
-  }
+    if(!res.ok){
+      alert("Error consultando la información");
+      return;
+    }
 
-  const data = await res.json();
-  const resultado = document.getElementById("resultadoConsulta");
+    const data = await res.json();
+    const resultado = document.getElementById("resultadoConsulta");
 
-  // =========================
-  // NO HAY COMPRAS
-  // =========================
-  if(!data || !data.length){
-    resultado.innerHTML = `
-      <div class="estado sin-compras">
-        <h3>📭 No se encontraron registros</h3>
-        <p>No encontramos ninguna compra asociada a "${inputUsuario}".</p>
-      </div>
+    // =========================
+    // NO HAY COMPRAS
+    // =========================
+    if(!data || !data.length){
+      resultado.innerHTML = `
+        <div class="estado sin-compras">
+          <h3>📭 No se encontraron registros</h3>
+          <p>No encontramos ninguna compra asociada a "${inputUsuario}".</p>
+        </div>
+      `;
+      return;
+    }
+
+    const estadoPrimerRegistro = data[0].estado ? data[0].estado.toLowerCase().trim() : "";
+
+    // =========================
+    // HAY COMPRAS PENDIENTES / RECHAZADAS
+    // =========================
+    if (!esNumeroOrden) {
+      const pendientes = data.filter(c => c.estado && c.estado.toLowerCase().trim() === "pendiente");
+      if(pendientes.length && pendientes.length === data.length){
+        resultado.innerHTML = `
+          <div class="estado pendiente">
+            <h3>⏳ Compra pendiente de aprobación</h3>
+            <p>Tu compra aún no ha sido aprobada por el administrador.</p>
+            <p>Realiza el pago mediante <b>transferencia</b> o <b>depósito</b>.</p>
+            <p>Luego envíanos el comprobante por WhatsApp para evaluar y aprobar tu compra.</p>
+            <p>Una vez aprobada podrás visualizar tus números.</p>
+          </div>
+        `;
+        return;
+      }
+    } else {
+      if (estadoPrimerRegistro === "pendiente") {
+        resultado.innerHTML = `
+          <div class="estado pendiente">
+            <h3>⏳ La Orden #${data[0].id} está pendiente</h3>
+            <p>Envíanos el comprobante de pago por WhatsApp para proceder con la aprobación.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      if (estadoPrimerRegistro === "rechazado" || estadoPrimerRegistro === "rechazada") {
+        resultado.innerHTML = `
+          <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
+            <h3>❌ La Orden #${data[0].id} fue Rechazada</h3>
+            <p>Esta compra no fue aprobada por el administrador.</p>
+          </div>
+        `;
+        return;
+      }
+    }
+
+    // =========================
+    // COMPRAS APROBADAS / MOSTRAR NÚMEROS
+    // =========================
+    let html = `
+      <div class="estado aprobada">
+        <h3>✅ Tus números</h3>
     `;
-    return;
-  }
 
-  const estadoPrimerRegistro = data[0].estado ? data[0].estado.toLowerCase().trim() : "";
+    let tieneAprobados = false;
+    let totalNumerosComprados = 0;
+    let premiosGanados = []; // Almacenamos los premios para manejarlos limpiamente
 
-  // =========================
-  // HAY COMPRAS PENDIENTES / RECHAZADAS
-  // =========================
-  if (!esNumeroOrden) {
-    const pendientes = data.filter(c => c.estado && c.estado.toLowerCase().trim() === "pendiente");
-    if(pendientes.length && pendientes.length === data.length){
-      resultado.innerHTML = `
-        <div class="estado pendiente">
-          <h3>⏳ Compra pendiente de aprobación</h3>
-          <p>Tu compra aún no ha sido aprobada por el administrador.</p>
-          <p>Realiza el pago mediante <b>transferencia</b> o <b>depósito</b>.</p>
-          <p>Luego envíanos el comprobante por WhatsApp para aprobar tu compra.</p>
-          <p>Una vez aprobada podrás visualizar tus números.</p>
-        </div>
-      `;
-      return;
-    }
-  } else {
-    if (estadoPrimerRegistro === "pendiente") {
-      resultado.innerHTML = `
-        <div class="estado pendiente">
-          <h3>⏳ La Orden #${data[0].id} está pendiente</h3>
-          <p>Envíanos el comprobante de pago por WhatsApp para proceder con la aprobación.</p>
-        </div>
-      `;
-      return;
-    }
-    
-    if (estadoPrimerRegistro === "rechazado" || estadoPrimerRegistro === "rechazada") {
-      resultado.innerHTML = `
-        <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
-          <h3>❌ La Orden #${data[0].id} fue Rechazada</h3>
-          <p>Esta compra no fue aprobada por el administrador.</p>
-        </div>
-      `;
-      return;
-    }
-  }
+    // Calculamos el total de números de forma segura
+    data.forEach(compra => {
+      const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
+      if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
+        totalNumerosComprados += compra.numeros.split(",").filter(n => n.trim() !== "").length;
+      }
+    });
 
-  // =========================
-  // COMPRAS APROBADAS / MOSTRAR NÚMEROS
-  // =========================
-  let html = `
-    <div class="estado aprobada">
-      <h3>✅ Tus números</h3>
-  `;
-
-  let tieneAprobados = false;
-  let totalNumerosComprados = 0;
-
-  // Calculamos el total de números primero para ver si vale la pena poner buscador
-  data.forEach(compra => {
-    const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
-    if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
-      totalNumerosComprados += compra.numeros.split(",").length;
-    }
-  });
-
-  // Si tiene más de 15 números en total, añadimos un mini buscador interactivo inline
-  if (totalNumerosComprados > 15) {
-    html += `
-      <div class="buscador-boletos-box" style="margin-bottom: 15px;">
-        <input type="text" id="filtrarBoletoInput" placeholder="🔍 Buscar mi número..." 
-               onkeyup="filtrarBoletosEnPantalla()" 
-               style="width:100%; padding:8px; border-radius:5px; border:1px solid #444; background:#222; color:#fff;">
-      </div>
-    `;
-  }
-
-  data.forEach(compra => {
-    const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
-
-    if (est === "aprobado" || est === "aprobada") {
-      tieneAprobados = true;
-      const arrayNumeros = compra.numeros.split(",");
-
+    // Si tiene más de 15 números en total, añadimos el mini buscador
+    if (totalNumerosComprados > 15) {
       html += `
-        <div class="numeros-box" style="margin-bottom: 20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <small style="color:#aaa;">Orden #${compra.id}</small>
-            <span style="font-size:12px; background:#333; padding:2px 8px; border-radius:10px; color:#fff;">
-              ${arrayNumeros.length} boletos
-            </span>
-          </div>
-          
-          <!-- Contenedor con scroll para evitar desbordes si son demasiados -->
-          <div class="boletos-grid-scroll" style="max-height: 200px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; border: 1px solid #333; border-radius: 6px; background: rgba(0,0,0,0.2);">
-            ${arrayNumeros
-              .map(n => `<span class="numero data-boleto-item" style="display:inline-block; padding:4px 8px; background:#00ff88; color:#000; font-weight:bold; border-radius:4px; font-size:14px;">${n.trim()}</span>`)
-              .join("")}
-          </div>
+        <div class="buscador-boletos-box" style="margin-bottom: 15px;">
+          <input type="text" id="filtrarBoletoInput" placeholder="🔍 Buscar mi número..." 
+                 onkeyup="filtrarBoletosEnPantalla()" 
+                 style="width:100%; padding:8px; border-radius:5px; border:1px solid #444; background:#222; color:#fff;">
         </div>
       `;
+    }
 
-      if (compra.premio) {
+    data.forEach(compra => {
+      const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
+
+      if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
+        tieneAprobados = true;
+        const arrayNumeros = compra.numeros.split(",").map(n => n.trim()).filter(n => n !== "");
+
         html += `
-          <div style="color:#00ff88;font-weight:bold;margin-top:15px; background: rgba(0,255,136,0.1); padding: 10px; border-radius: 5px; border: 1px solid #00ff88;">
-            🎉 ¡GANASTE UN PREMIO INSTANTÁNEO!<br>
-            Número ganador de la Orden #${compra.id}: ${compra.numeros}
+          <div class="numeros-box" style="margin-bottom: 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <small style="color:#aaa;">Orden #${compra.id}</small>
+              <span style="font-size:12px; background:#333; padding:2px 8px; border-radius:10px; color:#fff;">
+                ${arrayNumeros.length} boletos
+              </span>
+            </div>
+            
+            <div class="boletos-grid-scroll" style="max-height: 200px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; border: 1px solid #333; border-radius: 6px; background: rgba(0,0,0,0.2);">
+              ${arrayNumeros
+                .map(n => `<span class="numero data-boleto-item" style="display:inline-block; padding:4px 8px; background:#00ff88; color:#000; font-weight:bold; border-radius:4px; font-size:14px;">${n}</span>`)
+                .join("")}
+            </div>
           </div>
         `;
 
-        const mensaje = `🎉 FELICIDADES\n\nTu número de orden #${compra.id} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
-        const telefonoFinal = "593" + compra.whatsapp.replace(/^0/, "");
+        if (compra.premio) {
+          premiosGanados.push(compra);
+        }
+      }
+    });
 
-        window.open(`https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`);
+    // Inyectar sección de premios si existen
+    if (premiosGanados.length > 0) {
+      premiosGanados.forEach(compra => {
+        html += `
+          <div style="color:#00ff88; font-weight:bold; margin-top:15px; background: rgba(0,255,136,0.1); padding: 10px; border-radius: 5px; border: 1px solid #00ff88;">
+            🎉 ¡GANASTE UN PREMIO INSTANTÁNEO!<br>
+            Número ganador en la Orden #${compra.id}: ${compra.numeros}
+          </div>
+        `;
+      });
+    }
+
+    html += "</div>";
+
+    if (!tieneAprobados) {
+      resultado.innerHTML = `
+        <div class="estado pendiente">
+          <h3>⏳ Estado de la Orden: ${data[0].estado || "En revisión"}</h3>
+          <p>La orden se encuentra en revisión o tiene un formato no reconocido.</p>
+        </div>
+      `;
+    } else {
+      resultado.innerHTML = html;
+      
+      // Manejo controlado del disparo de redirección de WhatsApp de premios (solo el primero para evitar bloqueos)
+      if (premiosGanados.length > 0) {
+        const primerPremio = premiosGanados[0];
+        const mensaje = `🎉 FELICIDADES\n\nTu número de orden #${primerPremio.id} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
+        
+        // Limpieza segura del número de teléfono (Ecuador)
+        let numLimpio = primerPremio.whatsapp.replace(/\D/g, ""); // Quita cualquier espacio o carácter no numérico
+        if (numLimpio.startsWith("0")) {
+          numLimpio = "593" + numLimpio.substring(1);
+        } else if (!numLimpio.startsWith("593")) {
+          numLimpio = "593" + numLimpio;
+        }
+
+        // Retardo pequeño para que el usuario logre ver el renderizado en pantalla antes de salir de la pestaña
+        setTimeout(() => {
+          window.open(`https://wa.me/${numLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }, 800);
       }
     }
-  });
 
-  html += "</div>";
-
-  if (!tieneAprobados) {
-    resultado.innerHTML = `
-      <div class="estado pendiente">
-        <h3>⏳ Estado de la Orden: ${data[0].estado}</h3>
-        <p>La orden se encuentra en revisión o tiene un formato no reconocido.</p>
-      </div>
-    `;
-  } else {
-    resultado.innerHTML = html;
+  } catch (err) {
+    console.error("Error en la consulta:", err);
+    alert("Hubo un error de conexión al consultar tus boletos.");
   }
 }
 
 // =========================
-// FILTRADO DINÁMICO (Para cuando salen demasiados números)
+// FILTRADO DINÁMICO
 // =========================
 window.filtrarBoletosEnPantalla = function() {
-  const query = document.getElementById("filtrarBoletoInput").value.trim();
+  const query = document.getElementById("filtrarBoletoInput").value.trim().toLowerCase();
   const spans = document.querySelectorAll(".data-boleto-item");
   
   spans.forEach(span => {
-    if (span.textContent.includes(query)) {
+    if (span.textContent.toLowerCase().includes(query)) {
       span.style.display = "inline-block";
       span.style.opacity = "1";
     } else {
@@ -593,8 +621,9 @@ window.filtrarBoletosEnPantalla = function() {
   });
 }
 
-// Hacer la función visible para el botón HTML
+// Hacer la función visible globalmente
 window.consultarNumeros = consultarNumeros;
+
 // =========================
 // SLIDER DINÁMICO
 // =========================
