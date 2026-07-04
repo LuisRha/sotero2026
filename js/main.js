@@ -452,7 +452,27 @@ async function consultarNumeros(){
       return;
     }
 
-    const estadoPrimerRegistro = data[0].estado ? data[0].estado.toLowerCase().trim() : "";
+    // ✨ CORRECCIÓN AQUÍ: Si es número de orden, localizamos la orden exacta dentro de la respuesta
+    let ordenEspecifica = null;
+    if (esNumeroOrden) {
+      const idBuscado = inputUsuario.replace("#", "").trim();
+      ordenEspecifica = data.find(c => String(c.id) === idBuscado);
+
+      if (!ordenEspecifica) {
+        resultado.innerHTML = `
+          <div class="estado sin-compras">
+            <h3>📭 Orden no encontrada</h3>
+            <p>No encontramos la Orden #${idBuscado} en el sistema.</p>
+          </div>
+        `;
+        return;
+      }
+    }
+
+    // Asignamos el estado correcto dependiendo del tipo de búsqueda
+    const estadoAEvaluar = esNumeroOrden 
+      ? (ordenEspecifica.estado ? ordenEspecifica.estado.toLowerCase().trim() : "")
+      : (data[0].estado ? data[0].estado.toLowerCase().trim() : "");
 
     // =========================
     // HAY COMPRAS PENDIENTES / RECHAZADAS
@@ -472,20 +492,21 @@ async function consultarNumeros(){
         return;
       }
     } else {
-      if (estadoPrimerRegistro === "pendiente") {
+      // Validamos los estados usando la orden exacta encontrada en el filtro
+      if (estadoAEvaluar === "pendiente") {
         resultado.innerHTML = `
           <div class="estado pendiente">
-            <h3>⏳ La Orden #${data[0].id} está pendiente</h3>
+            <h3>⏳ La Orden #${ordenEspecifica.id} está pendiente</h3>
             <p>Envíanos el comprobante de pago por WhatsApp para proceder con la aprobación.</p>
           </div>
         `;
         return;
       }
       
-      if (estadoPrimerRegistro === "rechazado" || estadoPrimerRegistro === "rechazada") {
+      if (estadoAEvaluar === "rechazado" || estadoAEvaluar === "rechazada") {
         resultado.innerHTML = `
           <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
-            <h3>❌ La Orden #${data[0].id} fue Rechazada</h3>
+            <h3>❌ La Orden #${ordenEspecifica.id} fue Rechazada</h3>
             <p>Esta compra no fue aprobada por el administrador.</p>
           </div>
         `;
@@ -503,10 +524,13 @@ async function consultarNumeros(){
 
     let tieneAprobados = false;
     let totalNumerosComprados = 0;
-    let premiosGanados = []; // Almacenamos los premios para manejarlos limpiamente
+    let premiosGanados = [];
+
+    // Si es búsqueda por orden, procesamos solo esa orden. Si es por WhatsApp, procesamos todo el array.
+    const comprasAProcesar = esNumeroOrden ? [ordenEspecifica] : data;
 
     // Calculamos el total de números de forma segura
-    data.forEach(compra => {
+    comprasAProcesar.forEach(compra => {
       const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
       if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
         totalNumerosComprados += compra.numeros.split(",").filter(n => n.trim() !== "").length;
@@ -524,7 +548,7 @@ async function consultarNumeros(){
       `;
     }
 
-    data.forEach(compra => {
+    comprasAProcesar.forEach(compra => {
       const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
 
       if ((est === "aprobado" || est === "aprobada") && compra.numeros) {
@@ -554,44 +578,43 @@ async function consultarNumeros(){
       }
     });
 
-    // Inyectar sección de premios si existen
-    if (premiosGanados.length > 0) {
-      premiosGanados.forEach(compra => {
-        html += `
-          <div style="color:#00ff88; font-weight:bold; margin-top:15px; background: rgba(0,255,136,0.1); padding: 10px; border-radius: 5px; border: 1px solid #00ff88;">
-            🎉 ¡GANASTE UN PREMIO INSTANTÁNEO!<br>
-            Número ganador en la Orden #${compra.id}: ${compra.numeros}
-          </div>
-        `;
-      });
-    }
-
     html += "</div>";
 
     if (!tieneAprobados) {
+      const estadoMostrar = esNumeroOrden ? (ordenEspecifica.estado || "En revisión") : (data[0].estado || "En revisión");
       resultado.innerHTML = `
         <div class="estado pendiente">
-          <h3>⏳ Estado de la Orden: ${data[0].estado || "En revisión"}</h3>
+          <h3>⏳ Estado de la Orden: ${estadoMostrar}</h3>
           <p>La orden se encuentra en revisión o tiene un formato no reconocido.</p>
         </div>
       `;
     } else {
+      // Inyectar sección de premios si existen
+      if (premiosGanados.length > 0) {
+        premiosGanados.forEach(compra => {
+          html += `
+            <div style="color:#00ff88; font-weight:bold; margin-top:15px; background: rgba(0,255,136,0.1); padding: 10px; border-radius: 5px; border: 1px solid #00ff88;">
+              🎉 ¡GANASTE UN PREMIO INSTANTÁNEO!<br>
+              Número ganador en la Orden #${compra.id}: ${compra.numeros}
+            </div>
+          `;
+        });
+      }
+
       resultado.innerHTML = html;
       
-      // Manejo controlado del disparo de redirección de WhatsApp de premios (solo el primero para evitar bloqueos)
+      // Manejo controlado de WhatsApp de premios (solo el primero para evitar bloqueos)
       if (premiosGanados.length > 0) {
         const primerPremio = premiosGanados[0];
         const mensaje = `🎉 FELICIDADES\n\nTu número de orden #${primerPremio.id} ha ganado un premio instantáneo.\n\nComunícate con nosotros para reclamarlo.`;
         
-        // Limpieza segura del número de teléfono (Ecuador)
-        let numLimpio = primerPremio.whatsapp.replace(/\D/g, ""); // Quita cualquier espacio o carácter no numérico
+        let numLimpio = primerPremio.whatsapp.replace(/\D/g, ""); 
         if (numLimpio.startsWith("0")) {
           numLimpio = "593" + numLimpio.substring(1);
         } else if (!numLimpio.startsWith("593")) {
           numLimpio = "593" + numLimpio;
         }
 
-        // Retardo pequeño para que el usuario logre ver el renderizado en pantalla antes de salir de la pestaña
         setTimeout(() => {
           window.open(`https://wa.me/${numLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
         }, 800);
@@ -623,7 +646,6 @@ window.filtrarBoletosEnPantalla = function() {
 
 // Hacer la función visible globalmente
 window.consultarNumeros = consultarNumeros;
-
 // =========================
 // SLIDER DINÁMICO
 // =========================
