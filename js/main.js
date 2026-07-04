@@ -451,14 +451,16 @@ async function consultarNumeros(){
     return;
   }
 
+  // Normalizamos el estado del primer registro para evitar problemas de mayúsculas/espacios
+  const estadoPrimerRegistro = data[0].estado ? data[0].estado.toLowerCase().trim() : "";
+
   // =========================
-  // HAY COMPRAS PENDIENTES
+  // HAY COMPRAS PENDIENTES / RECHAZADAS
   // =========================
-  // Solo filtramos pendientes si estamos buscando por WhatsApp, 
-  // si es por Orden directa, queremos ver el estado de ESA orden específica.
   if (!esNumeroOrden) {
-    const pendientes = data.filter(c => c.estado === "pendiente");
-    if(pendientes.length){
+    // Si busca por WhatsApp, filtramos de forma segura en minúsculas
+    const pendientes = data.filter(c => c.estado && c.estado.toLowerCase().trim() === "pendiente");
+    if(pendientes.length && pendientes.length === data.length){
       resultado.innerHTML = `
         <div class="estado pendiente">
           <h3>⏳ Compra pendiente de aprobación</h3>
@@ -471,8 +473,8 @@ async function consultarNumeros(){
       return;
     }
   } else {
-    // Si buscó una orden específica y resulta que esa ÚNICA orden está pendiente
-    if (data[0].estado === "pendiente") {
+    // Si buscó una orden específica (#168) y su estado real es pendiente
+    if (estadoPrimerRegistro === "pendiente") {
       resultado.innerHTML = `
         <div class="estado pendiente">
           <h3>⏳ La Orden #${data[0].id} está pendiente</h3>
@@ -483,7 +485,7 @@ async function consultarNumeros(){
     }
     
     // Si está rechazada
-    if (data[0].estado === "rechazado") {
+    if (estadoPrimerRegistro === "rechazado" || estadoPrimerRegistro === "rechazada") {
       resultado.innerHTML = `
         <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
           <h3>❌ La Orden #${data[0].id} fue Rechazada</h3>
@@ -502,9 +504,14 @@ async function consultarNumeros(){
       <h3>✅ Tus números</h3>
   `;
 
+  let tieneAprobados = false;
+
   data.forEach(compra => {
-    // Solo mostrar los números de las compras que sí estén aprobadas
-    if (compra.estado === "aprobado" || compra.estado === "aprobada") {
+    const est = compra.estado ? compra.estado.toLowerCase().trim() : "";
+
+    // Acepta "aprobado", "aprobada", "aprobado " de manera segura
+    if (est === "aprobado" || est === "aprobada") {
+      tieneAprobados = true;
       html += `
         <div class="numeros-box">
           <small style="display:block; color:#aaa; margin-bottom:5px;">Orden #${compra.id}</small>
@@ -532,12 +539,22 @@ async function consultarNumeros(){
   });
 
   html += "</div>";
-  resultado.innerHTML = html;
+
+  // Control extra: Si no se detectó como pendiente ni rechazada arriba, pero tampoco entró en aprobada
+  if (!tieneAprobados) {
+    resultado.innerHTML = `
+      <div class="estado pendiente">
+        <h3>⏳ Estado de la Orden: ${data[0].estado}</h3>
+        <p>La orden se encuentra en revisión o tiene un formato no reconocido.</p>
+      </div>
+    `;
+  } else {
+    resultado.innerHTML = html;
+  }
 }
 
 // Hacer la función visible para el botón HTML
 window.consultarNumeros = consultarNumeros;
-
 
 // =========================
 // SLIDER DINÁMICO
