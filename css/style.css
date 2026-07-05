@@ -822,10 +822,18 @@ body {
   box-shadow: 0 0 20px #fb00ff;
 }
 
-.slide {
+/* .slide {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: none;
+} */
+
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center 25%; /* <- AÑADIDO: Sube el enfoque para que no recorte lo importante */
   display: none;
 }
 
