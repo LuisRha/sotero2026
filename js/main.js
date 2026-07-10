@@ -656,7 +656,7 @@ function cargarSlider(){
 
   cont.innerHTML = "";
 
-  const total = 6;
+  const total = 8;
 
   for(let i = 1; i <= total; i++){
 
