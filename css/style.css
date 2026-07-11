@@ -1234,9 +1234,19 @@ main>*:last-child {
 }
 
 @media (max-width: 768px) {
-  .container { width: 92%; }
-  .logo-text, .logo-highlight { font-size: 40px; }
-  .hero-box h2 { font-size: 30px; }
+  .container { 
+    width: 92%; 
+  }
+  
+  /* CORRECCIÓN: Usamos 7.5vw para que el texto se encoja automáticamente en celulares */
+  .logo-text, .logo-highlight { 
+    font-size: 8vw; 
+    display: inline-block;
+  }
+  
+  .hero-box h2 { 
+    font-size: 30px; 
+  }
 }
 
 
