@@ -1240,7 +1240,7 @@ main>*:last-child {
   
   /* CORRECCIÓN: Usamos 7.5vw para que el texto se encoja automáticamente en celulares */
   .logo-text, .logo-highlight { 
-    font-size: 8vw; 
+    font-size: 9vw; 
     display: inline-block;
   }
   
