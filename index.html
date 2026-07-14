@@ -46,13 +46,19 @@
 <div class="container hero-box">
 
 <h2>Llevate contigo <span id="nombreSorteoPedido"> Nombre del sorteo</span></h2>  
-<!-- <p>Sorteos transparentes · Pagos verificados · Premios reales</p> -->
+<div class="slider-container" style="position: relative; width: 100%;">
+  
+  <button onclick="anteriorSlide()" class="flecha-slider flecha-izq">
+    &#10094;
+  </button>
 
+  <div class="slider" id="slider"></div>
 
-<div class="slider" id="slider"></div>
+  <button onclick="siguienteSlide()" class="flecha-slider flecha-der">
+    &#10095;
+  </button>
 
-
-
+</div>
 <div class="progreso-sorteo">
 
 <h3>¡CANTIDADES LIMITADAS!</h3>
