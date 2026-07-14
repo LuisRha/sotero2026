@@ -225,7 +225,7 @@ Total: $${totalCompra.toFixed(2)}
         const tipo_documento = tipoDocumentoInput?.value;
 
         if(!aceptarTerminos.checked){
-  alert("Debes aceptar los términos");
+  alert("Debes aceptar los términos y condiciones");
   document.getElementById("procesando").style.display = "none";
   return;
 }
@@ -646,20 +646,21 @@ window.filtrarBoletosEnPantalla = function() {
 
 // Hacer la función visible globalmente
 window.consultarNumeros = consultarNumeros;
-// =========================
-// SLIDER DINÁMICO
-// =========================
-function cargarSlider(){
 
+// =========================
+// SLIDER DINÁMICO (ACTUALIZADO CON FLECHAS)
+// =========================
+let sliderIntervalo = null; // Variable global para controlar el tiempo automático
+let indexActual = 0;       // Control global del slide activo
+
+function cargarSlider(){
   const cont = document.getElementById("slider");
   if(!cont) return;
 
   cont.innerHTML = "";
-
-  const total = 7;
+  const total = 6;
 
   for(let i = 1; i <= total; i++){
-
     const img = document.createElement("img");
     img.src = `images/sorteos/s${i}.jpeg`;
     img.classList.add("slide");
@@ -675,26 +676,45 @@ function cargarSlider(){
 }
 
 function iniciarSlider(){
+  // Limpiamos cualquier intervalo previo por seguridad
+  if(sliderIntervalo) clearInterval(sliderIntervalo);
 
-  const slides = document.querySelectorAll("#slider .slide");
-
-  let index = 0;
-
-  setInterval(() => {
-
-    slides[index].classList.remove("active");
-
-    index++;
-
-    if(index >= slides.length){
-      index = 0;
-    }
-
-    slides[index].classList.add("active");
-
+  sliderIntervalo = setInterval(() => {
+    cambiarSlide(1); // Avanza 1 automáticamente cada 5 segundos
   }, 5000);
-
 }
+
+// Función maestra para cambiar de slide de forma segura
+function cambiarSlide(direccion) {
+  const slides = document.querySelectorAll("#slider .slide");
+  if(!slides.length) return;
+
+  // Quitamos la clase activa a la imagen actual
+  slides[indexActual].classList.remove("active");
+
+  // Calculamos el nuevo índice
+  indexActual += direccion;
+
+  if(indexActual >= slides.length){
+    indexActual = 0; // Si pasa del final, vuelve al inicio
+  } else if(indexActual < 0){
+    indexActual = slides.length - 1; // Si baja de cero, va al final
+  }
+
+  // Añadimos la clase activa a la nueva imagen
+  slides[indexActual].classList.add("active");
+}
+
+// Funciones para los clics de las flechas (reinician el temporizador automático)
+window.siguienteSlide = function() {
+  cambiarSlide(1);
+  iniciarSlider();
+};
+
+window.anteriorSlide = function() {
+  cambiarSlide(-1);
+  iniciarSlider();
+};
 
 // =========================
 // TEXTOS DINAMICOS
