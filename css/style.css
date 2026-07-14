@@ -98,60 +98,7 @@ body {
   }
 }
 
-/* ===== HERO ===== */
-.hero {
-  background: linear-gradient(rgba(0, 0, 0, .6),
-      rgba(0, 0, 0, .6)), url("../images/banner.jpg") center/cover;
-  padding: 3px 0 50px 0;
-  color: #fff;
-}
 
-.hero-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-box h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
-.hero-box p {
-  max-width: 700px;
-}
-
-/* ===== IMÁGENES DEL SORTEO ===== */
-.sorteo-imagen {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.slider {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  height: 600px;      /* misma altura para todas las imágenes */
-  overflow: hidden;
-
-  border: 4px solid #f700ff6c;     /* color brillante */
-  border-radius: 20px;   /* 🔵 bordes redondeados */
-  box-shadow: 0 0 20px #fb00ff;  /* efecto brillo */
-
-}
-
-.slide {
-  width: 100%;
-  height: 100%;       /* ocupa toda la altura del slider */
-  object-fit: cover;  /* recorta la imagen sin deformarla */
-  display: none;
-}
-
-.slide.active {
-  display: block;
-}
 
 /* 📱 MÓVIL */
 @media (max-width: 768px) {
@@ -811,36 +758,70 @@ body {
   justify-content: center;
 }
 
-.slider {
+/* .slider {
   position: relative;
   width: 100%;
-  max-width:900px;
-  aspect-ratio: 4 / 3;
-  /* height: 600px; */
+  max-width:1000px;
+  height: 100%;
   overflow: hidden;
   border: 4px solid #f700ff6c;
   border-radius: 20px;
   box-shadow: 0 0 20px #fb00ff;
-}
-
-/* .slide {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: none;
 } */
+
+
+/* <- FECHAS */
+/* CONTAINER PRINCIPAL (Fija los límites para que las flechas no se salgan) */
+.slider-container {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;        /* Bordes redondeados de tu diseño */
+  overflow: hidden;          /* Evita que cualquier cosa se salga de la foto */
+}
 
 .slide {
   width: 100%;
   height: 100%;
   object-fit: cover; 
-  object-position: center 0%; /* <- AÑADIDO: Sube el enfoque para que no recorte lo importante */
+  object-position: center 0%; /* Sube el enfoque para que no recorte lo importante */
   display: none;
 }
 
 .slide.active {
   display: block;
 }
+
+.flecha-slider {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;               /* Subido a 20 para que siempre flote sobre las fotos */
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro translúcido */
+  color: #ffffff;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover con el verde neón de tu web */
+.flecha-slider:hover {
+  background-color: rgba(0, 255, 136, 0.9);
+  color: #000000;
+}
+
+/* Posiciones exactas ADENTRO de la foto */
+.flecha-izq {
+  left: 15px;
+}
+
+.flecha-der {
+  right: 15px;
+}
+
 
 /* 📱 MÓVIL SLIDER */
 @media (max-width: 768px) {
