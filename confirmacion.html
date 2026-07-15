@@ -1,98 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Confirmación de Compra</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="css/confirmacion.css">
-
+  <meta charset="UTF-8">
+  <title>Confirmación de Compra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/confirmacion.css">
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>✅ ¡Gracias! Tu compra ha sido recibida</h1>
+  <h1>✅ ¡Gracias! Tu compra ha sido recibida</h1>
 
-<!-- 🔥 BLOQUE ELEGANTE -->
-<div class="info-box">
+  <!-- 🔥 BLOQUE ELEGANTE -->
+  <div class="info-box">
+    <div class="info-item">
+      <span class="label">Número de pedido</span>
+      <span class="value" id="pedido"></span>
+    </div>
 
-  <div class="info-item">
-    <span class="label">Número de pedido</span>
-    <span class="value" id="pedido"></span>
+    <div class="info-item">
+      <span class="label">Fecha</span>
+      <span class="value" id="fecha"></span>
+    </div>
+
+    <div class="info-item">
+      <span class="label">Cliente</span>
+      <span class="value" id="cliente"></span>
+    </div>
+
+    <div class="info-item">
+      <span class="label">Total</span>
+      <span class="value total">$<span id="total"></span></span>
+    </div>
   </div>
 
-  <div class="info-item">
-    <span class="label">Fecha</span>
-    <span class="value" id="fecha"></span>
+  <p><strong>Método de pago:</strong> Transferencia bancaria o depósito</p>
+
+  <h2>INSTRUCCIONES DE PAGO:</h2>
+
+  <p>
+    1. Transfiere o deposita el monto total del pedido a cualquiera de nuestras cuentas: 
+  </p>
+  
+  <p>
+    ENVÍANOS EL NÚMERO DE PEDIDO Y EL COMPROBANTE DE PAGO A NUESTRO NÚMERO DE WHATSAPP 👉 
+    <a href="https://wa.me/593984594571" target="_blank" class="solo-numero">0984594571</a>
+  </p>
+
+  <div class="fila-cuentas">
+    <div class="cuenta">
+      <h3>🏦 Banco Pichincha</h3>
+      <p>
+        <strong>Tipo:</strong> Cuenta de Ahorro<br>
+        <strong>Número:</strong> <b>2201820430</b><br>
+        <strong>Nombre:</strong> Richard Adrian Trujillo<br>
+        <strong>CI:</strong> <b>1805295415</b><br>
+        <strong>Cel:</strong> <b>0987354472</b>
+      </p>
+    </div>
+
+    <div class="cuenta">
+      <h3>🏦 Produbanco</h3>
+      <p>
+        <strong>Tipo:</strong> Cuenta de Ahorro<br>
+        <strong>Número:</strong> <b>20059631341</b><br>
+        <strong>Nombre:</strong> Richard Adrian Trujillo<br>
+        <strong>CI:</strong> <b>1805295415</b><br>
+        <strong>Cel:</strong> <b>0987354472</b>
+      </p>
+    </div>
   </div>
 
-  <div class="info-item">
-    <span class="label">Cliente</span>
-    <span class="value" id="cliente"></span>
+  <p>2. Realiza el pago dentro de 30 minutos o tu pedido será cancelado.</p>
+
+  <div class="timer">
+    ⏱ Tiempo restante: <span id="contador">30:00</span>
   </div>
 
-  <div class="info-item">
-    <span class="label">Total</span>
-    <span class="value total">$<span id="total"></span></span>
-  </div>
+  <h2>Tus números:</h2>
+  <div class="numeros" id="listaNumeros"></div>
 
 </div>
-
-<p><strong>Método de pago:</strong> Transferencia bancaria o depósito</p>
-
-<h2>INSTRUCCIONES DE PAGO:</h2>
-
-<p>
-1. Transfiere o deposita el monto total del pedido a cualquiera de nuestras cuentas: 
-</a>
-</p>
-<p>
-ENVÍANOS EL NÚMERO DE PEDIDO Y EL COMPROBANTE DE PAGO A NUESTRO NÚMERO DE WHATSAPP 👉 
-<a href="https://wa.me/593984594571" target="_blank" class="solo-numero">0984594571</a>
-</p>
-
-<div class="fila-cuentas">
-
-  <div class="cuenta">
-    <h3>🏦 Banco Pichincha</h3>
-    <p>
-      <strong>Tipo:</strong> Cuenta de Ahorro<br>
-      <strong>Número:</strong> <b>2201820430</b><br>
-      <strong>Nombre:</strong> Richard Adrian Trujillo<br>
-      <strong>CI:</strong> <b>1805295415</b><br>
-      <strong>Cel:</strong> <b>0987354472</b>
-    </p>
-  </div>
-
-  <div class="cuenta">
-    <h3>🏦 Produbanco</h3>
-    <p>
-      <strong>Tipo:</strong> Cuenta de Ahorro<br>
-      <strong>Número:</strong> <b>20059631341</b><br>
-      <strong>Nombre:</strong> Richard Adrian Trujillo<br>
-      <strong>CI:</strong> <b>1805295415</b><br>
-      <strong>Cel:</strong> <b>0987354472</b>
-    </p>
-  </div>
-
-<!-- </div>
-2. Realiza el pago dentro de 30 minutos o tu pedido será cancelado.
-</p>
-
-<div class="timer">
-⏱ Tiempo restante: <span id="contador">30:00</span>
-</div>
-
-<h2>Tus números:</h2>
-
-<div class="numeros" id="listaNumeros"></div>
-
-</div> -->
 
 <script>
-
 // =========================
 // DATOS URL
 // =========================
@@ -104,18 +96,17 @@ const nums = params.get("nums");
 const cliente = params.get("cliente");
 
 // =========================
-// MOSTRAR DATOS
+// MOSTRAR DATOS (SEGURO CONTRA XSS)
 // =========================
-document.getElementById("pedido").innerText = pedido || "------";
-document.getElementById("total").innerText = total;
-document.getElementById("cliente").innerText = cliente || "Cliente";
+document.getElementById("pedido").textContent = pedido || "------";
+document.getElementById("total").textContent = total;
+document.getElementById("cliente").textContent = cliente || "Cliente";
 
 // =========================
 // FECHA
 // =========================
 const ahora = new Date();
-
-document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
+document.getElementById("fecha").textContent = ahora.toLocaleString("es-EC", {
   day: "numeric",
   month: "long",
   year: "numeric",
@@ -130,30 +121,31 @@ if(nums){
   const lista = nums.split(",");
   const contenedor = document.getElementById("listaNumeros");
 
-  lista.forEach(n=>{
-    const span = document.createElement("span");
-    span.className = "numero";
-    span.innerText = n.trim();
-    contenedor.appendChild(span);
-  });
+  if(contenedor) {
+    lista.forEach(n=>{
+      const span = document.createElement("span");
+      span.className = "numero";
+      span.textContent = n.trim();
+      contenedor.appendChild(span);
+    });
+  }
 }
 
 // =========================
 // CONTADOR
 // =========================
 let tiempo = 1800;
+const contadorEl = document.getElementById("contador");
 
-setInterval(()=>{
-  let min = Math.floor(tiempo / 60);
-  let seg = tiempo % 60;
+if(contadorEl) {
+  setInterval(()=>{
+    let min = Math.floor(tiempo / 60);
+    let seg = tiempo % 60;
 
-  document.getElementById("contador").innerText =
-    min + ":" + (seg < 10 ? "0" : "") + seg;
-
-  tiempo--;
-
-},1000);
-
+    contadorEl.textContent = min + ":" + (seg < 10 ? "0" : "") + seg;
+    tiempo--;
+  }, 1000);
+}
 </script>
 
 </body>
