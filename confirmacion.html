@@ -73,15 +73,6 @@
     </div>
   </div>
 
-  <p>2. Realiza el pago dentro de 30 minutos o tu pedido será cancelado.</p>
-
-  <div class="timer">
-    ⏱ Tiempo restante: <span id="contador">30:00</span>
-  </div>
-
-  <h2>Tus números:</h2>
-  <div class="numeros" id="listaNumeros"></div>
-
 </div>
 
 <script>
@@ -92,11 +83,10 @@ const params = new URLSearchParams(window.location.search);
 
 const pedido = params.get("id");
 const total = params.get("total") || "0.00";
-const nums = params.get("nums");
 const cliente = params.get("cliente");
 
 // =========================
-// MOSTRAR DATOS (SEGURO CONTRA XSS)
+// MOSTRAR DATOS (100% SEGURO CONTRA XSS)
 // =========================
 document.getElementById("pedido").textContent = pedido || "------";
 document.getElementById("total").textContent = total;
@@ -113,39 +103,6 @@ document.getElementById("fecha").textContent = ahora.toLocaleString("es-EC", {
   hour: "2-digit",
   minute: "2-digit"
 });
-
-// =========================
-// NUMEROS
-// =========================
-if(nums){
-  const lista = nums.split(",");
-  const contenedor = document.getElementById("listaNumeros");
-
-  if(contenedor) {
-    lista.forEach(n=>{
-      const span = document.createElement("span");
-      span.className = "numero";
-      span.textContent = n.trim();
-      contenedor.appendChild(span);
-    });
-  }
-}
-
-// =========================
-// CONTADOR
-// =========================
-let tiempo = 1800;
-const contadorEl = document.getElementById("contador");
-
-if(contadorEl) {
-  setInterval(()=>{
-    let min = Math.floor(tiempo / 60);
-    let seg = tiempo % 60;
-
-    contadorEl.textContent = min + ":" + (seg < 10 ? "0" : "") + seg;
-    tiempo--;
-  }, 1000);
-}
 </script>
 
 </body>
