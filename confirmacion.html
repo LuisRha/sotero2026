@@ -5,7 +5,7 @@
     <title>Confirmación de Compra</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/confirmacion.css">
-    <!-- Incluimos la librería oficial de Supabase -->
+    <!-- CDN de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -18,12 +18,12 @@
     <div class="info-box">
         <div class="info-item">
             <span class="label">Número de pedido</span>
-            <span class="value" id="pedido"></span>
+            <span class="value" id="pedido">------</span>
         </div>
 
         <div class="info-item">
             <span class="label">Fecha</span>
-            <span class="value" id="fecha"></span>
+            <span class="value" id="fecha">------</span>
         </div>
 
         <div class="info-item">
@@ -33,7 +33,7 @@
 
         <div class="info-item">
             <span class="label">Total</span>
-            <span class="value total">$<span id="total"></span></span>
+            <span class="value total">$<span id="total">0.00</span></span>
         </div>
     </div>
 
@@ -80,63 +80,17 @@
 
 <script>
 // ==========================================
-// CONFIGURACIÓN DE SUPABASE
-// ==========================================
-// Coloca aquí tus credenciales reales de Supabase:
-const SUPABASE_URL = "TU_SUPABASE_URL_AQUI"; 
-const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
-
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ==========================================
-// DATOS URL
+// 1. CARGA INMEDIATA DESDE LA URL Y FECHA
 // ==========================================
 const params = new URLSearchParams(window.location.search);
 const pedidoId = params.get("id");
 const total = params.get("total") || "0.00";
 const nums = params.get("nums");
 
-// Mostrar datos inmediatos de la URL
+// Esto se muestra al instante sin depender de internet ni de Supabase
 document.getElementById("pedido").innerText = pedidoId || "------";
 document.getElementById("total").innerText = total;
 
-// ==========================================
-// CONSULTA A LA BASE DE DATOS (SUPABASE)
-// ==========================================
-async function obtenerCliente() {
-    if (!pedidoId) {
-        document.getElementById("cliente").innerText = "No indicado";
-        return;
-    }
-
-    try {
-        // Reemplaza 'tu_tabla_de_pedidos' por el nombre real de tu tabla en Supabase (ej. 'pedidos' o 'ordenes')
-        // Reemplaza 'Nombres' por el nombre exacto de la columna en tu tabla si es diferente
-        const { data, error } = await supabase
-            .from('pedidos') 
-            .select('Nombres')
-            .eq('id', pedidoId) // o '.eq("numero_orden", pedidoId)' según tu columna de id
-            .single();
-
-        if (error) throw error;
-
-        if (data && data.Nombres) {
-            document.getElementById("cliente").innerText = data.Nombres;
-        } else {
-            document.getElementById("cliente").innerText = "No encontrado";
-        }
-    } catch (err) {
-        console.error("Error al consultar el cliente:", err);
-        document.getElementById("cliente").innerText = "Error al cargar";
-    }
-}
-
-// Ejecutar la consulta al cargar la página
-obtenerCliente();
-
-// ==========================================
-// FECHA REAL (Formato Ecuador)
-// ==========================================
 const ahora = new Date();
 document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
     day: "numeric",
@@ -147,13 +101,9 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
     hour12: true
 });
 
-// ==========================================
-// RENDERIZAR NÚMEROS COMPRADOS
-// ==========================================
 if (nums) {
     const lista = nums.split(",");
     const contenedor = document.getElementById("listaNumeros");
-
     lista.forEach(n => {
         if(n.trim() !== "") {
             const span = document.createElement("span");
@@ -165,6 +115,46 @@ if (nums) {
 } else {
     document.getElementById("listaNumeros").innerText = "No se detectaron números.";
 }
+
+// ==========================================
+// 2. CONEXIÓN ASÍNCRONA A SUPABASE
+// ==========================================
+// Reemplaza estas dos cadenas con tus datos de Supabase del proyecto sorteos2026:
+const SUPABASE_URL = "TU_SUPABASE_URL_AQUI"; 
+const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
+
+async function obtenerCliente() {
+    if (!pedidoId) {
+        document.getElementById("cliente").innerText = "No indicado";
+        return;
+    }
+
+    try {
+        // Inicializamos el cliente dentro de la función para evitar colgar el script global
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Ajusta 'sorteos' o 'pedidos' según se llame tu tabla en Supabase
+        const { data, error } = await supabaseClient
+            .from('pedidos') 
+            .select('Nombres')
+            .eq('id', pedidoId) 
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.Nombres) {
+            document.getElementById("cliente").innerText = data.Nombres;
+        } else {
+            document.getElementById("cliente").innerText = "No encontrado";
+        }
+    } catch (err) {
+        console.error("Error detectado en Supabase:", err);
+        document.getElementById("cliente").innerText = "Error de conexión";
+    }
+}
+
+// Ejecutamos la búsqueda en segundo plano
+obtenerCliente();
 </script>
 
 </body>
