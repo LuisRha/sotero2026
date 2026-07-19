@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Icono de la pestaña del navegador -->
-  <link rel="icon" type="image/png" href="favicon-v2.png">
+  <link type="image/png" rel="icon" href="favicon-v2.png">
 
   <!-- Iconos externos de Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -92,7 +92,7 @@
         <input type="text" id="whatsapp" placeholder="Tu WhatsApp">
       </div>
 
-      <!-- Campo para la dirección domiciliaria -->
+      <!-- Campo para la dirección domiciliaria (Filtro seguro integrado) -->
       <div class="field full">
         <label>Dirección *</label>
         <input type="text" id="direccion" placeholder="Dirección">
@@ -228,24 +228,26 @@
     const inputEmail = document.getElementById('email');
     const inputConfirmarEmail = document.getElementById('confirmar_email');
     const btnEnviar = document.getElementById('btnEnviar');
-    
-    // Nueva referencia para el input de la ciudad
     const inputCiudad = document.getElementById('ciudad');
+    
+    // Nueva referencia para el input de la dirección
+    const inputDireccion = document.getElementById('direccion');
 
     /**
-     * Filtro en tiempo real para el campo de Ciudad.
-     * Solo permite texto, espacios simples y tildes. Bloquea números y caracteres como @, $, >, etc.
+     * Filtro en tiempo real para el campo de Dirección (NUEVO).
+     * Permite: letras, números, espacios, y los símbolos estructurados #, -, /, (, )
+     * Limpia de forma automática cualquier intento de meter caracteres basura como $, %, *, <, >
      */
-    function filtrarCiudadEnTiempoReal(e) {
+    function filtrarDireccionEnTiempoReal(e) {
       let value = e.target.value;
 
-      // 1. Quitar números o símbolos raros dejando solo letras, tildes, la Ñ y espacios
-      let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+      // Deja pasar letras (con tildes/Ñ), números, espacios, y los símbolos básicos de nomenclatura # / ( ) -
+      let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ0-9#\/\(\) \-]/g, '');
 
-      // 2. Cambiar espacios dobles o seguidos por un solo espacio para mantener el orden
+      // Quita espacios duplicados seguidos
       limpio = limpio.replace(/ {2,}/g, ' ');
 
-      // 3. Si el usuario intenta presionar la barra espaciadora al inicio, se limpia el campo
+      // Evita empezar la caja de texto con un espacio vacío
       if (limpio.startsWith(' ')) {
         limpio = '';
       }
@@ -253,12 +255,43 @@
       e.target.value = limpio;
     }
 
-    // Vincula la función de control al evento de escritura en el campo Ciudad
+    // Vincula el control al evento de escritura del campo Dirección
+    inputDireccion.addEventListener('input', filtrarDireccionEnTiempoReal);
+
+    /**
+     * Filtro en tiempo real para el campo de Ciudad.
+     */
+    function filtrarCiudadEnTiempoReal(e) {
+      let value = e.target.value;
+      let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ0-9#\/\(\) \-]/g, '');
+      limpio = limpio.replace(/ {2,}/g, ' ');
+      if (limpio.startsWith(' ')) { limpio = ''; }
+      e.target.value = limpio;
+    }
+
     inputCiudad.addEventListener('input', filtrarCiudadEnTiempoReal);
 
     /**
+     * Compara los dos campos de correo mediante el evento blur.
+     */
+    function verificarCorreosIdenticos() {
+      const emailOriginal = inputEmail.value.trim();
+      const emailConfirmacion = inputConfirmarEmail.value.trim();
+
+      if (emailOriginal !== '' && emailConfirmacion !== '') {
+        if (emailOriginal !== emailConfirmacion) {
+          alert('❌ Los correos electrónicos ingresados no coinciden. Por favor, verifícalos.');
+          inputConfirmarEmail.value = ''; 
+          inputConfirmarEmail.focus();    
+        }
+      }
+    }
+
+    inputConfirmarEmail.addEventListener('blur', verificarCorreosIdenticos);
+    inputEmail.addEventListener('blur', verificarCorreosIdenticos);
+
+    /**
      * Filtro en tiempo real para el campo de Correo Electrónico.
-     * Convierte todo a minúsculas y elimina espacios o caracteres inválidos de inmediato.
      */
     function filtrarEmailEnTiempoReal(e) {
       let value = e.target.value.toLowerCase(); 
@@ -269,15 +302,15 @@
     inputConfirmarEmail.addEventListener('input', filtrarEmailEnTiempoReal);
 
     /**
-     * Intercepta la acción del botón de pagar para verificar que ambos correos sean idénticos.
+     * Intercepta la acción del botón de pagar como última capa de seguridad.
      */
     btnEnviar.addEventListener('click', (e) => {
       const emailOriginal = inputEmail.value.trim();
       const emailConfirmacion = inputConfirmarEmail.value.trim();
 
-      if (emailOriginal !== emailConfirmacion) {
+      if (emailOriginal !== emailConfirmacion || emailOriginal === '') {
         e.preventDefault(); 
-        alert('❌ Los correos electrónicos ingresados no coinciden. Por favor, verifícalos antes de continuar.');
+        alert('❌ Los correos electrónicos ingresados no coinciden o están vacíos.');
         inputConfirmarEmail.focus(); 
       }
     });
@@ -287,19 +320,11 @@
      */
     function filtrarTextoNombreApellido(e) {
       let value = e.target.value;
-
       let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
       limpio = limpio.replace(/ {2,}/g, ' ');
-
-      if (limpio.startsWith(' ')) {
-        limpio = '';
-      }
-
+      if (limpio.startsWith(' ')) { limpio = ''; }
       let partes = limpio.split(' ');
-      if (partes.length > 2) {
-        limpio = partes[0] + ' ' + partes[1];
-      }
-
+      if (partes.length > 2) { limpio = partes[0] + ' ' + partes[1]; }
       e.target.value = limpio;
     }
 
@@ -311,11 +336,9 @@
      */
     numeroDocumento.addEventListener('input', (e) => {
       let value = e.target.value;
-      
       if (tipoDocumento.value === 'cedula') {
         let numeros = value.replace(/[^0-9]/g, '');
         numeros = numeros.slice(0, 10);
-        
         if (numeros.length > 9) {
           e.target.value = numeros.slice(0, 9) + '-' + numeros.slice(9);
         } else {
@@ -342,14 +365,8 @@
     inputWhatsapp.addEventListener('input', (e) => {
       let value = e.target.value;
       let numeros = value.replace(/[^0-9]/g, '');
-
-      if (numeros.length > 0 && numeros[0] !== '0') {
-        numeros = '';
-      }
-      if (numeros.length > 1 && numeros[1] !== '9') {
-        numeros = '0';
-      }
-
+      if (numeros.length > 0 && numeros[0] !== '0') { numeros = ''; }
+      if (numeros.length > 1 && numeros[1] !== '9') { numeros = '0'; }
       e.target.value = numeros.slice(0, 10);
     });
   </script>
