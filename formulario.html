@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Icono de la pestaña del navegador -->
-  <link type="image/png" rel="icon" href="favicon-v2.png">
+  <link rel="icon" type="image/png" href="favicon-v2.png">
 
   <!-- Iconos externos de Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -137,7 +137,7 @@
         </select>
       </div>
 
-      <!-- Campo para ingresar la ciudad (Acepta letras, números, #, -, /, (, ) y espacios) -->
+      <!-- Campo para ingresar la ciudad -->
       <div class="field">
         <label>Ciudad *</label>
         <input type="text" id="ciudad" placeholder="Ciudad">
@@ -228,23 +228,24 @@
     const inputEmail = document.getElementById('email');
     const inputConfirmarEmail = document.getElementById('confirmar_email');
     const btnEnviar = document.getElementById('btnEnviar');
+    
+    // Nueva referencia para el input de la ciudad
     const inputCiudad = document.getElementById('ciudad');
 
     /**
-     * Filtro en tiempo real para el campo de Ciudad (CORREGIDO).
-     * Permite: letras, números, espacios, y los símbolos #, -, /, (, )
-     * Se añadió el guion al final de la expresión regular [^...-] para que se permita escribir correctamente.
+     * Filtro en tiempo real para el campo de Ciudad.
+     * Solo permite texto, espacios simples y tildes. Bloquea números y caracteres como @, $, >, etc.
      */
     function filtrarCiudadEnTiempoReal(e) {
       let value = e.target.value;
 
-      // 1. Quitar símbolos raros, dejando letras, números, espacios y los caracteres: # / ( ) -
-      let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ0-9#\/\(\) \-]/g, '');
+      // 1. Quitar números o símbolos raros dejando solo letras, tildes, la Ñ y espacios
+      let limpio = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
 
       // 2. Cambiar espacios dobles o seguidos por un solo espacio para mantener el orden
       limpio = limpio.replace(/ {2,}/g, ' ');
 
-      // 3. Prevenir que se empiece con un espacio vacío
+      // 3. Si el usuario intenta presionar la barra espaciadora al inicio, se limpia el campo
       if (limpio.startsWith(' ')) {
         limpio = '';
       }
@@ -252,11 +253,12 @@
       e.target.value = limpio;
     }
 
-    // Vincula la función de control actualizada al campo Ciudad
+    // Vincula la función de control al evento de escritura en el campo Ciudad
     inputCiudad.addEventListener('input', filtrarCiudadEnTiempoReal);
 
     /**
      * Filtro en tiempo real para el campo de Correo Electrónico.
+     * Convierte todo a minúsculas y elimina espacios o caracteres inválidos de inmediato.
      */
     function filtrarEmailEnTiempoReal(e) {
       let value = e.target.value.toLowerCase(); 
