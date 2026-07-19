@@ -169,7 +169,7 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 <button onclick="window.location.href='formulario.html?cantidad=' + document.getElementById('cantidadPersonalizada').value">COMPRAR</button>
 </div>
 
-<!-- SECCIÓN DE CONSULTA DE NÚMEROS ÚNICA Y CORREGIDA -->
+<!-- SECCIÓN DE CONSULTA DE NÚMEROS CORREGIDA -->
 <div class="consulta-numeros">
 
     <h2>CONSULTA TUS NÚMEROS</h2>
@@ -180,12 +180,13 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
     </p>
 
     <div class="consulta-form">
+        <!-- El pattern ahora exige obligatoriamente que empiece con 09 para el formato móvil -->
         <input
             type="text"
             id="consultaWhatsapp"
             placeholder="Ingresa tu número de WhatsApp"
             pattern="(09\d{8}|#\d{1,10})"
-            title="Ingresa un número de WhatsApp de 10 dígitos (ej. 0988271324) o un número de compra de hasta 10 dígitos (ej. #0123456789)"
+            title="Ingresa un número de WhatsApp válido que empiece con 09 (ej. 0988271324) o un número de compra (ej. #0123456789)"
             maxlength="11"
             required>
 
@@ -254,20 +255,33 @@ ImpulsoDigitalStudio
 
 <script src="js/main.js"></script>
 
-<!-- VALIDACIÓN EN TIEMPO REAL PARA EL FORMATO REQUERIDO -->
+<!-- SCRIPT DE VALIDACIÓN ESTRICTA CON FILTRO PARA EL 0 -->
 <script>
   const inputConsulta = document.getElementById('consultaWhatsapp');
 
   inputConsulta.addEventListener('input', (e) => {
     let value = e.target.value;
 
-    // Si empieza con '#' maneja formato de orden de compra
+    // 1. Si empieza con '#', permitir solo números después del símbolo (máximo # + 10 dígitos)
     if (value.startsWith('#')) {
       e.target.value = '#' + value.slice(1).replace(/[^0-9]/g, '').slice(0, 10);
     } 
-    // Si no tiene '#' maneja formato de celular de Ecuador (09...)
+    // 2. Si no empieza con '#', procesar el número de WhatsApp
     else {
-      e.target.value = value.replace(/[^0-9]/g, '').slice(0, 10);
+      // Limpiar letras y caracteres raros primero
+      let numeros = value.replace(/[^0-9]/g, '');
+      
+      // Si el primer dígito que intentan poner NO es un cero, lo borra por completo
+      if (numeros.length > 0 && numeros[0] !== '0') {
+        numeros = '';
+      }
+      
+      // Si ya tiene dos dígitos y el segundo NO es un 9 (ej. "08..."), también lo invalida
+      if (numeros.length > 1 && numeros[1] !== '9') {
+        numeros = '0';
+      }
+
+      e.target.value = numeros.slice(0, 10);
     }
   });
 </script>
