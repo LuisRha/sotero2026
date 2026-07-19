@@ -21,7 +21,7 @@
 
         <div class="info-item">
             <span class="label">Fecha</span>
-            <span class="value" id="fecha">------</span>
+            <span class="value" id="fecha">Cargando...</span>
         </div>
 
         <div class="info-item">
@@ -75,7 +75,7 @@
 
 <script>
 // ==========================================
-// 1. CARGA INMEDIATA DESDE LA URL Y FECHA
+// 1. CARGA INMEDIATA DESDE LA URL (ID Y TOTAL)
 // ==========================================
 const params = new URLSearchParams(window.location.search);
 const pedidoId = params.get("id");
@@ -84,27 +84,18 @@ const total = params.get("total") || "0.00";
 document.getElementById("pedido").innerText = pedidoId || "------";
 document.getElementById("total").innerText = total;
 
-const ahora = new Date();
-document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true
-});
-
 // ==========================================
 // 2. CONSULTA ASÍNCRONA A TU API INTERNA
 // ==========================================
-async function obtenerCliente() {
+async function obtenerDatosCompra() {
     if (!pedidoId) {
         document.getElementById("cliente").innerText = "No indicado";
+        document.getElementById("fecha").innerText = "No indicado";
         return;
     }
 
     try {
-        // Consultamos a tu propia API, igual que lo hace tu panel de administración
+        // Consultamos a tu propia API local para traer los datos del pedido
         const res = await fetch("/api/compras");
         const data = await res.json();
 
@@ -112,20 +103,38 @@ async function obtenerCliente() {
         const compra = data.find(c => String(c.id) === pedidoId);
 
         if (compra) {
-            // Replicamos la lógica exacta de nombres y apellidos de tu admin.js
+            // 👤 ASIGNAR NOMBRE COMPLETO DEL CLIENTE
             const nombreCompleto = `${compra.nombres || compra.nombre || ""} ${compra.apellidos || ""}`.trim();
             document.getElementById("cliente").innerText = nombreCompleto || "Cliente Registrado";
+
+            // 📅 ASIGNAR FECHA Y HORA REAL DESDE LA BASE DE DATOS (created_at)
+            if (compra.created_at) {
+                const fechaBaseDatos = new Date(compra.created_at);
+                document.getElementById("fecha").innerText = fechaBaseDatos.toLocaleString("es-EC", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true
+                });
+            } else {
+                document.getElementById("fecha").innerText = "Fecha no registrada";
+            }
+
         } else {
             document.getElementById("cliente").innerText = "No encontrado";
+            document.getElementById("fecha").innerText = "No encontrado";
         }
     } catch (err) {
         console.error("Error al obtener datos de la API:", err);
         document.getElementById("cliente").innerText = "Error de conexión";
+        document.getElementById("fecha").innerText = "Error de conexión";
     }
 }
 
 // Ejecutar consulta al cargar la página
-obtenerCliente();
+obtenerDatosCompra();
 </script>
 
 </body>
