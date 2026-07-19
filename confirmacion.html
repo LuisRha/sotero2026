@@ -5,8 +5,6 @@
     <title>Confirmación de Compra</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/confirmacion.css">
-    <!-- CDN de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -97,11 +95,8 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
 });
 
 // ==========================================
-// 2. CONEXIÓN A TU SUPABASE
+// 2. CONSULTA ASÍNCRONA A TU API INTERNA
 // ==========================================
-const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co"; 
-const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
-
 async function obtenerCliente() {
     if (!pedidoId) {
         document.getElementById("cliente").innerText = "No indicado";
@@ -109,29 +104,27 @@ async function obtenerCliente() {
     }
 
     try {
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Consultamos a tu propia API, igual que lo hace tu panel de administración
+        const res = await fetch("/api/compras");
+        const data = await res.json();
 
-        // Corregido: Ahora busca exactamente en la tabla 'sorteos'
-        const { data, error } = await supabaseClient
-            .from('sorteos') 
-            .select('Nombres') 
-            .eq('id', pedidoId) 
-            .single();
+        // Buscamos la orden que coincida con el ID de la URL
+        const compra = data.find(c => String(c.id) === pedidoId);
 
-        if (error) throw error;
-
-        if (data && data.Nombres) {
-            document.getElementById("cliente").innerText = data.Nombres;
+        if (compra) {
+            // Replicamos la lógica exacta de nombres y apellidos de tu admin.js
+            const nombreCompleto = `${compra.nombres || compra.nombre || ""} ${compra.apellidos || ""}`.trim();
+            document.getElementById("cliente").innerText = nombreCompleto || "Cliente Registrado";
         } else {
             document.getElementById("cliente").innerText = "No encontrado";
         }
     } catch (err) {
-        console.error("Error detectado en Supabase:", err);
+        console.error("Error al obtener datos de la API:", err);
         document.getElementById("cliente").innerText = "Error de conexión";
     }
 }
 
-// Ejecutar la consulta en segundo plano
+// Ejecutar consulta al cargar la página
 obtenerCliente();
 </script>
 
