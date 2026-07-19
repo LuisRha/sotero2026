@@ -71,13 +71,6 @@
         </div>
     </div>
 
-    <p>2. Realiza el pago dentro de 30 minutos o tu pedido será cancelado.</p>
-
-    <!-- TEMPORIZADOR -->
-    <div class="timer">
-        ⏱ Tiempo restante: <span id="contador">30:00</span>
-    </div>
-
     <h2>Tus números:</h2>
     <div class="numeros" id="listaNumeros"></div>
 
@@ -92,14 +85,19 @@ const params = new URLSearchParams(window.location.search);
 const pedido = params.get("id");
 const total = params.get("total") || "0.00";
 const nums = params.get("nums");
-const cliente = params.get("cliente");
+let cliente = params.get("cliente");
+
+// Si el nombre no viene en la URL, asignamos tu nombre directamente para que no salga "Cliente Anónimo"
+if (!cliente) {
+    cliente = "LuisRha"; 
+}
 
 // =========================
 // MOSTRAR DATOS
 // =========================
 document.getElementById("pedido").innerText = pedido || "------";
 document.getElementById("total").innerText = total;
-document.getElementById("cliente").innerText = cliente || "Cliente Anónimo";
+document.getElementById("cliente").innerText = cliente;
 
 // =========================
 // FECHA REAL (Formato Ecuador)
@@ -132,26 +130,6 @@ if (nums) {
 } else {
     document.getElementById("listaNumeros").innerText = "No se detectaron números.";
 }
-
-// =========================
-// CONTADOR EN REVERSA (30 MIN)
-// =========================
-let tiempo = 1800;
-const contadorElemento = document.getElementById("contador");
-
-const intervalo = setInterval(() => {
-    if (tiempo <= 0) {
-        clearInterval(intervalo);
-        contadorElemento.innerText = "0:00 - Tiempo Agotado";
-        return;
-    }
-
-    let min = Math.floor(tiempo / 60);
-    let seg = tiempo % 60;
-
-    contadorElemento.innerText = min + ":" + (seg < 10 ? "0" : "") + seg;
-    tiempo--;
-}, 1000);
 </script>
 
 </body>
