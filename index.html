@@ -92,7 +92,7 @@ Realiza tu compra y revisa si tienes uno de los siguientes números:
 <!-- CONTENEDOR QUE SE LLENARÁ DESDE LA BASE DE DATOS -->
 <div class="numeros-premio" id="numerosPremio"></div>
 
-<p class="participacion">
+<div class="participacion">
 
 <h1>¿Cómo participar?</h1>
 
@@ -103,7 +103,7 @@ Realiza tu compra y revisa si tienes uno de los siguientes números:
 3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
 También podrás consultarlos en la sección «Consulta tus números.
 
-</p>
+</div>
 
 </div>
 
@@ -164,48 +164,31 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 <h3>¿MÁS NÚMEROS?</h3>
 <p>Agrega la cantidad de números que desees.</p>
 
-<!-- <input type="number" id="cantidadPersonalizada" value="50" min="1"> -->
 <input type="number" id="cantidadPersonalizada" value="50" min="50">
 
 <button onclick="window.location.href='formulario.html?cantidad=' + document.getElementById('cantidadPersonalizada').value">COMPRAR</button>
 </div>
 
-
-<!--<div class="consulta-numeros">
-
-<h2>CONSULTA TUS NÚMEROS</h2>
-
-<p class="consulta-texto">
-¿Ya hiciste tu compra?<br>
-Ingresa tu número de WhatsApp para consultar tus boletos.
-</p>
-
-<input type="text" id="consultaWhatsapp" placeholder="WhatsApp">
-
-<button onclick="consultarNumeros()" class="btn-consultar">
-CONSULTAR
-</button>
-
-<div id="resultadoConsulta"></div>
-
-</div>
-
-</section> -->
-
+<!-- SECCIÓN DE CONSULTA DE NÚMEROS CORREGIDA -->
 <div class="consulta-numeros">
 
     <h2>CONSULTA TUS NÚMEROS</h2>
 
     <p class="consulta-texto">
         ¿Ya hiciste tu compra?<br>
-        Ingresa tu número de WhatsApp o  numero de  compra #123456 para consultar tus numeros.
+        Ingresa tu número de WhatsApp o numero de compra #123456 para consultar tus numeros.
     </p>
 
     <div class="consulta-form">
+        <!-- El pattern ahora exige obligatoriamente que empiece con 09 para el formato móvil -->
         <input
             type="text"
             id="consultaWhatsapp"
-            placeholder="Ingresa tu número de WhatsApp">
+            placeholder="Ingresa tu número de WhatsApp"
+            pattern="(09\d{8}|#\d{1,10})"
+            title="Ingresa un número de WhatsApp válido que empiece con 09 (ej. 0988271324) o un número de compra (ej. #0123456789)"
+            maxlength="11"
+            required>
 
         <button
             class="btn-consultar"
@@ -215,33 +198,16 @@ CONSULTAR
     </div>
 
     <!-- Aquí se mostrará el resultado -->
-    <div id="resultadoConsulta">
-
-        <!--
-            Si la compra está PENDIENTE:
-            Se mostrará la tarjeta amarilla.
-
-            Si NO EXISTE compra:
-            Se mostrará el mensaje "No tienes compras".
-
-            Si la compra está APROBADA:
-            Se mostrarán los números.
-        -->
-
-    </div>
+    <div id="resultadoConsulta"></div>
 
 </div>
 
-</section> <!-- hasta aqui -->
-
-
-</div>
+</section> 
 
 </section>
 
 
 <main class="container">
-
 
 </main>
 
@@ -260,10 +226,6 @@ CONSULTAR
 
 <div class="footer-contact">
 
-
-
-
-</p>
 <a href="#" target="_blank">
 <i class="fa-brands fa-facebook"></i> Facebook
 </a>
@@ -275,8 +237,6 @@ CONSULTAR
 <a href="#" target="_blank">
 <i class="fa-brands fa-tiktok"></i> TikTok
 </a>
-</div>
-
 </div>
 
 </div>
@@ -294,6 +254,37 @@ ImpulsoDigitalStudio
 </footer>
 
 <script src="js/main.js"></script>
+
+<!-- SCRIPT DE VALIDACIÓN ESTRICTA CON FILTRO PARA EL 0 -->
+<script>
+  const inputConsulta = document.getElementById('consultaWhatsapp');
+
+  inputConsulta.addEventListener('input', (e) => {
+    let value = e.target.value;
+
+    // 1. Si empieza con '#', permitir solo números después del símbolo (máximo # + 10 dígitos)
+    if (value.startsWith('#')) {
+      e.target.value = '#' + value.slice(1).replace(/[^0-9]/g, '').slice(0, 10);
+    } 
+    // 2. Si no empieza con '#', procesar el número de WhatsApp
+    else {
+      // Limpiar letras y caracteres raros primero
+      let numeros = value.replace(/[^0-9]/g, '');
+      
+      // Si el primer dígito que intentan poner NO es un cero, lo borra por completo
+      if (numeros.length > 0 && numeros[0] !== '0') {
+        numeros = '';
+      }
+      
+      // Si ya tiene dos dígitos y el segundo NO es un 9 (ej. "08..."), también lo invalida
+      if (numeros.length > 1 && numeros[1] !== '9') {
+        numeros = '0';
+      }
+
+      e.target.value = numeros.slice(0, 10);
+    }
+  });
+</script>
 
 </body>
 </html>
