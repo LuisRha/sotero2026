@@ -99,9 +99,9 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
 // ==========================================
 // 2. CONEXIÓN ASÍNCRONA A SUPABASE
 // ==========================================
-// ⚠️ REEMPLAZA ESTOS VALORES CON LOS DE TU PANEL (Project Settings > API)
-const SUPABASE_URL = "https://tu-proyecto.supabase.co"; 
-const SUPABASE_KEY = "tu-anon-key-real";
+// ⚠️ IMPORTANTE: Reemplaza estas dos cadenas con tus credenciales reales de Supabase
+const SUPABASE_URL = "https://TU_PROYECTO_REAL_AQUI.supabase.co"; 
+const SUPABASE_KEY = "TU_ANON_KEY_REAL_DE_SUPABASE_AQUI";
 
 async function obtenerCliente() {
     if (!pedidoId) {
@@ -112,7 +112,7 @@ async function obtenerCliente() {
     try {
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Cambiado a la tabla 'sorteos2026' y mapeado a la columna 'Nombres'
+        // Conexión directa a la tabla y columna correctas
         const { data, error } = await supabaseClient
             .from('sorteos2026') 
             .select('Nombres') 
@@ -132,6 +132,7 @@ async function obtenerCliente() {
     }
 }
 
+// Inicializar la búsqueda del cliente en segundo plano
 obtenerCliente();
 </script>
 
