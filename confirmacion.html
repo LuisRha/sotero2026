@@ -5,6 +5,8 @@
     <title>Confirmación de Compra</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/confirmacion.css">
+    <!-- Incluimos la librería oficial de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -26,7 +28,7 @@
 
         <div class="info-item">
             <span class="label">Cliente</span>
-            <span class="value" id="cliente"></span>
+            <span class="value" id="cliente">Cargando...</span>
         </div>
 
         <div class="info-item">
@@ -71,36 +73,70 @@
         </div>
     </div>
 
-    
+    <h2>Tus números:</h2>
+    <div class="numeros" id="listaNumeros"></div>
 
 </div>
 
 <script>
-// =========================
-// DATOS URL
-// =========================
-const params = new URLSearchParams(window.location.search);
+// ==========================================
+// CONFIGURACIÓN DE SUPABASE
+// ==========================================
+// Coloca aquí tus credenciales reales de Supabase:
+const SUPABASE_URL = "TU_SUPABASE_URL_AQUI"; 
+const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
 
-const pedido = params.get("id");
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ==========================================
+// DATOS URL
+// ==========================================
+const params = new URLSearchParams(window.location.search);
+const pedidoId = params.get("id");
 const total = params.get("total") || "0.00";
 const nums = params.get("nums");
-let cliente = params.get("cliente");
 
-// Si el nombre no viene en la URL, asignamos tu nombre directamente para que no salga "Cliente Anónimo"
-if (!cliente) {
-    cliente = "LuisRha"; 
+// Mostrar datos inmediatos de la URL
+document.getElementById("pedido").innerText = pedidoId || "------";
+document.getElementById("total").innerText = total;
+
+// ==========================================
+// CONSULTA A LA BASE DE DATOS (SUPABASE)
+// ==========================================
+async function obtenerCliente() {
+    if (!pedidoId) {
+        document.getElementById("cliente").innerText = "No indicado";
+        return;
+    }
+
+    try {
+        // Reemplaza 'tu_tabla_de_pedidos' por el nombre real de tu tabla en Supabase (ej. 'pedidos' o 'ordenes')
+        // Reemplaza 'Nombres' por el nombre exacto de la columna en tu tabla si es diferente
+        const { data, error } = await supabase
+            .from('pedidos') 
+            .select('Nombres')
+            .eq('id', pedidoId) // o '.eq("numero_orden", pedidoId)' según tu columna de id
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.Nombres) {
+            document.getElementById("cliente").innerText = data.Nombres;
+        } else {
+            document.getElementById("cliente").innerText = "No encontrado";
+        }
+    } catch (err) {
+        console.error("Error al consultar el cliente:", err);
+        document.getElementById("cliente").innerText = "Error al cargar";
+    }
 }
 
-// =========================
-// MOSTRAR DATOS
-// =========================
-document.getElementById("pedido").innerText = pedido || "------";
-document.getElementById("total").innerText = total;
-document.getElementById("cliente").innerText = cliente;
+// Ejecutar la consulta al cargar la página
+obtenerCliente();
 
-// =========================
+// ==========================================
 // FECHA REAL (Formato Ecuador)
-// =========================
+// ==========================================
 const ahora = new Date();
 document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
     day: "numeric",
@@ -111,9 +147,9 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
     hour12: true
 });
 
-// =========================
+// ==========================================
 // RENDERIZAR NÚMEROS COMPRADOS
-// =========================
+// ==========================================
 if (nums) {
     const lista = nums.split(",");
     const contenedor = document.getElementById("listaNumeros");
