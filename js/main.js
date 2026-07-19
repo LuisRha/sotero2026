@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = emailInput?.value.trim();
         const direccion = direccionInput?.value.trim();
         const provincia = provinciaInput?.value;
-        const ciudad = ciudadInput?.value.trim();
+        const city = ciudadInput?.value.trim();
         const numero_documento = documentoInput?.value.trim();
         const tipo_documento = tipoDocumentoInput?.value;
 
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sorteo_id: SORTEO_ID,
             nombres, apellidos,
             telefono, whatsapp: telefono,
-            email, direccion, provincia, ciudad,
+            email, direccion, provincia, ciudad: city,
             numero_documento, tipo_documento,
             cantidad, total: cantidad * PRECIO_BOLETO
           })
@@ -235,12 +235,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("procesando").style.display = "none";
 
         // ==========================================
-        // Solución al URI_TOO_LONG: Guardar datos pesados en la memoria local
+        // Guardar datos en memoria local para evitar URI_TOO_LONG
         // ==========================================
         sessionStorage.setItem("nums_compra", data.numeros || "");
         sessionStorage.setItem("cliente_compra", nombres + " " + apellidos);
 
-        // La URL ahora queda súper limpia y corta para que Vercel jamás de error
         window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}`;
 
         // Limpieza de campos
@@ -262,8 +261,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
       catch(err){
+        // Ocultar la capa de carga visual al detectar un error
         document.getElementById("procesando").style.display = "none";
-        alert(err.message);
+        
+        // CORRECCIÓN INTERCEPTORA INTELIGENTE DE ERRORES SQL/SUPABASE
+        if (err.message.includes("check_whatsapp_formato")) {
+          alert("❌ El número de teléfono ingresado no es válido. Recuerda que deben ser 10 números puros (Ej: 09XXXXXXXX).");
+        } 
+        else if (err.message.includes("check_cantidad_maxima")) {
+          alert("⚠️ La cantidad de boletos excede el límite permitido por transacción.");
+        } 
+        else {
+          // Captura genérica de cualquier otra incidencia técnica
+          alert("❌ " + err.message);
+        }
       }
     });
   }
@@ -386,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (estadoAEvaluar === "rechazado" || estadoAEvaluar === "rechazada") {
           resultado.innerHTML = `
             <div class="estado sin-compras" style="border-left: 6px solid #ff4a4a;">
-              <h3>❌ La Orden #${ordenEspecifica.id} fue Rechazada por falta de pago.</h3>
+              <h3>❌ La Orden #${ordenEspecifica.id} fue Fue Rechazada por falta de pago.</h3>
               <p>Esta compra no fue aprobada por el administrador.</p>
             </div>
           `;
