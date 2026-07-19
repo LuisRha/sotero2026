@@ -159,14 +159,28 @@ VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
 </div>
 
 </div>
+
+<!-- SECCIÓN MODIFICADA SÓLO PARA VALIDAR EL MÍNIMO DE 50 -->
 <div class="mas-numeros">
+  <h3>¿MÁS NÚMEROS?</h3>
+  <p>Agrega la cantidad de números que desees (mínimo 50).</p>
 
-<h3>¿MÁS NÚMEROS?</h3>
-<p>Agrega la cantidad de números que desees.</p>
+  <input 
+    type="number" 
+    id="cantidadPersonalizada" 
+    value="50" 
+    min="50"
+    onblur="if(this.value < 50) this.value = 50;">
 
-<input type="number" id="cantidadPersonalizada" value="50" min="50">
-
-<button onclick="window.location.href='formulario.html?cantidad=' + document.getElementById('cantidadPersonalizada').value">COMPRAR</button>
+  <button onclick="
+    const cant = Number(document.getElementById('cantidadPersonalizada').value);
+    if (cant < 50) {
+      alert('La cantidad mínima permitida es 50 números.');
+      document.getElementById('cantidadPersonalizada').value = 50;
+    } else {
+      window.location.href = 'formulario.html?cantidad=' + cant;
+    }
+  ">COMPRAR</button>
 </div>
 
 <!-- SECCIÓN DE CONSULTA DE NÚMEROS CORREGIDA -->
