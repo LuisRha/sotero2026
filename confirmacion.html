@@ -97,7 +97,7 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
 });
 
 // ==========================================
-// 2. CONEXIÓN REAL A TU SUPABASE
+// 2. CONEXIÓN A TU SUPABASE
 // ==========================================
 const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
@@ -111,9 +111,9 @@ async function obtenerCliente() {
     try {
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Hace la consulta a tu tabla 'sorteos2026' buscando el ID de la orden
+        // Corregido: Ahora busca exactamente en la tabla 'sorteos'
         const { data, error } = await supabaseClient
-            .from('sorteos2026') 
+            .from('sorteos') 
             .select('Nombres') 
             .eq('id', pedidoId) 
             .single();
@@ -131,7 +131,7 @@ async function obtenerCliente() {
     }
 }
 
-// Ejecutar de fondo para traer el nombre real
+// Ejecutar la consulta en segundo plano
 obtenerCliente();
 </script>
 
