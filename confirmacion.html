@@ -73,9 +73,6 @@
         </div>
     </div>
 
-    <h2>Tus números:</h2>
-    <div class="numeros" id="listaNumeros"></div>
-
 </div>
 
 <script>
@@ -85,9 +82,7 @@
 const params = new URLSearchParams(window.location.search);
 const pedidoId = params.get("id");
 const total = params.get("total") || "0.00";
-const nums = params.get("nums");
 
-// Esto se muestra al instante sin depender de internet ni de Supabase
 document.getElementById("pedido").innerText = pedidoId || "------";
 document.getElementById("total").innerText = total;
 
@@ -101,25 +96,10 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
     hour12: true
 });
 
-if (nums) {
-    const lista = nums.split(",");
-    const contenedor = document.getElementById("listaNumeros");
-    lista.forEach(n => {
-        if(n.trim() !== "") {
-            const span = document.createElement("span");
-            span.className = "numero";
-            span.innerText = n.trim();
-            contenedor.appendChild(span);
-        }
-    });
-} else {
-    document.getElementById("listaNumeros").innerText = "No se detectaron números.";
-}
-
 // ==========================================
 // 2. CONEXIÓN ASÍNCRONA A SUPABASE
 // ==========================================
-// Reemplaza estas dos cadenas con tus datos de Supabase del proyecto sorteos2026:
+// ⚠️ REEMPLAZA ESTOS DOS VALORES CON LOS DE TU PANEL DE SUPABASE:
 const SUPABASE_URL = "TU_SUPABASE_URL_AQUI"; 
 const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
 
@@ -130,13 +110,12 @@ async function obtenerCliente() {
     }
 
     try {
-        // Inicializamos el cliente dentro de la función para evitar colgar el script global
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Ajusta 'sorteos' o 'pedidos' según se llame tu tabla en Supabase
+        // ⚠️ REVISA AQUÍ: Cambia 'pedidos' por el nombre de tu tabla (ej: 'sorteos2026') si es diferente
         const { data, error } = await supabaseClient
             .from('pedidos') 
-            .select('Nombres')
+            .select('Nombres') // Revisa si la columna se llama 'Nombres' o 'nombres'
             .eq('id', pedidoId) 
             .single();
 
@@ -153,7 +132,6 @@ async function obtenerCliente() {
     }
 }
 
-// Ejecutamos la búsqueda en segundo plano
 obtenerCliente();
 </script>
 
