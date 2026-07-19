@@ -99,9 +99,9 @@ document.getElementById("fecha").innerText = ahora.toLocaleString("es-EC", {
 // ==========================================
 // 2. CONEXIÓN ASÍNCRONA A SUPABASE
 // ==========================================
-// ⚠️ REEMPLAZA ESTOS DOS VALORES CON LOS DE TU PANEL DE SUPABASE:
-const SUPABASE_URL = "TU_SUPABASE_URL_AQUI"; 
-const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
+// ⚠️ REEMPLAZA ESTOS VALORES CON LOS DE TU PANEL (Project Settings > API)
+const SUPABASE_URL = "https://tu-proyecto.supabase.co"; 
+const SUPABASE_KEY = "tu-anon-key-real";
 
 async function obtenerCliente() {
     if (!pedidoId) {
@@ -112,10 +112,10 @@ async function obtenerCliente() {
     try {
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ⚠️ REVISA AQUÍ: Cambia 'pedidos' por el nombre de tu tabla (ej: 'sorteos2026') si es diferente
+        // Cambiado a la tabla 'sorteos2026' y mapeado a la columna 'Nombres'
         const { data, error } = await supabaseClient
-            .from('pedidos') 
-            .select('Nombres') // Revisa si la columna se llama 'Nombres' o 'nombres'
+            .from('sorteos2026') 
+            .select('Nombres') 
             .eq('id', pedidoId) 
             .single();
 
