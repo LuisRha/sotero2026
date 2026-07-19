@@ -22,23 +22,20 @@ let SORTEO_ID = null;
 async function verificarPremiosMasivo(listaNumeros) {
   if (!listaNumeros || listaNumeros.length === 0) return;
 
-  // Realiza una única consulta a Supabase buscando todos los números del arreglo al mismo tiempo
   const { data, error } = await supabaseClient
     .from("tickets")
     .select("numero, premio")
     .eq("sorteo_id", SORTEO_ID)
-    .in("numero", listaNumeros); // El operador .in() pasa la lista completa de golpe en una sola petición
+    .in("numero", listaNumeros); 
 
   if (error) {
     console.error("Error consultando premios masivos:", error);
     return;
   }
 
-  // Si encuentra coincidencias, revisa cuáles de ellos tienen un premio asignado
   if (data && data.length > 0) {
     data.forEach(ticket => {
       if (ticket.premio) {
-        // Lanza la alerta individual solo si el número está premiado
         alert("🎉 ¡FELICIDADES! Número premiado: " + ticket.numero);
       }
     });
@@ -155,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnEnviar.addEventListener("click", async (e)=>{
       e.preventDefault();
 
-      // 🔄 Mostrar overlay animado de carga en pantalla
       document.getElementById("procesando").style.display = "flex";
       document.querySelector("#procesando h2").innerText = "Procesando tu compra...";
       document.querySelector("#procesando p").innerText = "Por favor espera";
@@ -203,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // Registrar los datos de la compra en la API del servidor
         const res = await fetch("/api/compras",{
           method:"POST",
           headers: { "Content-Type":"application/json" },
@@ -220,7 +215,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
         if(!res.ok){ throw new Error(data.error || "Error al registrar compra"); }
 
-        // Enviar la notificación de correo automática mediante la API
         await fetch("/api/enviar-correo", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -233,21 +227,23 @@ document.addEventListener("DOMContentLoaded", () => {
           })
         });
 
-        // 🔥 LOGICA OPTIMIZADA: Ejecución de verificación masiva instantánea sin bucle pesado
         if(data.numeros){
-          // Convierte la cadena separada por comas en un array limpio de espacios vacíos
           const listaLimpiada = data.numeros.split(",").map(n => n.trim()).filter(n => n !== "");
-          // Llama a la nueva función de consulta única masiva
           await verificarPremiosMasivo(listaLimpiada);
         }
 
-        // Ocultar loader de carga al terminar todo el flujo con éxito
         document.getElementById("procesando").style.display = "none";
 
-        // Redirigir a la pantalla de confirmación exitosa
-        window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}&nums=${data.numeros}&cliente=${encodeURIComponent(nombres + " " + apellidos)}`;
+        // ==========================================
+        // Solución al URI_TOO_LONG: Guardar datos pesados en la memoria local
+        // ==========================================
+        sessionStorage.setItem("nums_compra", data.numeros || "");
+        sessionStorage.setItem("cliente_compra", nombres + " " + apellidos);
 
-        // Limpieza completa de los campos del formulario
+        // La URL ahora queda súper limpia y corta para que Vercel jamás de error
+        window.location.href = `confirmacion.html?id=${data.id_compra}&total=${cantidad * PRECIO_BOLETO}`;
+
+        // Limpieza de campos
         nombreInput.value="";
         apellidosInput.value="";
         whatsappInput.value="";
@@ -282,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
       await actualizarDisponibles();
       await cargarNumerosPremio();
 
-      // Leer parámetros dinámicos de cantidad desde la URL si existen
       const params = new URLSearchParams(window.location.search);
       const cantidadURL = params.get("cantidad");
 
@@ -304,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   // =========================
-  // CONSULTAR BOLETOS (Búsqueda Inteligente por Celular u Orden)
+  // CONSULTAR BOLETOS
   // =========================
   async function consultarNumeros(){
     const inputUsuario = document.getElementById("consultaWhatsapp").value.trim();

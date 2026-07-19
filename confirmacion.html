@@ -13,7 +13,9 @@
 
   <h1>✅ ¡Gracias! Tu compra ha sido recibida</h1>
 
-  <!-- 🔥 BLOQUE ELEGANTE -->
+  <!-- ==========================================
+       BLOQUE DE INFORMACIÓN DEL PEDIDO
+       ========================================== -->
   <div class="info-box">
     <div class="info-item">
       <span class="label">Número de pedido</span>
@@ -49,6 +51,9 @@
     <a href="https://wa.me/593984594571" target="_blank" class="solo-numero">0984594571</a>
   </p>
 
+  <!-- ==========================================
+       INFORMACIÓN DE LAS CUENTAS BANCARIAS
+       ========================================== -->
   <div class="fila-cuentas">
     <div class="cuenta">
       <h3>🏦 Banco Pichincha</h3>
@@ -76,25 +81,28 @@
 </div>
 
 <script>
-// =========================
-// DATOS URL
-// =========================
+// ==========================================
+// CAPTURA DE DATOS (MÉTODO HÍBRIDO SEGURO)
+// ==========================================
 const params = new URLSearchParams(window.location.search);
 
+// Extrae el ID y el Total directamente desde la URL
 const pedido = params.get("id");
 const total = params.get("total") || "0.00";
-const cliente = params.get("cliente");
 
-// =========================
-// MOSTRAR DATOS (100% SEGURO CONTRA XSS)
-// =========================
+// CORRECCIÓN: Si no encuentra el cliente en la URL, lo recupera del sessionStorage del navegador
+const cliente = params.get("cliente") || sessionStorage.getItem("cliente_compra");
+
+// ==========================================
+// MOSTRAR DATOS EN PANTALLA (PROTECCIÓN XSS)
+// ==========================================
 document.getElementById("pedido").textContent = pedido || "------";
 document.getElementById("total").textContent = total;
 document.getElementById("cliente").textContent = cliente || "Cliente";
 
-// =========================
-// FECHA
-// =========================
+// ==========================================
+// FORMATEO DE FECHA LOCAL (ECUADOR)
+// ==========================================
 const ahora = new Date();
 document.getElementById("fecha").textContent = ahora.toLocaleString("es-EC", {
   day: "numeric",
@@ -103,6 +111,10 @@ document.getElementById("fecha").textContent = ahora.toLocaleString("es-EC", {
   hour: "2-digit",
   minute: "2-digit"
 });
+
+// Opcional: Limpiar el almacenamiento local una vez renderizados los datos para mantener limpia la memoria
+sessionStorage.removeItem("cliente_compra");
+sessionStorage.removeItem("nums_compra");
 </script>
 
 </body>
