@@ -13,24 +13,15 @@
   <link rel="stylesheet" href="css/comprar-boletos.css">
   <link rel="stylesheet" href="css/textosdinamicos.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Se eliminó la conexión directa a Supabase por seguridad y optimización -->
 </head>
 
 <body>
 
-<!-- BARRA SUPERIOR ESTRUCTURA -->
-<div class="top-bar" id="topBarText0">
-  <div class="top-bar-content">
-    <div class="top-line"></div>
-    <div class="top-main"></div>
-    <div class="top-sub"></div>
-  </div>
-</div>
-
+<!-- BARRA SUPERIOR UNIFICADA -->
 <div class="top-bar">
-<span id="topBarText"></span>
+  <span id="topBarText"></span>
 </div>
-
 
 <header class="main-header">
   <div class="logo-box">
@@ -40,222 +31,163 @@
   </div>
 </header>
 
-
 <section class="hero">
 
-<div class="container hero-box">
+  <div class="container hero-box">
 
-<h2>Llevate contigo <span id="nombreSorteoPedido"> Nombre del sorteo</span></h2>  
-<div class="slider-container" style="position: relative; width: 100%;">
-  
-  <button onclick="anteriorSlide()" class="flecha-slider flecha-izq">
-    &#10094;
-  </button>
+    <h2>Llevate contigo <span id="nombreSorteoPedido"> Nombre del sorteo</span></h2>  
+    
+    <div class="slider-container" style="position: relative; width: 100%;">
+      <button onclick="anteriorSlide()" class="flecha-slider flecha-izq">&#10094;</button>
 
-  <div class="slider" id="slider"></div>
+      <div class="slider" id="slider"></div>
 
-  <button onclick="siguienteSlide()" class="flecha-slider flecha-der">
-    &#10095;
-  </button>
-
-</div>
-<div class="progreso-sorteo">
-
-<h3>¡CANTIDADES LIMITADAS!</h3>
-
-<p id="porcentajeTexto">
-Números vendidos: 0%
-</p>
-
-<div class="barra">
-<div class="barra-fill" id="barraFill"></div>
-</div>
-
-<span id="disponibles">Boletos disponibles: --</span>
-
-<p class="nota">
-Los premios se jugarán una vez vendida la totalidad de los números.
-</p>
-
-</div>
-
-
-<div class="premios-instantaneos">
-
-<h2>¡PREMIOS INSTANTÁNEOS!</h2>
-
-<p class="descripcion">
-¡Hay 10 números bendecidos con premios en efectivo! 
-Realiza tu compra y revisa si tienes uno de los siguientes números:
-</p>
-
-<!-- CONTENEDOR QUE SE LLENARÁ DESDE LA BASE DE DATOS -->
-<div class="numeros-premio" id="numerosPremio"></div>
-
-<div class="participacion">
-
-<h1>¿Cómo participar?</h1>
-
-1. Selecciona el paquete de números que desees, recuerda que mientras más números tengas, más oportunidades tendrás de ganar. <br>
-
-2. Serás redirigido a una página donde seleccionarás tu forma de pago y llenarás tus datos. <br>
-
-3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
-También podrás consultarlos en la sección «Consulta tus números.
-
-</div>
-
-</div>
-
-</div>
-
-
-<section class="paquetes-compra">
-
-<h2>¡ADQUIERE TUS NÚMEROS!</h2>
-
-<p class="precio-unitario">
-VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
-</p>
-
-<div class="grid-paquetes">
-
-<div class="card">
-<h3>X5 NÚMEROS</h3>
-<p class="precio" id="precio5">$0</p>
-<a href="formulario.html?cantidad=5"><button>COMPRAR</button></a>
-</div>
-
-<div class="card">
-<h3>X10 NÚMEROS</h3>
-<p class="precio" id="precio10">$0</p>
-<a href="formulario.html?cantidad=10"><button>COMPRAR</button></a>
-</div>
-
-<div class="card destacado">
-<span class="tag">★ Más Vendido ★</span>
-<h3>X15 NÚMEROS</h3>
-<p class="precio" id="precio15">$0</p>
-<a href="formulario.html?cantidad=15"><button>COMPRAR</button></a>
-</div>
-
-<div class="card">
-<h3>X20 NÚMEROS</h3>
-<p class="precio" id="precio20">$40</p>
-<a href="formulario.html?cantidad=20"><button>COMPRAR</button></a>
-</div>
-
-<div class="card">
-<h3>X30 NÚMEROS</h3>
-<p class="precio" id="precio30">$60</p>
-<a href="formulario.html?cantidad=30"><button>COMPRAR</button></a>
-</div>
-
-<div class="card destacado-verde">
-<span class="tag">★★★★★</span>
-<h3>X50 NÚMEROS</h3>
-<p class="precio" id="precio50">$100</p>
-<a href="formulario.html?cantidad=50"><button>COMPRAR</button></a>
-</div>
-
-</div>
-<div class="mas-numeros">
-
-<h3>¿MÁS NÚMEROS?</h3>
-<p>Agrega la cantidad de números que desees.</p>
-
-<input type="number" id="cantidadPersonalizada" value="50" min="50">
-
-<button onclick="window.location.href='formulario.html?cantidad=' + document.getElementById('cantidadPersonalizada').value">COMPRAR</button>
-</div>
-
-<!-- SECCIÓN DE CONSULTA DE NÚMEROS CORREGIDA -->
-<div class="consulta-numeros">
-
-    <h2>CONSULTA TUS NÚMEROS</h2>
-
-    <p class="consulta-texto">
-        ¿Ya hiciste tu compra?<br>
-        Ingresa tu número de WhatsApp o numero de compra #123456 para consultar tus numeros.
-    </p>
-
-    <div class="consulta-form">
-        <!-- El pattern ahora exige obligatoriamente que empiece con 09 para el formato móvil -->
-        <input
-            type="text"
-            id="consultaWhatsapp"
-            placeholder="Ingresa tu número de WhatsApp"
-            pattern="(09\d{8}|#\d{1,10})"
-            title="Ingresa un número de WhatsApp válido que empiece con 09 (ej. 0988271324) o un número de compra (ej. #0123456789)"
-            maxlength="11"
-            required>
-
-        <button
-            class="btn-consultar"
-            onclick="consultarNumeros()">
-            CONSULTAR
-        </button>
+      <button onclick="siguienteSlide()" class="flecha-slider flecha-der">&#10095;</button>
     </div>
 
-    <!-- Aquí se mostrará el resultado -->
-    <div id="resultadoConsulta"></div>
+    <div class="progreso-sorteo">
+      <h3>¡CANTIDADES LIMITADAS!</h3>
+      
+      <p id="porcentajeTexto">Números vendidos: 0%</p>
 
-</div>
+      <div class="barra">
+        <div class="barra-fill" id="barraFill"></div>
+      </div>
 
-</section> 
+      <span id="disponibles">Boletos disponibles: --</span>
+
+      <p class="nota">
+        Los premios se jugarán una vez vendida la totalidad de los números.
+      </p>
+    </div>
+
+    <div class="premios-instantaneos">
+      <h2>¡PREMIOS INSTANTÁNEOS!</h2>
+      <p class="descripcion">
+        ¡Hay 10 números bendecidos con premios en efectivo! 
+        Realiza tu compra y revisa si tienes uno de los siguientes números:
+      </p>
+
+      <!-- CONTENEDOR DE PREMIOS DESDE LA API -->
+      <div class="numeros-premio" id="numerosPremio"></div>
+
+      <div class="participacion">
+        <h1>¿Cómo participar?</h1>
+        1. Selecciona el paquete de números que desees, recuerda que mientras más números tengas, más oportunidades tendrás de ganar. <br>
+        2. Serás redirigido a una página donde seleccionarás tu forma de pago y llenarás tus datos. <br>
+        3. Una vez realizado el pago, tus números serán asignados automáticamente y enviados al WhatsApp registrado en tu compra. 
+        También podrás consultarlos en la sección «Consulta tus números».
+      </div>
+    </div>
+
+  </div>
+
+  <section class="paquetes-compra">
+    <h2>¡ADQUIERE TUS NÚMEROS!</h2>
+    <p class="precio-unitario">
+      VALOR DE LA UNIDAD: $<span id="precioUnidad">0</span>
+    </p>
+
+    <div class="grid-paquetes">
+      <div class="card">
+        <h3>X5 NÚMEROS</h3>
+        <p class="precio" id="precio5">$0</p>
+        <a href="formulario.html?cantidad=5"><button>COMPRAR</button></a>
+      </div>
+
+      <div class="card">
+        <h3>X10 NÚMEROS</h3>
+        <p class="precio" id="precio10">$0</p>
+        <a href="formulario.html?cantidad=10"><button>COMPRAR</button></a>
+      </div>
+
+      <div class="card destacado">
+        <span class="tag">★ Más Vendido ★</span>
+        <h3>X15 NÚMEROS</h3>
+        <p class="precio" id="precio15">$0</p>
+        <a href="formulario.html?cantidad=15"><button>COMPRAR</button></a>
+      </div>
+
+      <div class="card">
+        <h3>X20 NÚMEROS</h3>
+        <p class="precio" id="precio20">$40</p>
+        <a href="formulario.html?cantidad=20"><button>COMPRAR</button></a>
+      </div>
+
+      <div class="card">
+        <h3>X30 NÚMEROS</h3>
+        <p class="precio" id="precio30">$60</p>
+        <a href="formulario.html?cantidad=30"><button>COMPRAR</button></a>
+      </div>
+
+      <div class="card destacado-verde">
+        <span class="tag">★★★★★</span>
+        <h3>X50 NÚMEROS</h3>
+        <p class="precio" id="precio50">$100</p>
+        <a href="formulario.html?cantidad=50"><button>COMPRAR</button></a>
+      </div>
+    </div>
+
+    <div class="mas-numeros">
+      <h3>¿MÁS NÚMEROS?</h3>
+      <p>Agrega la cantidad de números que desees.</p>
+      <input type="number" id="cantidadPersonalizada" value="50" min="50">
+      <button onclick="window.location.href='formulario.html?cantidad=' + document.getElementById('cantidadPersonalizada').value">COMPRAR</button>
+    </div>
+
+    <!-- SECCIÓN DE CONSULTA DE NÚMEROS -->
+    <div class="consulta-numeros">
+        <h2>CONSULTA TUS NÚMEROS</h2>
+        <p class="consulta-texto">
+            ¿Ya hiciste tu compra?<br>
+            Ingresa tu número de WhatsApp o numero de compra #123456 para consultar tus numeros.
+        </p>
+
+        <div class="consulta-form">
+            <input
+                type="text"
+                id="consultaWhatsapp"
+                placeholder="Ingresa tu número de WhatsApp"
+                pattern="(09\d{8}|#\d{1,10})"
+                title="Ingresa un número de WhatsApp válido que empiece con 09 (ej. 0988271324) o un número de compra (ej. #0123456789)"
+                maxlength="11"
+                required>
+
+            <button class="btn-consultar" onclick="consultarNumeros()">
+                CONSULTAR
+            </button>
+        </div>
+
+        <!-- Contenedor de resultados -->
+        <div id="resultadoConsulta"></div>
+    </div>
+  </section> 
 
 </section>
 
-
-<main class="container">
-
-</main>
-
-
 <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h3>SorteoEC</h3>
+      <p>Sorteos digitales con transparencia y confianza.</p>
+    </div>
 
-<div class="footer-container">
+    <div class="footer-contact">
+      <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a>
+      <a href="https://www.instagram.com/trujillosgroup?igsh=Z2FlazBqdGt3cDU5" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+      <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+    </div>
+  </div>
 
-<div class="footer-brand">
-
-<h3>SorteoEC</h3>
-
-<p>Sorteos digitales con transparencia y confianza.</p>
-
-</div>
-
-<div class="footer-contact">
-
-<a href="#" target="_blank">
-<i class="fa-brands fa-facebook"></i> Facebook
-</a>
-
-<a href="https://www.instagram.com/trujillosgroup?igsh=Z2FlazBqdGt3cDU5" target="_blank">
-<i class="fa-brands fa-instagram"></i> Instagram
-</a>
-
-<a href="#" target="_blank">
-<i class="fa-brands fa-tiktok"></i> TikTok
-</a>
-</div>
-
-</div>
-
-<div class="footer-bottom">
-
-© 2026 TrujillosGroup – Todos los derechos reservados |
-
-<a href="https://www.facebook.com/ImpulsoDigitalStudio19" target="_blank" class="impulso-link">
-ImpulsoDigitalStudio
-</a>
-
-</div>
-
+  <div class="footer-bottom">
+    © 2026 TrujillosGroup – Todos los derechos reservados |
+    <a href="https://www.facebook.com/ImpulsoDigitalStudio19" target="_blank" class="impulso-link">ImpulsoDigitalStudio</a>
+  </div>
 </footer>
 
 <script src="js/main.js"></script>
 
-<!-- SCRIPT DE VALIDACIÓN ESTRICTA CON FILTRO PARA EL 0 -->
+<!-- SCRIPT DE VALIDACIÓN DE FORMULARIO ECUADOR -->
 <script>
   const inputConsulta = document.getElementById('consultaWhatsapp');
 
@@ -266,17 +198,14 @@ ImpulsoDigitalStudio
     if (value.startsWith('#')) {
       e.target.value = '#' + value.slice(1).replace(/[^0-9]/g, '').slice(0, 10);
     } 
-    // 2. Si no empieza con '#', procesar el número de WhatsApp
+    // 2. Si no empieza con '#', procesar formato móvil celular de Ecuador
     else {
-      // Limpiar letras y caracteres raros primero
       let numeros = value.replace(/[^0-9]/g, '');
       
-      // Si el primer dígito que intentan poner NO es un cero, lo borra por completo
       if (numeros.length > 0 && numeros[0] !== '0') {
         numeros = '';
       }
       
-      // Si ya tiene dos dígitos y el segundo NO es un 9 (ej. "08..."), también lo invalida
       if (numeros.length > 1 && numeros[1] !== '9') {
         numeros = '0';
       }
