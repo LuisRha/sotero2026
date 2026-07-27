@@ -1,8 +1,8 @@
 // =========================
 // CONEXIÓN SUPABASE
 // =========================
-//const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
-//const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
+const SUPABASE_URL = "https://caovuekqrczqysxgnucc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX";
 
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
