@@ -953,9 +953,10 @@ document.body.removeChild(link);
 }
 
 // ==========================
-// REVISAR GANADORES
+// REVISAR GANADORES (DESACTIVADO)
 // ==========================
 async function revisarGanadores(){
+  return; // Cancela la petición antes de ejecutar el fetch /  hay error y se desactiva
 
   try{
 
@@ -1014,7 +1015,6 @@ async function revisarGanadores(){
   }
 
 }
-
 
 
 // ==========================
