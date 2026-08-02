@@ -4,6 +4,8 @@
 const tablaBody = document.querySelector("#tabla tbody");
 const totalComprasEl = document.getElementById("totalCompras");
 const totalNumerosEl = document.getElementById("totalNumeros");
+const totalAprobadoEl = document.getElementById("totalAprobado");
+const totalPendienteEl = document.getElementById("totalPendiente");
 const sorteoActivoTitulo = document.getElementById("sorteoActivoTitulo");
 
 // botones superiores
@@ -329,16 +331,26 @@ y=20;
 doc.save("ticket_" + pedido + ".pdf");
 
 }
+
+// =========================
 // CARGAR COMPRAS
 // =========================
 async function cargarDatos() {
 
   tablaBody.innerHTML = "";
 
-  totalComprasEl.textContent = "0";
-  totalNumerosEl.textContent = "0";
+  if(totalComprasEl) totalComprasEl.textContent = "0";
+  if(totalNumerosEl) totalNumerosEl.textContent = "0";
+  if(totalAprobadoEl) totalAprobadoEl.textContent = "$0.00";
+  if(totalPendienteEl) totalPendienteEl.textContent = "$0.00";
 
   let totalNumerosVendidos = 0;
+  let totalAprobado = 0;
+  let totalPendiente = 0;
+
+  // Obtener precio por ticket del sorteo activo si existe en la cache
+  const sorteoActivo = sorteosCache.find(s => s.id === sorteoActivoId);
+  const PRECIO_TICKET = Number(sorteoActivo?.precio_ticket || 0);
 
   let url = "/api/compras";
 
@@ -358,12 +370,20 @@ async function cargarDatos() {
 
   }
 
-  totalComprasEl.textContent = data.length;
+  if(totalComprasEl) totalComprasEl.textContent = data.length;
 
   data.forEach(item => {
 
-    if(item.estado === "aprobado" || item.estado === "pendiente"){
-      totalNumerosVendidos += Number(item.cantidad || 0);
+    const cantidad = Number(item.cantidad || 0);
+    // Toma el monto total grabado en el registro o lo calcula según la cantidad de tickets
+    const monto = item.monto ? Number(item.monto) : (cantidad * PRECIO_TICKET);
+
+    if(item.estado === "aprobado"){
+      totalNumerosVendidos += cantidad;
+      totalAprobado += monto;
+    } else if(item.estado === "pendiente"){
+      totalNumerosVendidos += cantidad;
+      totalPendiente += monto;
     }
 
     const nombreCompleto =
@@ -414,7 +434,9 @@ async function cargarDatos() {
 
   });
 
-  totalNumerosEl.textContent = totalNumerosVendidos;
+  if(totalNumerosEl) totalNumerosEl.textContent = totalNumerosVendidos;
+  if(totalAprobadoEl) totalAprobadoEl.textContent = `$${totalAprobado.toFixed(2)}`;
+  if(totalPendienteEl) totalPendienteEl.textContent = `$${totalPendiente.toFixed(2)}`;
 
 }
 
@@ -716,13 +738,6 @@ btnCancelarSorteo?.addEventListener("click", () => {
 // BOTON BUSCAR COMPRA
 document.getElementById("btnBuscar")?.addEventListener("click", buscarCompra);
 document.getElementById("btnBuscarOrden")?.addEventListener("click", buscarOrden);
-btnNuevoSorteo?.addEventListener("click", () => {
-  modalNuevoSorteo.classList.remove("oculto");
-});
-
-btnCancelarSorteo?.addEventListener("click", () => {
-  modalNuevoSorteo.classList.add("oculto");
-});
 
 // =========================
 // CREAR SORTEO
@@ -871,7 +886,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarDatos();
   await revisarGanadores();
 
-  await cargarNumerosTopAdmin(); // 🔥 AGREGA ESTA LÍNEA
+  await cargarNumerosTopAdmin();
 
   // revisar cada 5 segundos si hay ganadores
   setInterval(revisarGanadores, 5000);
@@ -956,7 +971,7 @@ document.body.removeChild(link);
 // REVISAR GANADORES (DESACTIVADO)
 // ==========================
 async function revisarGanadores(){
-  return; // Cancela la petición antes de ejecutar el fetch /  hay error y se desactiva
+  return;
 
   try{
 
@@ -971,15 +986,12 @@ async function revisarGanadores(){
 
     const alerta = document.getElementById("alertaAdmin");
 
-    // Verificar si existe el contenedor
     if(!alerta) return;
 
     if(data && data.length > 0){
 
-      // Título del aviso en el panel admin
       let html = "🎉 <b>Premios instantáneos ganados</b><br><br>";
 
-      // Recorrer cada ganador
       data.forEach(g => {
 
         html += `
@@ -987,7 +999,6 @@ async function revisarGanadores(){
         👤 Ganador: <b>${g.ganador}</b><br>
         📱 WhatsApp: <b>${g.telefono}</b><br>
 
-        <!-- BOTON PARA NOTIFICAR POR WHATSAPP -->
         <button class="btn-whatsapp"
         onclick="notificarGanador('${g.telefono}','${g.ganador}','${g.numero}')">
         📲 Notificar ganador
@@ -998,12 +1009,10 @@ async function revisarGanadores(){
 
       });
 
-      // Mostrar la información en el panel admin
       alerta.innerHTML = html;
 
     }else{
 
-      // Mensaje si no hay ganadores
       alerta.innerHTML = "✔ No hay premios instantáneos reclamados";
 
     }
@@ -1022,7 +1031,6 @@ async function revisarGanadores(){
 // ==========================
 function notificarGanador(telefono,nombre,numero){
 
-  // Verificar si existe número
   if(!telefono){
     alert("No hay número de WhatsApp para este ganador");
     return;
@@ -1030,7 +1038,6 @@ function notificarGanador(telefono,nombre,numero){
 
   telefono = telefono.trim();
 
-  // Mensaje que se enviará al ganador
   const mensaje = `
 Hola ${nombre} 🎉
 
@@ -1042,10 +1049,8 @@ Por favor contáctanos para reclamar tu premio.
 SorteoEC
 `;
 
-  // Convertir número ecuatoriano a formato internacional
   const telefonoFinal = "593" + telefono.replace(/^0/, "");
 
-  // Abrir WhatsApp con el mensaje listo
   window.open(
     `https://wa.me/${telefonoFinal}?text=${encodeURIComponent(mensaje)}`,
     "_blank"
