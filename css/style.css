@@ -1,397 +1,15 @@
 * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* ===== BASE ===== */
-body {
-  margin: 0;
-  background: #f8fafc;
-  color: #11111120;
-}
-
-.container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* ===== TOP BAR ===== */
-
-.top-bar {
-  background: linear-gradient(90deg, #0A1FFF, #FF2DAA);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0px 0px;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-
-.top-bar-content {
-  line-height: 0.5;
-}
-
-.top-line {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.top-main {
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.top-sub {
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* ===== HEADER ===== */
-.main-header {
-  background: #000;
-  padding: 4px 0;
-  text-align: center;
-}
-
-.logo-box {
-  color: #fff;
-}
-
-.logo-text {
-  font-size: 48px;
-  font-weight: 300;
-  letter-spacing: 3px;
-}
-
-.logo-highlight {
-  font-size: 48px;
-  font-weight: bold;
-  color: hsl(253, 89%, 52%);
-  margin-left: 10px;
-}
-
-.slogan {
-  margin-top: 5px;
-  font-size: 14px;
-  font-weight: bold;
-
-  background: linear-gradient(90deg, #ff0000, #ffcc00, #00ffcc, #00aaff, #ff00ff);
-  background-size: 300%;
-
-  background-clip: text;
-  -webkit-background-clip: text;
-
-  -webkit-text-fill-color: transparent;
-
-  animation: brillo 4s linear infinite;
-}
-
-@keyframes brillo {
-  0% {
-    background-position: 0%;
-  }
-  100% {
-    background-position: 300%;
-  }
-}
-
-
-
-/* 📱 MÓVIL */
-@media (max-width: 768px) {
-
-  .slider{
-    height: 280px;   /* altura menor en celular */
-  }
-
-  .galeria-sorteo {
-    justify-content: flex-start;
-    padding-left: 10px;
-  }
-
-  .galeria-sorteo img {
-    max-width: 85%;
-  }
-
-}
-
-
-/* ===== BOTONES ===== */
-.btn-principal {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 12px 30px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  margin-top: 15px;
-}
-
-.btn-principal:hover {
-  background: #1e4ed8;
-}
-
-#btnComprar {
-  margin: 20px auto 0;
-}
-
-/* ===== CARDS ===== */
-.card {
-  background: #fff;
-  padding: 30px;
-  margin: 30px auto;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
-}
-
-/* ===== FORM ===== */
-input,
-select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-select {
-  background: #fff;
-  cursor: pointer;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-.total {
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-/* ===== UTIL ===== */
-.oculto {
-  display: none;
-}
-
-/* ===== BARRA DE PROGRESO ===== */
-.progreso-sorteo {
-  margin: 25px auto;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  color: #fff;
-}
-
-.progreso-sorteo h3 {
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.progreso-sorteo p {
-  margin: 6px 0;
-}
-
-.barra {
-  width: 100%;
-  height: 16px;
-  background: #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 10px 0;
-}
-
-.barra-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00c853, #ffeb3b, #ff5252);
-  transition: width 0.6s ease;
-}
-
-.nota {
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-/* 📱 CELULARES */
-@media (max-width: 480px) {
-
-  .container {
-    width: 94%;
-  }
-
-  .top-main {
-    font-size: 18px;
-  }
-
-  .top-sub {
-    font-size: 12px;
-  }
-
-  .logo-text,
-  .logo-highlight {
-    font-size: 34px;
-    letter-spacing: 2px;
-  }
-
-  .slogan {
-    font-size: 12px;
-  }
-
-  .hero {
-    padding: 3px 0 50px 0;
-  }
-
-  .hero-box h2 {
-    font-size: 24px;
-  }
-
-  .hero-box p {
-    font-size: 14px;
-  }
-
-  .card {
-    padding: 20px;
-    margin: 20px auto;
-  }
-
-  input,
-  select {
-    font-size: 14px;
-    padding: 11px;
-  }
-
-  .btn-principal {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-  }
-
-  .nota {
-    font-size: 12px;
-  }
-}
-
-/* 📲 TABLETS */
-@media (max-width: 768px) {
-
-  .container {
-    width: 92%;
-  }
-
-  .logo-text,
-  .logo-highlight {
-    font-size: 40px;
-  }
-
-  .hero-box h2 {
-    font-size: 30px;
-  }
-
-  .card {
-    padding: 25px;
-  }
-}
-
-/* ===== CORRECCIÓN ESPACIO ANTES DEL FOOTER ===== */
-main>*:last-child {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-
-/* foother*/
-
-.footer {
-  width: 100%;
-  background: #383737;
-  /* combina con tu fondo */
-  color: #eee;
-  margin-top: px;
-}
-
-.footer a {
-  color: #4da3ff;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.footer-brand h3 {
-  margin: 0 0 8px;
-  color: #fff;
-}
-
-.footer-brand p {
-  margin: 0;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.footer-contact {
-  text-align: right;
-  font-size: 14px;
-}
-
-.footer-social {
-  margin-top: 6px;
-}
-
-.footer-social a {
-  margin-left: 12px;
-  font-size: 14px;
-}
-
-.footer-bottom {
-  background: #1f1f1f;
-  text-align: center;
-  padding: 12px;
-  font-size: 13px;
-  color: #aaa;
-}
-
-
-/* body*/
-
+/* ===== BASE / BODY ===== */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-
-  background: linear-gradient(270deg,
-    #0f172a,
-    #1e3a8a,
-    #7c3aed,
-    #ec4899,
-    #f59e0b
-  );
-
+  background: linear-gradient(270deg, #0f172a, #1e3a8a, #7c3aed, #ec4899, #f59e0b);
   background-size: 400% 400%;
   animation: fondoMove 12s ease infinite;
-
   color: #ffffff;
 }
 
@@ -401,255 +19,6 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-
-/* impulso digital*/
-.footer-bottom {
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-}
-
-.footer-bottom .impulso-link {
-  color: #1877f2;
-  /* azul Facebook */
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer-bottom .impulso-link:hover {
-  text-decoration: underline;
-}
-
-
-/* =========================
-   CHECKOUT LAYOUT
-========================= */
-
-/* =========================
-   CHECKOUT GRID PRINCIPAL
-========================= */
-/* =========================
-   OVERLAY + CARD MÁS ELEGANTE
-========================= */
-.overlay {
-  background: rgba(0, 0, 0, 0.65);
-}
-
-.card {
-  max-width: 1200px;
-  width: 96%;
-  margin: 40px auto;
-  border-radius: 10px;
-  padding: 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
-}
-
-/* =========================
-   CHECKOUT ANCHO COMPLETO
-========================= */
-.checkout {
-  display: grid;
-  grid-template-columns: 1.4fr 1.2fr;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-/* =========================
-   COLUMNA IZQUIERDA
-========================= */
-.checkout-left {
-  display: grid;
-  grid-template-columns: 2fr 2fr;
-  gap: 1px 8px;
-}
-
-.checkout-left h2 {
-  grid-column: 1 / -1;
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #111;
-}
-
-/* cada campo */
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-/* campos largos */
-.field.full {
-  grid-column: 1 / -1;
-}
-
-/* labels */
-.checkout-left label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #444;
-  margin-bottom: 4px;
-}
-
-/* inputs elegantes */
-.checkout-left input,
-.checkout-left select {
-  height: 42px;
-  padding: 10px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #6383b7;
-  background: #dfe4e9;
-  transition: all .2s ease;
-}
-
-/* placeholder */
-.checkout-left input::placeholder {
-  color: #000307;
-}
-
-/* focus bonito */
-.checkout-left input:focus,
-.checkout-left select:focus {
-  outline: none;
-  background: #fff;
-  border-color: #7d6113;
-  box-shadow: 0 0 0 3px rgba(124, 242, 194, .25);
-}
-
-/* =========================
-   COLUMNA DERECHA (PEDIDO)
-========================= */
-.checkout-right {
-  background: #f8fafc;
-  padding: 22px;
-  border-radius: 10px;
-  border: 1px solid #ac999f;
-}
-
-.checkout-right h3 {
-  font-size: 17px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-/* pedido */
-.pedido {
-  border-bottom: none;
-}
-
-.pedido-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* método de pago */
-.metodo-pago {
-  background: #dad5ce;
-  padding: 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  margin-bottom: 16px;
-}
-
-.metodo-pago label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-}
-
-.metodo-pago p {
-  margin-top: 6px;
-  font-size: 12px;
-  color: #555;
-}
-
-/* términos */
-.terminos {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 12px;
-  color: #301414;
-  margin-bottom: 18px;
-}
-
-/* botón pagar */
-.btn-pagar {
-  width: 100%;
-  height: 44px;
-  background: #2f2f2f;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background .2s ease;
-}
-
-.btn-pagar:hover {
-  background: #1f1f1f;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 900px) {
-  .checkout {
-    grid-template-columns: 1fr;
-  }
-
-  .checkout-left {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    padding: 22px;
-  }
-}
-
-/* busqueda numeros comprados */
-.numeros-box{
-display:flex;
-flex-wrap:wrap;
-gap:6px;
-margin-top:10px;
-}
-
-.numero{
-background:#1e1e1e;
-padding:5px 8px;
-border-radius:4px;
-font-size:13px;
-}
-
-
-/* unout de colsulta co numero de  whsaapp */
-
-#consultaWhatsapp{
-width:250px;
-max-width:90%;
-padding:8px;
-border-radius:6px;
-border:none;
-}
-
-
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-/* ===== BASE ===== */
-body {
-  margin: 0;
-  background: #f8fafc;
-  color: #11111120;
-}
-
 .container {
   width: 90%;
   max-width: 1100px;
@@ -663,7 +32,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0px 0px;
+  padding: 0;
   text-align: center;
   letter-spacing: 1px;
 }
@@ -712,7 +81,7 @@ body {
 }
 
 .slogan {
-  margin-top: 5px;
+  margin-top: 3px;
   font-size: 14px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff0000, #ffcc00, #00ffcc, #00aaff, #ff00ff);
@@ -731,7 +100,7 @@ body {
 /* ===== HERO ===== */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6)), url("../images/banner.jpg") center/cover;
-  padding: 3px 0 50px 0;
+  padding: 10px 0 20px 0;
   color: #fff;
 }
 
@@ -744,24 +113,25 @@ body {
 
 .hero-box h2 {
   font-size: 36px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .hero-box p {
   max-width: 700px;
+  margin: 4px 0;
 }
 
-/* ===== IMÁGENES DEL SORTEO ===== */
-.sorteo-imagen {
+/* ===== SLIDER ===== */
+.slider-container {
+  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .slider {
   position: relative;
   width: 100%;
-  /* max-width:900px;  */
   height: 100%;
   overflow: hidden;
   border: 4px solid #f700ff6c;
@@ -769,23 +139,11 @@ body {
   box-shadow: 0 0 40px #fb00ff;
 }
 
-
-
-
-/* <- FECHAS */
-/* CONTAINER PRINCIPAL (Fija los límites para que las flechas no se salgan) */
-.slider-container {
-  position: relative;
-  width: 100%;
-  border-radius: 8px;        /* Bordes redondeados de tu diseño */
-  overflow: hidden;          /* Evita que cualquier cosa se salga de la foto */
-}
-
 .slide {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  object-position: center 0%; /* Sube el enfoque para que no recorte lo importante */
+  object-fit: cover;
+  object-position: center 0%;
   display: none;
 }
 
@@ -797,8 +155,8 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 20;               /* Subido a 20 para que siempre flote sobre las fotos */
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro translúcido */
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.6);
   color: #ffffff;
   border: none;
   font-size: 22px;
@@ -809,100 +167,17 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Efecto hover con el verde neón de tu web */
 .flecha-slider:hover {
   background-color: rgba(0, 255, 136, 0.9);
   color: #000000;
 }
 
-/* Posiciones exactas ADENTRO de la foto */
-.flecha-izq {
-  left: 15px;
-}
-
-.flecha-der {
-  right: 15px;
-}
-
-
-/* 📱 MÓVIL SLIDER */
-@media (max-width: 768px) {
-  .slider {
-    height: 280px;
-  }
-  .galeria-sorteo {
-    justify-content: flex-start;
-    padding-left: 10px;
-  }
-  .galeria-sorteo img {
-    max-width: 85%;
-  }
-}
-
-/* ===== BOTONES ===== */
-.btn-principal {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 12px 30px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  margin-top: 15px;
-}
-
-.btn-principal:hover {
-  background: #1e4ed8;
-}
-
-#btnComprar {
-  margin: 20px auto 0;
-}
-
-/* ===== CARDS GLOBAL ===== */
-.card {
-  background: #fff;
-  padding: 30px;
-  margin: 30px auto;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
-}
-
-/* ===== FORM ===== */
-input, select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-select {
-  background: #fff;
-  cursor: pointer;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-.total {
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-/* ===== UTIL ===== */
-.oculto {
-  display: none;
-}
+.flecha-izq { left: 15px; }
+.flecha-der { right: 15px; }
 
 /* ===== BARRA DE PROGRESO ===== */
 .progreso-sorteo {
-  margin: 25px auto;
+  margin: 12px auto;
   max-width: 420px;
   width: 100%;
   text-align: center;
@@ -910,12 +185,12 @@ label {
 }
 
 .progreso-sorteo h3 {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-weight: bold;
 }
 
 .progreso-sorteo p {
-  margin: 6px 0;
+  margin: 3px 0;
 }
 
 .barra {
@@ -924,7 +199,7 @@ label {
   background: #ccc;
   border-radius: 10px;
   overflow: hidden;
-  margin: 10px 0;
+  margin: 6px 0;
 }
 
 .barra-fill {
@@ -939,11 +214,75 @@ label {
   opacity: 0.9;
 }
 
+/* ===== BOTONES ===== */
+.btn-principal {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.btn-principal:hover {
+  background: #1e4ed8;
+}
+
+#btnComprar {
+  margin: 15px auto 0;
+}
+
+/* ===== CARDS ===== */
+.card {
+  max-width: 1200px;
+  width: 96%;
+  margin: 20px auto;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+  background: #fff;
+}
+
+/* ===== FORM ===== */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+select {
+  background: #fff;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.total {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* ===== UTIL ===== */
+.oculto {
+  display: none;
+}
+
 /* ===== FOOTER ===== */
 .footer {
   width: 100%;
   background: #383737;
   color: #eee;
+  margin-top: 0;
 }
 
 .footer a {
@@ -958,16 +297,16 @@ label {
 .footer-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
 }
 
 .footer-brand h3 {
-  margin: 0 0 8px;
+  margin: 0 0 5px;
   color: #fff;
 }
 
@@ -983,7 +322,7 @@ label {
 }
 
 .footer-social {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .footer-social a {
@@ -994,7 +333,7 @@ label {
 .footer-bottom {
   background: #1f1f1f;
   text-align: center;
-  padding: 12px;
+  padding: 10px;
   font-size: 14px;
   color: #555;
 }
@@ -1009,36 +348,9 @@ label {
   text-decoration: underline;
 }
 
-/* ===== ANIMATED BODY BODY ===== */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(270deg, #0f172a, #1e3a8a, #7c3aed, #ec4899, #f59e0b);
-  background-size: 400% 400%;
-  animation: fondoMove 12s ease infinite;
-  color: #ffffff;
-}
-
-@keyframes fondoMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* =========================
-   CHECKOUT LAYOUT & GRID
-========================= */
+/* ===== CHECKOUT LAYOUT ===== */
 .overlay {
   background: rgba(0, 0, 0, 0.65);
-}
-
-.card {
-  max-width: 1200px;
-  width: 96%;
-  margin: 40px auto;
-  border-radius: 10px;
-  padding: 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
 }
 
 .checkout {
@@ -1058,7 +370,7 @@ body {
   grid-column: 1 / -1;
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #111;
 }
 
@@ -1075,7 +387,7 @@ body {
   font-size: 13px;
   font-weight: 500;
   color: #444;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .checkout-left input,
@@ -1103,7 +415,7 @@ body {
 
 .checkout-right {
   background: #f8fafc;
-  padding: 22px;
+  padding: 18px;
   border-radius: 10px;
   border: 1px solid #ac999f;
 }
@@ -1111,7 +423,7 @@ body {
 .checkout-right h3 {
   font-size: 17px;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .pedido-row {
@@ -1123,10 +435,10 @@ body {
 
 .metodo-pago {
   background: #dad5ce;
-  padding: 14px;
+  padding: 12px;
   border-radius: 6px;
   font-size: 13px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .metodo-pago label {
@@ -1137,7 +449,7 @@ body {
 }
 
 .metodo-pago p {
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 12px;
   color: #555;
 }
@@ -1148,7 +460,7 @@ body {
   gap: 8px;
   font-size: 12px;
   color: #301414;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .btn-pagar {
@@ -1168,11 +480,12 @@ body {
   background: #1f1f1f;
 }
 
+/* ===== NUMEROS CONSULTA ===== */
 .numeros-box {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .numero {
@@ -1190,16 +503,26 @@ body {
   border: none;
 }
 
+/* ===== FIX ESPACIO ANTES FOOTER ===== */
 main>*:last-child {
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
 
-/* RESPONSIVE BASE */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .checkout { grid-template-columns: 1fr; }
   .checkout-left { grid-template-columns: 1fr; }
-  .card { padding: 22px; }
+  .card { padding: 18px; }
+}
+
+@media (max-width: 768px) {
+  .container { width: 92%; }
+  .logo-text, .logo-highlight { font-size: 9vw; display: inline-block; }
+  .hero-box h2 { font-size: 28px; }
+  .slider { height: 280px; }
+  .galeria-sorteo { justify-content: flex-start; padding-left: 10px; }
+  .galeria-sorteo img { max-width: 85%; }
 }
 
 @media (max-width: 480px) {
@@ -1208,54 +531,30 @@ main>*:last-child {
   .top-sub { font-size: 12px; }
   .logo-text, .logo-highlight { font-size: 34px; letter-spacing: 2px; }
   .slogan { font-size: 12px; }
-  .hero { padding: 3px 0 50px 0; }
-  .hero-box h2 { font-size: 24px; }
+  .hero { padding: 5px 0 20px 0; }
+  .hero-box h2 { font-size: 22px; }
   .hero-box p { font-size: 14px; }
-  input, select { font-size: 14px; padding: 11px; }
-  .btn-principal { width: 100%; padding: 14px; font-size: 16px; }
+  input, select { font-size: 14px; padding: 10px; }
+  .btn-principal { width: 100%; padding: 12px; font-size: 16px; }
   .nota { font-size: 12px; }
-}
 
-@media (max-width: 768px) {
-  .container { 
-    width: 92%; 
-  }
-  
-  /* CORRECCIÓN: Usamos 7.5vw para que el texto se encoja automáticamente en celulares */
-  .logo-text, .logo-highlight { 
-    font-size: 9vw; 
-    display: inline-block;
-  }
-  
-  .hero-box h2 { 
-    font-size: 30px; 
-  }
-}
-
-
-/* ===================================================
-   🚀 NUEVA CORRECCIÓN ADICIONAL PARA LAS TARJETAS EN CELULAR 
-   =================================================== */
-@media (max-width: 480px) {
-  /* Evita el estiramiento vertical forzando un empaquetado fluido */
-  .checkout, 
+  .checkout,
   .checkout-left,
-  [class*="contenedor-tarjetas"], 
+  [class*="contenedor-tarjetas"],
   [class*="boletos-container"] {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
-    gap: 5px !important; /* Espacio fijo controlado entre tarjetas */
-    height: auto !important; /* Elimina alturas rígidas en móvil */
+    gap: 5px !important;
+    height: auto !important;
   }
 
-  /* Compactación del relleno interno y márgenes de cada tarjeta */
-  .card, 
+  .card,
   [class*="tarjeta-boleto"],
   [class*="producto-card"] {
     margin: 2px auto !important;
-    padding: 16px !important;
+    padding: 14px !important;
     width: 100% !important;
     max-width: 100% !important;
   }
