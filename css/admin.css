@@ -9,8 +9,8 @@
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: #f0f2f5;
+  color: #222;
   padding: 0;
   min-height: 100vh;
 }
@@ -19,8 +19,8 @@ body {
    HEADER
 ========================= */
 .admin-header {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-bottom: 1px solid #334155;
+  background: linear-gradient(135deg, #1e3a5f 0%, #1a2a40 100%);
+  border-bottom: 1px solid #2c4a6e;
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .admin-header h1 {
@@ -85,8 +85,8 @@ body {
    BARRA DE SORTEO
 ========================= */
 .barra-sorteo {
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
   margin: 20px 24px;
   padding: 20px 24px;
@@ -95,6 +95,7 @@ body {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 /* SORTEO ACTIVO */
@@ -104,7 +105,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #f1f5f9;
+  color: #1a2a40;
 }
 
 .sorteo-activo .dot {
@@ -132,9 +133,9 @@ body {
 .selector select {
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid #475569;
-  background: #0f172a;
-  color: #e2e8f0;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
   font-size: 14px;
 }
 
@@ -151,9 +152,9 @@ body {
 .acciones input[type="text"] {
   padding: 9px 14px;
   border-radius: 8px;
-  border: 1px solid #475569;
-  background: #0f172a;
-  color: #e2e8f0;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
   font-size: 14px;
   width: 180px;
   transition: border-color 0.2s;
@@ -162,7 +163,7 @@ body {
 .acciones input[type="text"]:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 .acciones button {
@@ -198,12 +199,12 @@ body {
 .resumen {
   font-size: 14px;
   font-weight: 600;
-  color: #94a3b8;
+  color: #555;
   line-height: 1.8;
 }
 
 .resumen strong {
-  color: #f8fafc;
+  color: #1a2a40;
   font-size: 16px;
 }
 
@@ -211,7 +212,7 @@ body {
    RESULTADO BUSQUEDA
 ========================= */
 #resultadoBusqueda {
-  color: #fbbf24;
+  color: #e67e22;
   font-weight: 600;
   font-size: 14px;
   margin-top: 8px;
@@ -231,15 +232,15 @@ table {
   min-width: 1000px;
   border-collapse: separate;
   border-spacing: 0;
-  background: #1e293b;
+  background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-  border: 1px solid #334155;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid #e0e0e0;
 }
 
 thead {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8a 100%);
   color: #fff;
 }
 
@@ -256,10 +257,10 @@ th {
 td {
   padding: 12px 10px;
   font-size: 14px;
-  border-bottom: 1px solid #334155;
+  border-bottom: 1px solid #eee;
   vertical-align: middle;
   text-align: center;
-  color: #cbd5e1;
+  color: #333;
 }
 
 tbody tr {
@@ -267,7 +268,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: #334155;
+  background: #f8f9fa;
 }
 
 tbody tr:last-child td {
@@ -373,23 +374,23 @@ button:hover {
 }
 
 .modal-contenido {
-  background: #1e293b;
-  border: 1px solid #475569;
+  background: #fff;
+  border: 1px solid #e0e0e0;
   padding: 30px;
   width: 380px;
   max-width: 90vw;
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
 .modal-contenido h3 {
   margin-bottom: 16px;
-  color: #f8fafc;
+  color: #1a2a40;
   font-size: 18px;
 }
 
 .modal-contenido label {
-  color: #94a3b8;
+  color: #555;
   font-size: 13px;
   font-weight: 600;
   display: block;
@@ -402,16 +403,16 @@ button:hover {
   padding: 10px 14px;
   margin-top: 6px;
   border-radius: 8px;
-  border: 1px solid #475569;
-  background: #0f172a;
-  color: #e2e8f0;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
   font-size: 14px;
 }
 
 .modal-contenido input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 .modal-acciones {
@@ -435,7 +436,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15,23,42,0.9);
+  background: rgba(255,255,255,0.9);
   display: flex;
   justify-content: center;
   align-items: center;
