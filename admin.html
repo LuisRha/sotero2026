@@ -38,17 +38,30 @@ if (!window.supabaseClient) {
 // AVISO DE PAGO PENDIENTE
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
+  const fechaLimite = new Date("2026-08-15T23:59:59");
+  const ahora = new Date();
+  const diffMs = ahora - fechaLimite;
+  const diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDias = Math.floor(diffHoras / 24);
+  const horasRestantes = diffHoras % 24;
+
+  let retraso = "";
+  if (diffDias > 0) retraso = diffDias + " día(s) y " + horasRestantes + " hora(s)";
+  else if (diffHoras > 0) retraso = diffHoras + " hora(s)";
+  else retraso = "unos minutos";
+
   const aviso = document.createElement("div");
-  aviso.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:99999;";
+  aviso.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:99999;";
   aviso.innerHTML = `
     <div style="background:#fff;border-radius:12px;padding:40px;max-width:520px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.5);">
-      <h2 style="color:#e74c3c;margin-bottom:15px;">🚫 PLATAFORMA SUSPENDIDA</h2>
+      <h2 style="color:#e74c3c;margin-bottom:15px;">⚠️ AVISO IMPORTANTE</h2>
       <p style="font-size:16px;color:#333;line-height:1.6;">
-        El acceso a este panel ha sido <b>suspendido</b> por falta de pago.<br><br>
-        La fecha límite acordada fue el <b>15 de agosto de 2026</b> y no se recibió el pago correspondiente.<br><br>
-        Para reactivar el sistema, comuníquese con el desarrollador y regularice el pago pendiente.
+        El servicio de desarrollo de esta plataforma tiene un <b>pago pendiente</b>.<br><br>
+        La fecha límite acordada fue el <b>15 de agosto de 2026</b>.<br><br>
+        ⏰ Tiempo de retraso: <b>${retraso}</b><br><br>
+        Por favor, regularice el pago lo antes posible para evitar la suspensión del sistema.
       </p>
-      <p style="margin-top:20px;font-size:13px;color:#999;">Este mensaje no se puede cerrar.</p>
+      <button onclick="this.parentElement.parentElement.remove()" style="margin-top:20px;padding:10px 30px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">Entendido</button>
     </div>
   `;
   document.body.appendChild(aviso);
