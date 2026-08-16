@@ -149,6 +149,40 @@ body {
   align-items: center;
 }
 
+.buscar-grupo {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.buscar-grupo input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 6px 10px;
+  font-size: 12px;
+  width: 140px;
+  background: transparent;
+  color: #222;
+}
+
+.buscar-grupo button {
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.2s;
+}
+
+.buscar-grupo button:hover {
+  background: #2563eb;
+}
+
 .acciones input[type="text"] {
   padding: 6px 10px;
   border-radius: 6px;
@@ -486,22 +520,23 @@ button:hover {
 
   .acciones {
     width: 100%;
-    gap: 4px;
-    flex-direction: row;
-    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  .acciones input[type="text"] {
-    width: calc(50% - 40px);
-    font-size: 10px;
-    padding: 4px 6px;
-    height: 28px;
+  .buscar-grupo {
+    flex: 1;
+    min-width: 0;
   }
 
-  .acciones button {
-    font-size: 9px;
-    padding: 4px 8px;
-    height: 28px;
+  .buscar-grupo input[type="text"] {
+    width: 100%;
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .buscar-grupo button {
+    font-size: 11px;
+    padding: 5px 8px;
   }
 
   .resumen {
