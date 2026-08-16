@@ -465,30 +465,51 @@ button:hover {
 @media (max-width: 768px) {
 
   .admin-header {
-    padding: 12px 16px;
+    padding: 8px 12px;
   }
 
   .admin-header h1 {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .barra-sorteo {
-    margin: 12px 12px;
-    padding: 16px;
+    margin: 8px 10px;
+    padding: 10px 12px;
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
+  }
+
+  .sorteo-activo {
+    font-size: 11px;
   }
 
   .acciones {
     width: 100%;
+    gap: 5px;
   }
 
   .acciones input[type="text"] {
     width: 100%;
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .acciones button {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+
+  .resumen {
+    font-size: 11px;
+  }
+
+  .resumen strong {
+    font-size: 12px;
   }
 
   .table-wrapper {
-    padding: 0 12px 12px;
+    padding: 0 8px 8px;
   }
 
   table {
@@ -496,36 +517,37 @@ button:hover {
   }
 
   th, td {
-    font-size: 12px;
-    padding: 10px 6px;
+    font-size: 11px;
+    padding: 8px 5px;
   }
 
   button {
-    font-size: 12px;
-    padding: 7px 12px;
+    font-size: 10px;
+    padding: 5px 8px;
   }
 
   .numeros-premio {
-    font-size: 11px;
+    font-size: 7px;
+    gap: 2px;
   }
 
   #numerosTopAdmin span {
-    font-size: 11px;
-    padding: 2px 6px;
+    font-size: 7px;
+    padding: 1px 3px;
   }
 }
 
 @media (max-width: 480px) {
 
   .admin-header h1 {
-    font-size: 14px;
+    font-size: 11px;
   }
 
   .sorteo-activo {
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .resumen {
-    font-size: 13px;
+    font-size: 10px;
   }
 }
