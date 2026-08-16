@@ -99,7 +99,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
-    console.log("✅ Sesión activa");
+    // Mostrar email del usuario conectado
+    const email = data.session.user.email || "Sin email";
+    const usuarioEl = document.getElementById("usuarioConectado");
+    if (usuarioEl) usuarioEl.textContent = email;
+
+    console.log("✅ Sesión activa:", email);
 
   } catch (e) {
 
@@ -146,6 +151,8 @@ HEADER
   <button onclick="cerrarSesion()" class="logout" style="font-size:10px;padding:4px 8px;">
     Cerrar sesión
   </button>
+
+  <span id="usuarioConectado" style="font-size:9px;color:#94a3b8;margin-left:4px;"></span>
 
   <div id="numerosTopAdmin" class="numeros-premio" style="font-size:8px;gap:3px;">👀</div>
 
