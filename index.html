@@ -274,30 +274,11 @@ ImpulsoDigitalStudio
 <script>
 (async function(){
   try {
-    const sb = supabase.createClient(
-      "https://caovuekqrczqysxgnucc.supabase.co",
-      "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX"
-    );
-
-    // Incrementar visita via RPC o update directo
-    const { data } = await sb
-      .from("configuracion")
-      .select("valor")
-      .eq("clave", "visitas")
-      .single();
-
-    let visitas = data ? parseInt(data.valor || "0") : 0;
-    visitas++;
-
-    await sb
-      .from("configuracion")
-      .upsert({ clave: "visitas", valor: String(visitas) }, { onConflict: "clave" });
-
+    const res = await fetch("/api/visitas", { method: "POST" });
+    const data = await res.json();
     const el = document.getElementById("contadorVisitas");
-    if (el) el.textContent = visitas.toLocaleString();
-  } catch(e) {
-    // silencioso
-  }
+    if (el && data.visitas) el.textContent = data.visitas.toLocaleString();
+  } catch(e) {}
 })();
 </script>
 
