@@ -272,14 +272,16 @@ ImpulsoDigitalStudio
 
 <!-- CONTADOR DE VISITAS -->
 <script>
-(async function(){
+window.addEventListener("load", async function(){
   try {
     const res = await fetch("/api/visitas", { method: "POST" });
-    const data = await res.json();
-    const el = document.getElementById("contadorVisitas");
-    if (el && data.visitas) el.textContent = data.visitas.toLocaleString();
+    if (res.ok) {
+      const data = await res.json();
+      const el = document.getElementById("contadorVisitas");
+      if (el && data.visitas) el.textContent = data.visitas.toLocaleString();
+    }
   } catch(e) {}
-})();
+});
 </script>
 
 <!-- SCRIPT DE VALIDACIÓN ESTRICTA CON FILTRO PARA EL 0 -->

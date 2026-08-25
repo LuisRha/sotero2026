@@ -11,17 +11,18 @@ export default async function handler(req, res) {
       // Obtener valor actual
       const { data } = await supabase
         .from("configuracion")
-        .select("valor")
+        .select("id, valor")
         .eq("clave", "visitas")
         .single();
 
       let visitas = data ? parseInt(data.valor || "0") : 0;
       visitas++;
 
-      // Actualizar
+      // Actualizar por id
       await supabase
         .from("configuracion")
-        .upsert({ clave: "visitas", valor: String(visitas) }, { onConflict: "clave" });
+        .update({ valor: String(visitas) })
+        .eq("id", data.id);
 
       return res.status(200).json({ visitas });
     }
