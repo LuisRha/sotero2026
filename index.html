@@ -38,6 +38,7 @@
     <span class="logo-highlight">TRUJILLOSGROUP</span>
     <p class="slogan">Alcanza tus metas..</p>
   </div>
+  <div id="contadorVisitas" style="font-size:10px;color:rgba(255,255,255,0.5);text-align:center;margin-top:2px;letter-spacing:1px;"></div>
 </header>
 
 
@@ -268,6 +269,37 @@ ImpulsoDigitalStudio
 </footer>
 
 <script src="js/main.js"></script>
+
+<!-- CONTADOR DE VISITAS -->
+<script>
+(async function(){
+  try {
+    const sb = supabase.createClient(
+      "https://caovuekqrczqysxgnucc.supabase.co",
+      "sb_publishable_843ipMaoEhnMrvuF95Iq6Q_9It7qiFX"
+    );
+
+    // Incrementar visita via RPC o update directo
+    const { data } = await sb
+      .from("configuracion")
+      .select("valor")
+      .eq("clave", "visitas")
+      .single();
+
+    let visitas = data ? parseInt(data.valor || "0") : 0;
+    visitas++;
+
+    await sb
+      .from("configuracion")
+      .upsert({ clave: "visitas", valor: String(visitas) }, { onConflict: "clave" });
+
+    const el = document.getElementById("contadorVisitas");
+    if (el) el.textContent = visitas.toLocaleString();
+  } catch(e) {
+    // silencioso
+  }
+})();
+</script>
 
 <!-- SCRIPT DE VALIDACIÓN ESTRICTA CON FILTRO PARA EL 0 -->
 <script>
